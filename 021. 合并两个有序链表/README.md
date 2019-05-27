@@ -1,18 +1,5 @@
-#vmp-for-save
-Variational Message passing
-"Varia"
-## Geting started
-```source ```
+# 解题思路
 
-# Fee_Calcutor_for_UM
-1. 讲待处理的Excel
-2. 在windows环境下直接处理
-```python
-pythoon resource/code.py
-```
+# 我的解题思路
+第二次刷： 可以使用递归地定义两个链表里的merge操作；也就是说链表头较小的一个与剩下的元素的merge操作结果合并
 
-具体使用方法见**User.pdf**
-### 你说的是啥水电费水电费
-| 姓名 |年龄|
-|-----|----|
-|张莎|12|
