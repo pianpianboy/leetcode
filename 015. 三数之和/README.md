@@ -64,10 +64,10 @@ class Solution {
         Arrays.sort(nums);
 
         for(int i=0;i<nums.length;i++){
-            //去重1
-            if(nums[i]>0)
+
+            if(nums[i]>0)//因为确定三数和为0，那么a>0即可提前结束；
                 break;
-            if(i>0&& nums[i]==nums[i-1])
+            if(i>0&& nums[i]==nums[i-1])//去重1
                 continue;
 
             int j = i+1;
@@ -80,7 +80,7 @@ class Solution {
                 //去重3
                 }else if(nums[i]+nums[j]+nums[k]>0 || (k<nums.length-1&&nums[k]==nums[k+1])){
                     k--;
-                }else if(nums[i]+nums[j]+nums[k]==0){
+                }else if(nums[i]+nums[j]+nums[k]==0){//注意此处，当有了去重1之后，此处就不用去重了，当时想着在这个地方去重，太复杂，代码直接写废了
                     List<Integer> tmpList = new ArrayList<>();
                     tmpList.add(nums[i]);
                     tmpList.add(nums[j]);
