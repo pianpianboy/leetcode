@@ -51,5 +51,52 @@ class Solution {
 
 ```java
 //解法2：
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head==null||head.next==null) return true;
+        ListNode slow = head;
+        ListNode fast = head;
 
+        //如何处理奇偶的情况
+        while(true){
+            if(fast.next==null||fast.next.next ==null){
+                slow = slow.next;
+                break;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        //反转链表
+        ListNode tmphead = slow;
+        ListNode last = slow;
+        ListNode cur = slow.next;
+        while(cur!=null){
+            last.next = cur.next;
+            cur.next = tmphead;
+
+            tmphead = cur;
+            cur = last.next;
+        }
+
+        cur = head;
+        //对比
+        while(tmphead!=null){
+            if(tmphead.val!=cur.val)
+                return false;
+            tmphead = tmphead.next;
+            cur = cur.next;
+        }
+
+        return true;
+    }
+}
 ```
