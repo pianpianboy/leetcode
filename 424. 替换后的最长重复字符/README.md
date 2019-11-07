@@ -7,8 +7,9 @@
         * 确定移动窗口左边界的条件，即什么时候移动左边界
         * 确定移动窗口右边界的条件，即什么时移动右边界
     + 确定好左右边界的条件后，接下来的问题就是要解决：怎么计算当前窗口中数量最多的字符的数量。因为需要替换的字符就是当前窗口的大小减去窗口中数量最多的字符的数量
+    + 保证指针每次往前移动一格，每次移动都会有新的一个元素进入窗口，这时条件可能就会发生变化，然后根据当前条件来决定左指针是否移动，以及移动多少格
 - 参考 https://mp.weixin.qq.com/s/6YeZUCYj5ft-OGa85sQegw
-
+https://mp.weixin.qq.com/s/6YeZUCYj5ft-OGa85sQegw
 
 ```java
 class Solution {
@@ -36,9 +37,11 @@ class Solution {
             maxcount = Math.max(maxcount,hash[arr[right]-'A']);
 
             while(right-left +1-maxcount>k){
+                //在移动左指针的时候，将前面窗口内的数据移出掉（这样才能使用动态的增减）
                 hash[arr[left]-'A']--;
                 left++;
             }
+
             //此时left不停的往右移动，直到right-left +1-maxcount<=k, 满足条件，更新res
             res = Math.max(res,right-left+1);
             right++;
