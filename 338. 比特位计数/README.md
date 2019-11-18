@@ -11,7 +11,7 @@
         * dp[0] = 0
         * dp[1] = 1;
         * dp[2] = 1;
-- lowbit
+- lowbit 参考 191. 位1的个数
     + 遍历0到num中的每一个值i
     + 利用lowbit求i中1的个数
 - 使用暴力解，其实解法和lowbit很像，暴力解必须遍历完32,而lowbit到val==0的时候就结束了
@@ -39,15 +39,28 @@ class Solution {
         dp[2] = 1;
 
         for(int i=3;i<=num;i++){
-            if(i%2==0){
-                dp[i] = dp[i/2];
-            }else{
-                dp[i] = dp[i/2]+1;
-            }
+            // if(i%2==0){
+            //     dp[i] = dp[i/2];
+            // }else{
+            //     dp[i] = dp[i/2]+1;
+            // }
+
+            //或者写成
+            dp[i] = dp[i>>1]+(i&1);
         }
         return dp;
     }
 }
+
+public class Solution {
+  public int[] countBits(int num) {
+      int[] ans = new int[num + 1];
+      for (int i = 1; i <= num; ++i)
+        ans[i] = ans[i >> 1] + (i & 1); // x / 2 is x >> 1 and x % 2 is x & 1
+      return ans;
+  }
+}
+
 ```
 
 ```java
