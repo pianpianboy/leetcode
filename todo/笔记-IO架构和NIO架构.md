@@ -45,22 +45,98 @@ CharacterSteams : Reader和Writer
 - 装饰对象可以在转发这些请求以前或以后增加一些附加功能，这样确保了在运行时，不用修改给定兑现个的结构就可以在外部增加附加功能。在面向对象的设计钟，通常是通过继承来实现给定 类的功能扩展。
 
 #### 编码
+```java
+//抽象构建角色(Component): 给出一个抽象接口
+public interface Component {//可以理解为inputStream
+    //抽象的构建角色
+    void doSomething();
+}
+```
+```java
+//具体构件角色（Concrete Component）：定义一个将要接收附加责任的类
+public class ConcreteComponent implements Component{
+    //具体的构建角色
+    @Override
+    public void doSomething() {
+        System.out.println("功能A");
+    }
+}
+```
 
+```java
+//装饰角色（Decorator）：
+public class Decorator  implements Component{
+    //装饰角色: 1、装饰角色必须实现抽象构建角色，2、装饰角色要持有一个抽象构建角色的引用
+    private Component component;
 
+    public Decorator(Component component){
+        this.component = component;
+    }
 
+    @Override
+    public void doSomething() {
+        component.doSomething();
+    }
 
+}
+```
 
+```java
+//具体装饰角色（Concrete Decorator）
+public class ConcreteDecorator1 extends Decorator{
+    //具体的装饰角色
+    public ConcreteDecorator1(Component component) {
+        super(component);
+    }
+    @Override
+    public void doSomething() {
+        super.doSomething();
+        this.doAnoThing();
+    }
+    private void doAnoThing(){
+        System.out.println("功能B");
+    }
+}
+```
+#### 装饰模式VS继承
+- 装饰模式
+    + 用来扩展特定 **对象**的功能
+    + 不需要子类
+    + **动态**
+    + 对于一个给定的对象，同时可能有不同的装饰对象，客户端可以通过它的需要选择何时的装饰对象发送消息
+- 继承
+    + 用来扩展 **一类对象的功能（就是扩展类）**
+    + 需要子类
+    + **静态**
 
+装饰模式的适用性：
 
+- 想要透明并且动态地给对象增加新的职责（方法）而又不会影响其他对象
+- 给对象增加的方法在未来可能会发生改变
+- 用子类扩展功能不实际的情况下
 
-
-
-
-
-
-
-
+#### javaIO中装饰模式
+inputStream --> FilterInputStream --> BufferedInputStream
 
 
 
 ##33、JavaNIO深入详解与体系分析
+
+
+##34、Buffer中各个重要状态属性的含义与关系图解
+
+
+##35、Java NIO核心类源码解读与分析
+
+
+
+String 优化
+并发：
+算法--极客动态规划
+jvm--总结
+kafka--如何保证不丢失消息
+Flink yarn部署
+
+晚上：
+并发编程
+性能调优
