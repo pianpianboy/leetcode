@@ -128,6 +128,151 @@ inputStream --> FilterInputStream --> BufferedInputStream
 
 ##35、Java NIO核心类源码解读与分析
 
+##38、NIO堆外内存与零拷贝深入讲解
+```java
+//例子
+public class Test9 {
+    public static void main(String[] args) throws Exception {
+        FileInputStream inputStream = new FileInputStream("input2.txt");
+        FileOutputStream outputStream = new FileOutputStream("output2.txt");
+
+        FileChannel inputChannel = inputStream.getChannel();
+        FileChannel outputChannel = outputStream.getChannel();
+
+        ByteBuffer buffer = ByteBuffer.allocateDirect(512);
+
+        while(true){
+            buffer.clear();
+            int read = inputChannel.read(buffer);
+            System.out.println("read: "+read);
+
+            if(-1==read){
+                break;
+            }
+            buffer.flip();
+            outputChannel.write(buffer);
+        }
+        inputChannel.close();
+        outputChannel.close();
+    }
+}
+```
+```java
+ByteBuffer.allocateDirect(512)
+---->
+public static ByteBuffer allocateDirect(int capacity){
+        return new DirectByteBuffer(capacity)
+}
+---->
+DirectByteBuffer.java
+DirectByteBuffer extends MappedByteBuffer extends ByteBuffer  extends  Buffer
+
+private final Cleaner cleaner;
+//构造函数
+DirectByteBuffer(int cap) {
+    base = unsafe.allocateMemory(size);
+    unsafe.setMemory(base, size, (byte) 0);
+    address = base + ps - (base & (ps - 1));
+    cleaner = Cleaner.create(this, new Deallocator(base, size, cap));
+}
+
+Buffer.java{
+    在Buffer类中有个long类型的变量address
+    // Used only by direct buffers
+    long address;
+}
+
+```
+- HeapByteBuffer是一个纯粹的java对象没有调用unsafe方法
+- 关于直接缓存主要由两部分组成：
+    + JVM 堆中 DirectByteBuffer对象（在调用ByteBuffer.allocateDirecte()时候会执行 new DirectByteBuffer(), new出来的对象都是分配到JVM的堆中）
+    + native堆中 ，因为在DirectByteBuffer的构造函数中调用unsafe.allocateMemory(size);
+- 在DirectByteBuffer对象中有一个变量能引用native内存中的数据，这个引用就是address
+- 参考图：netty-directbytebuffer-38.jpg
+
+### 问题：为什么不把DirectByteBuffer引用的数据放在JVM的堆内存中呢？
+- 答：实际上是出于效率考虑
+    + 在使用heapByteBuffer进行数据写入会发生什么事情？
+        * 使用HeapByteBuffer时，HeapByteBuffer对象及对象封装的字节数组都是分配到JAVA堆中欧过的，然而操作系统并不是直接处理HeapByteBuffer在java堆上封装的字节数组
+        * 实际上是操作系统在JAVA内存结构外面开辟一块内存区域，将HeapByteBuffer里面的数据拷贝到这块开辟的内存区域，然后再把这块区域的数据直接拿出来跟IO设备打交道，进行数据的读取或者数据的写入，或者说我们使用HeapByteBuffer，我们多了一次拷贝
+    + 如果使用的是DirectByteBuffer进行数据写入？
+        * JVM堆上面就不会存在一个直接数组了。因为真正的数据已经在堆外放着了
+        * 如果进行数据读写的话，直接由堆外内存和IO设备打交道
+        * 这也叫零拷贝
+
+### 问题：为什么操作系统不直接的操作JVM堆上的数据？
+- 答：其实操作系统是可以访问JVM堆上的内存的，在内核态的一个场景下是可以访问任何一块内存区域的。既然能访问，为什么又要拷贝一份出来呢？
+    + 操作系统访问JVM堆上的内存，一定是通过JNI的方式去访问的，这个访问的前提就是这块内存区域是确定的。
+    + 然而你正在访问这块内存区域的时候，突然在这块区域进行了垃圾回收GC
+        * 垃圾回收有多种回收算法，除了CMS（标记清除算法）外其它的垃圾回收算法都会进行先标记再压缩的过程。而这个压缩过程涉及到内存拷贝。
+        * 比如YGC就是复制清除算法。
+        * 如果native正在操作这个数据，然而这个数据发生了移动的话，可能出现数据错误，甚至出现outofMemory这样的错误
+    + 所以由两种办法：
+        * 一种是让native操作jvm堆中对象的时候，让这个对象固定，这不太现实的
+        * 把这个内存的对象拷贝到堆外，而这个拷贝的动作是很快的，而IO又是比较慢，所以这个拷贝动作对于IO操作来说是比较高效的
+
+### 问题：对于零拷贝（堆外内存）的数据是如何进行回收（释放的）？
+- 因为address会维护堆外内存的一个引用
+- 对于jvm堆而言：当DirectByteBuffer被回收掉之后，是能根据address找到堆外内存
+- 然后通过JNI的方式释放掉堆外内存
+- 内存溢出的情况是不会发生的
+
+##39、NIO中Scattering与Gathering深度解析
+- MappedBgteBuffer.java
+    + MappedByteBuffer是一个文件的直接内存缓冲区域 A direct byte buffer whose content is a memory-mapped region of a file.
+    + 这个映射是一直存在的，知道buffer被GC 。 A mapped byte buffer and the file mapping that it represents remain valid until the buffer itself is garbage-collected.
+    + 也就是我们只需要操作内存，就能将修改直接写到磁盘文件中
+    + MappedByteBuffer就是：内存映射文件就是一种容许java从内存访问的文件。我们可以将整个文件或者文件的一部分映射到内存中，由操作系统将内存修改写入磁盘文件中，我们的应用程序只需要处理内存数据，这样可以实现非常迅速的IO操作，用于内存映射的文件的内存本身是在JVM堆外，也就是堆外内存
+- 例子:关于scattering与gathering的例子
+
+```java
+public class Test10 {
+    public static void main(String[] args) throws IOException {
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        InetSocketAddress address = new InetSocketAddress(8899);
+
+        serverSocketChannel.socket().bind(address);
+
+        SocketChannel socketChannel = serverSocketChannel.accept();
+
+        int messageLength = 2+3+4;
+        ByteBuffer[] buffers = new ByteBuffer[3];
+        buffers[0] = ByteBuffer.allocate(2);
+        buffers[1] = ByteBuffer.allocate(3);
+        buffers[2] = ByteBuffer.allocate(4);
+
+        while(true){
+            int bytesRead = 0;
+            while(bytesRead<messageLength){
+                long r = socketChannel.read(buffers);
+                bytesRead += r;
+                System.out.println("bytesRead: "+ bytesRead);
+
+                Arrays.asList(buffers).stream().map(buffer->
+                        "position: "+buffer.position()+",limit:"+buffer.limit()).forEach(System.out::println);
+            }
+
+
+            Arrays.asList(buffers).forEach(buffer->{
+                buffer.flip();
+            });
+
+            long bytesWriten = 0;
+            while(bytesWriten<messageLength){
+                long r = socketChannel.write(buffers);
+                bytesWriten += r;
+            }
+            Arrays.asList(buffers).forEach(buffer->{
+                buffer.clear();
+            });
+
+            System.out.println("bytesRead: "+bytesRead+
+                    ",bytesWrittens: "+bytesWriten+",messageLength"+messageLength);
+        }
+
+    }
+}
+```
 
 
 String 优化

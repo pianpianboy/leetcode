@@ -1162,10 +1162,195 @@ CharacterSteams : Reader和Writer</p>
 <h4 id="vs">装饰模式VS继承<a class="headerlink" href="#vs" title="Permanent link"></a></h4>
 <ul>
 <li>装饰模式<ul>
-<li>用来扩展特定对象的功能</li>
+<li>用来扩展特定 <strong>对象</strong>的功能</li>
 <li>不需要子类</li>
-<li>动态</li>
+<li><strong>动态</strong></li>
+<li>对于一个给定的对象，同时可能有不同的装饰对象，客户端可以通过它的需要选择何时的装饰对象发送消息</li>
+</ul>
+</li>
+<li>继承<ul>
+<li>用来扩展 <strong>一类对象的功能（就是扩展类）</strong></li>
+<li>需要子类</li>
+<li><strong>静态</strong></li>
 </ul>
 </li>
 </ul>
-<h2 id="33javanio">33、JavaNIO深入详解与体系分析<a class="headerlink" href="#33javanio" title="Permanent link"></a></h2></article></body></html>
+<p>装饰模式的适用性：</p>
+<ul>
+<li>想要透明并且动态地给对象增加新的职责（方法）而又不会影响其他对象</li>
+<li>给对象增加的方法在未来可能会发生改变</li>
+<li>用子类扩展功能不实际的情况下</li>
+</ul>
+<h4 id="javaio">javaIO中装饰模式<a class="headerlink" href="#javaio" title="Permanent link"></a></h4>
+<p>inputStream &ndash;&gt; FilterInputStream &ndash;&gt; BufferedInputStream</p>
+<h2 id="33javanio">33、JavaNIO深入详解与体系分析<a class="headerlink" href="#33javanio" title="Permanent link"></a></h2>
+<h2 id="34buffer">34、Buffer中各个重要状态属性的含义与关系图解<a class="headerlink" href="#34buffer" title="Permanent link"></a></h2>
+<h2 id="35java-nio">35、Java NIO核心类源码解读与分析<a class="headerlink" href="#35java-nio" title="Permanent link"></a></h2>
+<h2 id="38nio">38、NIO堆外内存与零拷贝深入讲解<a class="headerlink" href="#38nio" title="Permanent link"></a></h2>
+<p><div class="codehilite"><pre><span class="c1">//例子</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test9</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="n">FileInputStream</span> <span class="n">inputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="o">(</span><span class="s">&quot;input2.txt&quot;</span><span class="o">);</span>
+        <span class="n">FileOutputStream</span> <span class="n">outputStream</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileOutputStream</span><span class="o">(</span><span class="s">&quot;output2.txt&quot;</span><span class="o">);</span>
+
+        <span class="n">FileChannel</span> <span class="n">inputChannel</span> <span class="o">=</span> <span class="n">inputStream</span><span class="o">.</span><span class="na">getChannel</span><span class="o">();</span>
+        <span class="n">FileChannel</span> <span class="n">outputChannel</span> <span class="o">=</span> <span class="n">outputStream</span><span class="o">.</span><span class="na">getChannel</span><span class="o">();</span>
+
+        <span class="n">ByteBuffer</span> <span class="n">buffer</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocateDirect</span><span class="o">(</span><span class="mi">512</span><span class="o">);</span>
+
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="n">buffer</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+            <span class="kt">int</span> <span class="n">read</span> <span class="o">=</span> <span class="n">inputChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;read: &quot;</span><span class="o">+</span><span class="n">read</span><span class="o">);</span>
+
+            <span class="k">if</span><span class="o">(-</span><span class="mi">1</span><span class="o">==</span><span class="n">read</span><span class="o">){</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">buffer</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
+            <span class="n">outputChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">inputChannel</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="n">outputChannel</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocateDirect</span><span class="o">(</span><span class="mi">512</span><span class="o">)</span>
+<span class="o">----&gt;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">ByteBuffer</span> <span class="nf">allocateDirect</span><span class="o">(</span><span class="kt">int</span> <span class="n">capacity</span><span class="o">){</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">DirectByteBuffer</span><span class="o">(</span><span class="n">capacity</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="o">----&gt;</span>
+<span class="n">DirectByteBuffer</span><span class="o">.</span><span class="na">java</span>
+<span class="n">DirectByteBuffer</span> <span class="kd">extends</span> <span class="n">MappedByteBuffer</span> <span class="kd">extends</span> <span class="n">ByteBuffer</span>  <span class="kd">extends</span>  <span class="n">Buffer</span>
+
+<span class="kd">private</span> <span class="kd">final</span> <span class="n">Cleaner</span> <span class="n">cleaner</span><span class="o">;</span>
+<span class="c1">//构造函数</span>
+<span class="n">DirectByteBuffer</span><span class="o">(</span><span class="kt">int</span> <span class="n">cap</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">unsafe</span><span class="o">.</span><span class="na">allocateMemory</span><span class="o">(</span><span class="n">size</span><span class="o">);</span>
+    <span class="n">unsafe</span><span class="o">.</span><span class="na">setMemory</span><span class="o">(</span><span class="n">base</span><span class="o">,</span> <span class="n">size</span><span class="o">,</span> <span class="o">(</span><span class="kt">byte</span><span class="o">)</span> <span class="mi">0</span><span class="o">);</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">ps</span> <span class="o">-</span> <span class="o">(</span><span class="n">base</span> <span class="o">&amp;</span> <span class="o">(</span><span class="n">ps</span> <span class="o">-</span> <span class="mi">1</span><span class="o">));</span>
+    <span class="n">cleaner</span> <span class="o">=</span> <span class="n">Cleaner</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="k">new</span> <span class="n">Deallocator</span><span class="o">(</span><span class="n">base</span><span class="o">,</span> <span class="n">size</span><span class="o">,</span> <span class="n">cap</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="n">Buffer</span><span class="o">.</span><span class="na">java</span><span class="o">{</span>
+    <span class="n">在Buffer类中有个long类型的变量address</span>
+    <span class="c1">// Used only by direct buffers</span>
+    <span class="kt">long</span> <span class="n">address</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+- HeapByteBuffer是一个纯粹的java对象没有调用unsafe方法
+- 关于直接缓存主要由两部分组成：
+    + JVM 堆中 DirectByteBuffer对象（在调用ByteBuffer.allocateDirecte()时候会执行 new DirectByteBuffer(), new出来的对象都是分配到JVM的堆中）
+    + native堆中 ，因为在DirectByteBuffer的构造函数中调用unsafe.allocateMemory(size);
+- 在DirectByteBuffer对象中有一个变量能引用native内存中的数据，这个引用就是address
+- 参考图：netty-directbytebuffer-38.jpg</p>
+<h3 id="directbytebufferjvm">问题：为什么不把DirectByteBuffer引用的数据放在JVM的堆内存中呢？<a class="headerlink" href="#directbytebufferjvm" title="Permanent link"></a></h3>
+<ul>
+<li>答：实际上是出于效率考虑<ul>
+<li>在使用heapByteBuffer进行数据写入会发生什么事情？<ul>
+<li>使用HeapByteBuffer时，HeapByteBuffer对象及对象封装的字节数组都是分配到JAVA堆中欧过的，然而操作系统并不是直接处理HeapByteBuffer在java堆上封装的字节数组</li>
+<li>实际上是操作系统在JAVA内存结构外面开辟一块内存区域，将HeapByteBuffer里面的数据拷贝到这块开辟的内存区域，然后再把这块区域的数据直接拿出来跟IO设备打交道，进行数据的读取或者数据的写入，或者说我们使用HeapByteBuffer，我们多了一次拷贝</li>
+</ul>
+</li>
+<li>如果使用的是DirectByteBuffer进行数据写入？<ul>
+<li>JVM堆上面就不会存在一个直接数组了。因为真正的数据已经在堆外放着了</li>
+<li>如果进行数据读写的话，直接由堆外内存和IO设备打交道</li>
+<li>这也叫零拷贝</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="jvm">问题：为什么操作系统不直接的操作JVM堆上的数据？<a class="headerlink" href="#jvm" title="Permanent link"></a></h3>
+<ul>
+<li>答：其实操作系统是可以访问JVM堆上的内存的，在内核态的一个场景下是可以访问任何一块内存区域的。既然能访问，为什么又要拷贝一份出来呢？<ul>
+<li>操作系统访问JVM堆上的内存，一定是通过JNI的方式去访问的，这个访问的前提就是这块内存区域是确定的。</li>
+<li>然而你正在访问这块内存区域的时候，突然在这块区域进行了垃圾回收GC<ul>
+<li>垃圾回收有多种回收算法，除了CMS（标记清除算法）外其它的垃圾回收算法都会进行先标记再压缩的过程。而这个压缩过程涉及到内存拷贝。</li>
+<li>比如YGC就是复制清除算法。</li>
+<li>如果native正在操作这个数据，然而这个数据发生了移动的话，可能出现数据错误，甚至出现outofMemory这样的错误</li>
+</ul>
+</li>
+<li>所以由两种办法：<ul>
+<li>一种是让native操作jvm堆中对象的时候，让这个对象固定，这不太现实的</li>
+<li>把这个内存的对象拷贝到堆外，而这个拷贝的动作是很快的，而IO又是比较慢，所以这个拷贝动作对于IO操作来说是比较高效的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="_5">问题：对于零拷贝（堆外内存）的数据是如何进行回收（释放的）？<a class="headerlink" href="#_5" title="Permanent link"></a></h3>
+<ul>
+<li>因为address会维护堆外内存的一个引用</li>
+<li>对于jvm堆而言：当DirectByteBuffer被回收掉之后，是能根据address找到堆外内存</li>
+<li>然后通过JNI的方式释放掉堆外内存</li>
+<li>内存溢出的情况是不会发生的</li>
+</ul>
+<h2 id="39nioscatteringgathering">39、NIO中Scattering与Gathering深度解析<a class="headerlink" href="#39nioscatteringgathering" title="Permanent link"></a></h2>
+<ul>
+<li>MappedBgteBuffer.java<ul>
+<li>MappedByteBuffer是一个文件的直接内存缓冲区域 A direct byte buffer whose content is a memory-mapped region of a file.</li>
+<li>这个映射是一直存在的，知道buffer被GC 。 A mapped byte buffer and the file mapping that it represents remain valid until the buffer itself is garbage-collected.</li>
+<li>也就是我们只需要操作内存，就能将修改直接写到磁盘文件中</li>
+<li>MappedByteBuffer就是：内存映射文件就是一种容许java从内存访问的文件。我们可以将整个文件或者文件的一部分映射到内存中，由操作系统将内存修改写入磁盘文件中，我们的应用程序只需要处理内存数据，这样可以实现非常迅速的IO操作，用于内存映射的文件的内存本身是在JVM堆外，也就是堆外内存</li>
+</ul>
+</li>
+<li>例子:关于scattering与gathering的例子</li>
+</ul>
+<div class="codehilite"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test10</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="n">ServerSocketChannel</span> <span class="n">serverSocketChannel</span> <span class="o">=</span> <span class="n">ServerSocketChannel</span><span class="o">.</span><span class="na">open</span><span class="o">();</span>
+        <span class="n">InetSocketAddress</span> <span class="n">address</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InetSocketAddress</span><span class="o">(</span><span class="mi">8899</span><span class="o">);</span>
+
+        <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">socket</span><span class="o">().</span><span class="na">bind</span><span class="o">(</span><span class="n">address</span><span class="o">);</span>
+
+        <span class="n">SocketChannel</span> <span class="n">socketChannel</span> <span class="o">=</span> <span class="n">serverSocketChannel</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+
+        <span class="kt">int</span> <span class="n">messageLength</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="o">;</span>
+        <span class="n">ByteBuffer</span><span class="o">[]</span> <span class="n">buffers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteBuffer</span><span class="o">[</span><span class="mi">3</span><span class="o">];</span>
+        <span class="n">buffers</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+        <span class="n">buffers</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+        <span class="n">buffers</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="n">ByteBuffer</span><span class="o">.</span><span class="na">allocate</span><span class="o">(</span><span class="mi">4</span><span class="o">);</span>
+
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="kt">int</span> <span class="n">bytesRead</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">bytesRead</span><span class="o">&lt;</span><span class="n">messageLength</span><span class="o">){</span>
+                <span class="kt">long</span> <span class="n">r</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffers</span><span class="o">);</span>
+                <span class="n">bytesRead</span> <span class="o">+=</span> <span class="n">r</span><span class="o">;</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;bytesRead: &quot;</span><span class="o">+</span> <span class="n">bytesRead</span><span class="o">);</span>
+
+                <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">buffers</span><span class="o">).</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">buffer</span><span class="o">-&gt;</span>
+                        <span class="s">&quot;position: &quot;</span><span class="o">+</span><span class="n">buffer</span><span class="o">.</span><span class="na">position</span><span class="o">()+</span><span class="s">&quot;,limit:&quot;</span><span class="o">+</span><span class="n">buffer</span><span class="o">.</span><span class="na">limit</span><span class="o">()).</span><span class="na">forEach</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+            <span class="o">}</span>
+
+
+            <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">buffers</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="n">buffer</span><span class="o">-&gt;{</span>
+                <span class="n">buffer</span><span class="o">.</span><span class="na">flip</span><span class="o">();</span>
+            <span class="o">});</span>
+
+            <span class="kt">long</span> <span class="n">bytesWriten</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">while</span><span class="o">(</span><span class="n">bytesWriten</span><span class="o">&lt;</span><span class="n">messageLength</span><span class="o">){</span>
+                <span class="kt">long</span> <span class="n">r</span> <span class="o">=</span> <span class="n">socketChannel</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buffers</span><span class="o">);</span>
+                <span class="n">bytesWriten</span> <span class="o">+=</span> <span class="n">r</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">buffers</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="n">buffer</span><span class="o">-&gt;{</span>
+                <span class="n">buffer</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+            <span class="o">});</span>
+
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;bytesRead: &quot;</span><span class="o">+</span><span class="n">bytesRead</span><span class="o">+</span>
+                    <span class="s">&quot;,bytesWrittens: &quot;</span><span class="o">+</span><span class="n">bytesWriten</span><span class="o">+</span><span class="s">&quot;,messageLength&quot;</span><span class="o">+</span><span class="n">messageLength</span><span class="o">);</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>String 优化
+并发：
+算法&ndash;极客动态规划
+jvm&ndash;总结
+kafka&ndash;如何保证不丢失消息
+Flink yarn部署</p>
+<p>晚上：
+并发编程
+性能调优</p></article></body></html>
