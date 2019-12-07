@@ -13,3 +13,9 @@
 
 
 
+## Flink JVM参数
+env.java.opts="-XX:NewRatio=2"
+
+env.java.opts="-Xms2G -Xmx2G -Xmn1G -Xss1024K -XX:SurvivorRatio=4 -XX:PermSize=256M -XX:MaxPermSize=256M  -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=92 -XX:+CMSParallelRemarkEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -Xloggc:flink-gc.log"
+
+-Xms2G -Xmx2G -Xmn1G -Xss1024K -XX:SurvivorRatio=4 -XX:PermSize=256M -XX:MaxPermSize=256M  -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=92 -XX:+CMSParallelRemarkEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -Xloggc:flink-gc.log
