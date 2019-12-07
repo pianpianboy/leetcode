@@ -14,3 +14,5 @@
 我们可以通过一张图简单的对比下两个同步锁：了解下各自的特点：
 
 ![Demo](images/synchronized与lock对比.png)
+
+$\color{red}{红色字}$
