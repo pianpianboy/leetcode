@@ -288,7 +288,7 @@ Jdk 1.8 synchronized和 ReentrantLock 比较的话，官方比较建议用synchr
 
 ## HashMap、Hashtable、ConcurrentHashMap三者对比
 
-![Demo](images/HashMap\HashTable\ConcurrentHashMap的区别.png)
+![Demo](images/HashMapHashTableConcurrentHashMap的区别.png)
 
 
 

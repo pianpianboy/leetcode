@@ -223,16 +223,106 @@ linux操作系统分为两个空间：用户空间User space、内核空间Kerne
 **但是说这种内存映射就是一定性能最好的**，在java中就是通过MappedByteBuffer这个组件来帮助我们实现内存映射的。
 java提供了一些零拷贝的API,比如tansfrom ,tansfoTo
 
+### 3、NIO零拷贝实例深度剖析
+**非零拷贝方式实现：**
+```java
+public class OldClient {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 8899);
+        String fileName = "/Users/liaomengjie/Desktop/file.tgz";
+        InputStream inputStream = new FileInputStream(fileName);
 
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
+        byte[] buffer = new byte[4096];
+        long readCount;
+        long total = 0;
+        long startTime = System.currentTimeMillis();
 
+        while((readCount = inputStream.read(buffer)) >= 0){
+            total += readCount;
+            dataOutputStream.write(buffer);
+        }
+        System.out.println("发送总字节数："+total+",耗时："+(System.currentTimeMillis()-startTime));
+        dataOutputStream.close();
+    }
+}
+```
+```java
+public class OldServer {
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(8899);
 
+        while(true){
+            //Listens for a connection to be made to this socket and accepts
+            //     * it. The method blocks until a connection is made.
+            Socket socket = serverSocket.accept();
+            DataInputStream dataInputStrem = new DataInputStream(socket.getInputStream());
 
+            byte[] byteArray = new byte[4096];
+            while(true){
+                int readCount = dataInputStrem.read(byteArray, 0, byteArray.length);
 
+                if(-1 == readCount){
+                    break;
+                }
+            }
+        }
+    }
+}
+```
+**零拷贝的方式实现：**
+```java
+public class NewIOClient {
+    public static void main(String[] args) throws IOException {
+        SocketChannel socketChannel = SocketChannel.open();
+        socketChannel.connect(new InetSocketAddress("localhost",8899));
+        socketChannel.configureBlocking(true);
 
+        String fileName = "";
 
+        FileChannel fileChannel = new FileInputStream(fileName).getChannel();
+        long startTime = System.currentTimeMillis();
+        //* <p> This method is potentially much more efficient than a simple loop
+        //     * that reads from this channel and writes to the target channel.  Many
+        //     * operating systems can transfer bytes directly from the filesystem cache
+        //     * to the target channel without actually copying them.  </p>
+        long transferCount = fileChannel.transferTo(0, fileChannel.size(), socketChannel);
+        System.out.println("发送总字节数："+transferCount+",耗时："+(System.currentTimeMillis()-startTime));
+        fileChannel.close();
+    }
+}
+```
+```java
+public class NewIoServer {
+    public static void main(String[] args) throws IOException {
+        InetSocketAddress address = new InetSocketAddress(8899);
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        ServerSocket serverSocket = serverSocketChannel.socket();
+        serverSocket.bind(address);
 
+        ByteBuffer byteBuffer = ByteBuffer.allocate(4096);
 
+        while(true){
+            SocketChannel socketChannel = serverSocketChannel.accept();
+            //为什么要设置位阻塞
+            socketChannel.configureBlocking(true);
+            int readCount =0 ;
+            while(-1!=readCount){
+                readCount = socketChannel.read(byteBuffer);
+            }
+            byteBuffer.rewind();
+        }
+    }
+}
+```
+### 4、NIO零拷贝彻底分析与Gather操作在零拷贝中的作用详解
+真正意义上的零拷贝，netty的零拷贝也是如此：
+![Demo](images/零拷贝5.png)
+
+这个细微的修改是利用到了底层的gather operation,就是收集性操作（我可以将数据读取到一个byteBuffer当中，也可以将数据读取到多个byteBuffer当中，gather就是相反，就可以从多个渠道把信息汇总到一起，就是从多个渠道里去读），当把文件从硬件读到了kernel buffer当中，然后socket buffer当中并没有进行一个信息的拷贝，再也不会从kernel buffer拷贝到 socket buffer,他做的是什么事情呢？把文件拷贝到内核缓冲区之后，那么会有相应的文件描述符信息会被拷贝到socket buffer当中，会有文件描述符信息，这个文件描述符的信息包括：第一个是kernel buffer的内存地址在哪？第二个是这个kernel buffer 有多长或者说要读多少数据。这个时候不再将kernel buffer中的数据本身拷贝到 socket buffer，而是将数据的文件描述符拷贝到socket buffer当中。
+当把文件描述符拷贝到socket buffer之后，紧接着protocol engine协议引擎会真正的完成数据的发送，协议引擎再去发送数据的时候从两个地方开始读取kernel buffer和socket buffer，真正要发送的数据本身是在kernel buffer中,socket buffer 描述了这个文件在什么地方，有多长，换句话说就是从两个buffer中去读文件信息，这就是一种gather操作（gather operation）,确定好位置和长度之后，协议引擎就会kernel buffer中的数据发送给对应的服务器端。这里就不会在出现把数据原封不动的从kernel buffer 拷贝都按socket buffer了。
+上述的操作就是真正意义上的零拷贝。netty的零拷贝就是这个意思。
 
 
 
