@@ -99,7 +99,71 @@ SpringIOC技术的贡献就是，使得系统的类与类之间彻底的解耦�
 ##### SpringIOC的最大作用是什么？
 代码层面进行解耦，代码层面的大量变动不用去硬编码，直接改改配置就可以了，避免大量改动代码，避免大量的重复测试
 
+***
 
+### 说说你对Spring的AOP机制的理解可以吗？
+#### spring 核心框架里面，最关键的两个机制， **就是AOP和IOC**
+IOC: 根据XML配置或者注解，去实例化我们所有的bean，管理bean之间的依赖注入，让类与类之间解耦，维护代码的时候可以更加的轻松便利。
+AOP: 就是面向切面编程Aspect，其核心就是动态代理；AOP（即对一批类一批方法(切面)织入一些代码），如果没有AOP可能会有很多重复的代码，有了AOP之后会减少很多重复的代码。
+
+**如果没有AOP的话，代码中要记日志或者使用事务的话，就会书写很多重复的代码。如果有了AOP之后就可以通过对有重复代码的这一批类里的一批方法(也就是切面)织入一些代码，比如事务或者日志，这样就能减少大量重复的代码。**
+
+Spring已经管理了我们代码里所有的这个类的对象实例（Bean）
+
+
+```java
+@Controller
+public class MyController{
+    @Resource
+    private MyServiceA myServiceA;//注入的是动态代理的对象实例，ProxyMyServiceA
+
+    public void doRequest(){
+        myServiceA.doServiceA();//直接调用到动态代理的对象实例的方法中去
+    }
+}
+```
+```java
+@Service
+public class MyServiceAImpl implements MyServiceA{
+    public void doServiceA(){
+        //insert 语句
+        //update 语句
+        //update 语句
+        //delete 语句
+    }
+}
+```
+```java
+@Service
+public class MyServiceBImpl implements MyServiceA{
+    public void doServiceA(){
+        //update 语句
+        //update 语句
+        //insert 语句
+    }
+}
+```
+我们有几十个Service组件，类似的一样的代码，重复的代码，必须在几十个地方都去写一模一样的东西
+
+spring aop机制出马了；做一个切面，如何定一个切面呢？
+
+比如在代码中对于像MyServiceXXX的这种类，在这些类的所有方法中，都去织入一些代码，比如在所有这些方法开始运行的时候，都先去开启一个事务，在梭鱼欧这些方法运行完成之后，去根据是否抛出异常来判断一下，如果抛出异常，就回滚事务，如果没有异常，就提交事务 => AOP（即对一批类一批方法(切面)织入一些代码）
+
+Spring在运行的时候，动态代理技术，AOP的核心技术就是动态代理
+
+他会给你的那些类生成动态代理,那么什么是动态代理呢？
+```java
+public class ProxyMyserviceA implements MyServiceA{
+    private MyserviceA myServiceA;
+
+    public void doServiceA(){
+        //开启事务
+        //直接调用我依赖的MyServiceA对象的方法
+        myServiceA.doServiceA();
+        //根据他是否抛出异常，回滚事务，or,提交事务。
+    }
+}
+```
 
 
 
