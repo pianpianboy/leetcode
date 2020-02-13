@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://hbasefly.com/2016/03/25/hbase-hfile/ -->
+<html class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths js-evernote-checked" lang="zh-CN" style="" data-evernote-id="0"><!--<![endif]--><head data-evernote-id="265" class="js-evernote-checked"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1" data-evernote-id="267" class="js-evernote-checked">
+<link rel="profile" href="http://gmpg.org/xfn/11" data-evernote-id="268" class="js-evernote-checked">
+<link rel="pingback" href="http://hbasefly.com/xmlrpc.php" data-evernote-id="269" class="js-evernote-checked">
+
+<title data-evernote-id="270" class="js-evernote-checked">HBase – 存储文件HFile结构解析 – 有态度的HBase/Spark/BigData</title>
+<link rel="alternate" type="application/rss+xml" title="有态度的HBase/Spark/BigData » Feed" href="http://hbasefly.com/feed/" data-evernote-id="271" class="js-evernote-checked">
+<link rel="alternate" type="application/rss+xml" title="有态度的HBase/Spark/BigData » 评论Feed" href="http://hbasefly.com/comments/feed/" data-evernote-id="272" class="js-evernote-checked">
+<link rel="alternate" type="application/rss+xml" title="有态度的HBase/Spark/BigData » HBase – 存储文件HFile结构解析评论Feed" href="http://hbasefly.com/2016/03/25/hbase-hfile/feed/" data-evernote-id="273" class="js-evernote-checked">
+		<script type="text/javascript" data-evernote-id="274" class="js-evernote-checked">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/hbasefly.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.4.21"}};
+			!function(a,b,c){function d(a){var c,d,e,f=b.createElement("canvas"),g=f.getContext&&f.getContext("2d"),h=String.fromCharCode;return g&&g.fillText?(g.textBaseline="top",g.font="600 32px Arial","flag"===a?(g.fillText(h(55356,56806,55356,56826),0,0),f.toDataURL().length>3e3):"diversity"===a?(g.fillText(h(55356,57221),0,0),c=g.getImageData(16,16,1,1).data,g.fillText(h(55356,57221,55356,57343),0,0),c=g.getImageData(16,16,1,1).data,e=c[0]+","+c[1]+","+c[2]+","+c[3],d!==e):("simple"===a?g.fillText(h(55357,56835),0,0):g.fillText(h(55356,57135),0,0),0!==g.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag"),unicode8:d("unicode8"),diversity:d("diversity")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag&&c.supports.unicode8&&c.supports.diversity||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css" data-evernote-id="275" class="js-evernote-checked">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="wp-easyarchives-css" href="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/wp-easyarchives.css" type="text/css" media="screen" data-evernote-id="276" class="js-evernote-checked">
+<link rel="stylesheet" id="sparkling-bootstrap-css" href="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/bootstrap.min.css" type="text/css" media="all" data-evernote-id="277" class="js-evernote-checked">
+<link rel="stylesheet" id="sparkling-icons-css" href="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/font-awesome.min.css" type="text/css" media="all" data-evernote-id="278" class="js-evernote-checked">
+
+<link rel="stylesheet" id="sparkling-style-css" href="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/style.css" type="text/css" media="all" data-evernote-id="279" class="js-evernote-checked">
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/jquery.js" data-evernote-id="280" class="js-evernote-checked"></script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/jquery-migrate.min.js" data-evernote-id="281" class="js-evernote-checked"></script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/modernizr.min.js" data-evernote-id="282" class="js-evernote-checked"></script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/bootstrap.min.js" data-evernote-id="283" class="js-evernote-checked"></script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/functions.min.js" data-evernote-id="284" class="js-evernote-checked"></script>
+<link rel="https://api.w.org/" href="http://hbasefly.com/wp-json/" data-evernote-id="285" class="js-evernote-checked">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://hbasefly.com/xmlrpc.php?rsd" data-evernote-id="286" class="js-evernote-checked">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://hbasefly.com/wp-includes/wlwmanifest.xml" data-evernote-id="287" class="js-evernote-checked"> 
+<link rel="prev" title="HBase – Memstore Flush深度解析" href="http://hbasefly.com/2016/03/23/hbase-memstore-flush/" data-evernote-id="288" class="js-evernote-checked">
+<link rel="next" title="HBase – 探索HFile索引机制" href="http://hbasefly.com/2016/04/03/hbase_hfile_index/" data-evernote-id="289" class="js-evernote-checked">
+<meta name="generator" content="WordPress 4.4.21" data-evernote-id="290" class="js-evernote-checked">
+<link rel="canonical" href="http://hbasefly.com/2016/03/25/hbase-hfile/" data-evernote-id="291" class="js-evernote-checked">
+<link rel="shortlink" href="http://hbasefly.com/?p=53" data-evernote-id="292" class="js-evernote-checked">
+<link rel="alternate" type="application/json+oembed" href="http://hbasefly.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fhbasefly.com%2F2016%2F03%2F25%2Fhbase-hfile%2F" data-evernote-id="293" class="js-evernote-checked">
+<link rel="alternate" type="text/xml+oembed" href="http://hbasefly.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fhbasefly.com%2F2016%2F03%2F25%2Fhbase-hfile%2F&amp;format=xml" data-evernote-id="294" class="js-evernote-checked">
+<style type="text/css" data-evernote-id="295" class="js-evernote-checked"></style>
+<style type="text/css" data-evernote-id="296" class="js-evernote-checked">
+button.btn[data-v-cef78672]{display:inline-block;font-weight:300;line-height:1.25;text-align:center;white-space:nowrap;vertical-align:middle;user-select:none;border:1px solid transparent;cursor:pointer;letter-spacing:1px;transition:all .15s ease
+}
+button.btn.btn-sm[data-v-cef78672]{padding:.4rem .8rem;font-size:.8rem;border-radius:.2rem
+}
+button.btn.btn-primary[data-v-cef78672]{color:#fff;background-color:#45C8F1;border-color:#45C8F1
+}
+button.btn.btn-outline-primary[data-v-cef78672]{color:#45C8F1;background-color:transparent;border-color:#45C8F1
+}
+button.btn.btn-danger[data-v-cef78672]{color:#fff;background-color:#FF4949;border-color:#FF4949
+}
+.text-muted[data-v-cef78672]{color:#8492A6
+}
+.text-center[data-v-cef78672]{text-align:center
+}
+.drop-down-enter[data-v-cef78672],.drop-down-leave-to[data-v-cef78672]{transform:translateX(0) translateY(-20px);transition-timing-function:cubic-bezier(0.74, 0.04, 0.26, 1.05);opacity:0
+}
+.drop-down-enter-active[data-v-cef78672],.drop-down-leave-active[data-v-cef78672]{transition:all .15s
+}
+.move-left-enter[data-v-cef78672],.move-left-leave-to[data-v-cef78672]{transform:translateY(0) translateX(-80px);transition-timing-function:cubic-bezier(0.74, 0.04, 0.26, 1.05);opacity:0
+}
+.move-left-enter-active[data-v-cef78672],.move-left-leave-active[data-v-cef78672]{transition:all .15s
+}
+.shake[data-v-cef78672]{animation:shake-data-v-cef78672 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;transform:translate3d(0, 0, 0)
+}
+@keyframes shake-data-v-cef78672{
+10%,90%{transform:translate3d(-1px, 0, 0)
+}
+20%,80%{transform:translate3d(2px, 0, 0)
+}
+30%,50%,70%{transform:translate3d(-4px, 0, 0)
+}
+40%,60%{transform:translate3d(4px, 0, 0)
+}
+}
+.pulse[data-v-cef78672]{animation:pulse-data-v-cef78672 2s ease infinite
+}
+@keyframes pulse-data-v-cef78672{
+0%{opacity:.7
+}
+50%{opacity:.4
+}
+100%{opacity:.7
+}
+}
+.flash-once[data-v-cef78672]{animation:flash-once 3.5s ease 1
+}
+@keyframes fade-up-data-v-cef78672{
+0%{transform:translate3d(0, 10px, 0);opacity:0
+}
+100%{transform:translate3d(0, 0, 0);opacity:1
+}
+}
+.fade-in[data-v-cef78672]{animation:fade-in-data-v-cef78672 .3s ease-in-out
+}
+@keyframes fade-in-data-v-cef78672{
+0%{opacity:0
+}
+100%{opacity:1
+}
+}
+.spin[data-v-cef78672]{animation-name:spin-data-v-cef78672;animation-duration:2000ms;animation-iteration-count:infinite;animation-timing-function:linear
+}
+@keyframes spin-data-v-cef78672{
+from{transform:rotate(0deg)
+}
+to{transform:rotate(360deg)
+}
+}
+.bounceIn[data-v-cef78672]{animation-name:bounceIn-data-v-cef78672;transform-origin:center bottom;animation-duration:1s;animation-fill-mode:both;animation-iteration-count:1
+}
+@keyframes bounceIn-data-v-cef78672{
+0%,20%,40%,60%,80%,100%{-webkit-transition-timing-function:cubic-bezier(0.215, 0.61, 0.355, 1);transition-timing-function:cubic-bezier(0.215, 0.61, 0.355, 1)
+}
+0%{opacity:1;-webkit-transform:scale3d(0.8, 0.8, 0.8);transform:scale3d(0.8, 0.8, 0.8)
+}
+20%{-webkit-transform:scale3d(1.1, 1.1, 1.1);transform:scale3d(1.1, 1.1, 1.1)
+}
+40%{-webkit-transform:scale3d(0.9, 0.9, 0.9);transform:scale3d(0.9, 0.9, 0.9)
+}
+60%{opacity:1;-webkit-transform:scale3d(1.03, 1.03, 1.03);transform:scale3d(1.03, 1.03, 1.03)
+}
+80%{-webkit-transform:scale3d(0.97, 0.97, 0.97);transform:scale3d(0.97, 0.97, 0.97)
+}
+100%{opacity:1;-webkit-transform:scale3d(1, 1, 1);transform:scale3d(1, 1, 1)
+}
+}
+@keyframes dots-data-v-cef78672{
+0%,20%{color:rgba(0,0,0,0);text-shadow:0.25em 0 0 rgba(0,0,0,0),0.5em 0 0 rgba(0,0,0,0)
+}
+40%{color:#8492A6;text-shadow:0.25em 0 0 rgba(0,0,0,0),0.5em 0 0 rgba(0,0,0,0)
+}
+60%{text-shadow:0.25em 0 0 #8492A6,0.5em 0 0 rgba(0,0,0,0)
+}
+80%,100%{text-shadow:.25em 0 0 #8492A6, .5em 0 0 #8492A6
+}
+}
+@keyframes recording-data-v-cef78672{
+0%{box-shadow:0px 0px 5px 0px rgba(173,0,0,0.3)
+}
+65%{box-shadow:0px 0px 5px 5px rgba(173,0,0,0.3)
+}
+90%{box-shadow:0px 0px 5px 5px rgba(173,0,0,0)
+}
+}
+html[data-v-cef78672]{max-height:500px
+}
+body[data-v-cef78672]{margin:0;font-size:100%;color:#3C4858;width:350px;max-height:500px
+}
+a[data-v-cef78672]{text-decoration:none;color:#45C8F1
+}
+h1[data-v-cef78672],h2[data-v-cef78672],h3[data-v-cef78672],h4[data-v-cef78672]{margin-top:0
+}
+.container_selected_area[data-v-cef78672]{padding:0px;position:fixed;z-index:1000000;top:0px;left:0px;right:0px;bottom:0px;display:none;visibility:hidden
+}
+.container_selected_area.active[data-v-cef78672]{visibility:visible;display:block
+}
+.container_selected_area .label[data-v-cef78672]{font-family:"Didact Gothic Regular",sans-serif;font-size:22px;text-align:center;padding-top:15px
+}
+.container_selected_area .area[data-v-cef78672]{border:1px solid #1e83ff;background:rgba(30,131,255,0.1);display:none;position:fixed;z-index:1000000;box-sizing:border-box
+}
+.container_selected_area .area.active[data-v-cef78672]{display:block;top:0px;left:0px
+}
+.hide[data-v-cef78672]{display:none
+}
+</style><style type="text/css" data-evernote-originating-url="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/HighlightStyles.css" data-evernote-id="297" class="js-evernote-checked">body.clearly_highlighting_enabled ::-moz-selection {
+  background: rgba(246, 238, 150, 0.99);
+}
+
+body.clearly_highlighting_enabled ::selection {
+  background: rgba(246, 238, 150, 0.99);
+}
+
+mark.clearly_highlight_element {
+  font-style: inherit !important;
+  font-weight: inherit !important;
+}
+
+.en-simplified-article mark {
+  font-style: unset !important;
+}
+
+body.en-simplified-article {
+  padding-top: 4.5em;
+}
+
+body.clearly_highlighting_enabled mark.clearly_highlight_element {
+  background-color: #EAE260;
+  transition: background-color 0.4s ease;
+  color: black;
+}
+
+body.clearly_highlighting_enabled mark.clearly_highlight_element.hovered {
+  cursor: pointer;
+  background-color: #F0F1F1;
+  transition: background-color 0.4s ease;
+  /* TODO: found out why border with negative margin make strange space */
+  /* border: 1px solid #EDEDED; */
+  /* margin: -1px; */
+}
+
+
+
+</style><style type="text/css" data-evernote-originating-url="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/content.css" data-evernote-id="298" class="js-evernote-checked">#evernoteEmailPreview {
+  background-color: white;
+  border-top: none;
+  border-right: 1px solid #A2AEB5;
+  border-bottom: none;
+  border-left: 1px solid #A2AEB5;
+  box-sizing: content-box;
+  height: calc(100% - 76px);
+  left: calc(15% - 26px);
+  min-width: 402px;
+  overflow-y: auto;
+  padding: 38px 48px;
+  position: fixed;
+  top: 0;
+  width: calc(70% - 202px);
+  z-index: 2147483646;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.45);
+  pointer-events: all; }
+  #evernoteEmailPreview .evernoteEmailHeader, #evernoteEmailPreview .evernoteEmailDimmed, #evernoteEmailPreview .evernoteEmailAttachments {
+    font-family: Helvetica, Arial, sans-serif; }
+  #evernoteEmailPreview .evernoteEmailHeader {
+    color: #2F373D;
+    font-weight: bold; }
+  #evernoteEmailPreview .evernoteEmailBig {
+    font-size: 15px; }
+  #evernoteEmailPreview .evernoteEmailMedium {
+    font-size: 14px; }
+  #evernoteEmailPreview .evernoteEmailSmall {
+    font-size: 12px; }
+  #evernoteEmailPreview .evernoteEmailRight {
+    float: right; }
+  #evernoteEmailPreview .evernoteEmailDimmed {
+    color: #7B868A; }
+  #evernoteEmailPreview .evernoteEmailDivider {
+    height: 1px; }
+  #evernoteEmailPreview .evernoteEmailLight {
+    background-color: #D3D6D8; }
+  #evernoteEmailPreview .evernoteEmailDark {
+    background-color: #A2AEB5; }
+  #evernoteEmailPreview .evernoteEmailLong {
+    left: -48px;
+    position: relative;
+    width: calc(100% + 96px); }
+  #evernoteEmailPreview .evernoteEmailShort {
+    width: 100%; }
+  #evernoteEmailPreview #evernoteEmailParticipants {
+    margin: 16px 0 29px 0; }
+  #evernoteEmailPreview #evernoteEmailLinkBack {
+    display: block;
+    margin: 22px 0 8px 0;
+    position: relative;
+    text-decoration: none; }
+  #evernoteEmailPreview #evernoteEmailLinkBackArrow {
+    height: 11px;
+    width: 16px;
+    margin-right: 12px;
+    margin-bottom: 0; }
+  #evernoteEmailPreview #evernoteEmailSelectAllMessages {
+    margin: 22px 0 8px 0;
+    position: relative; }
+  #evernoteEmailPreview .evernoteEmail {
+    margin: 24px 0;
+    position: relative; }
+  #evernoteEmailPreview .evernoteEmailCheckbox {
+    border: 1px solid #5CC18A;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 16px;
+    position: absolute;
+    top: 0;
+    left: -30px;
+    width: 16px; }
+  #evernoteEmailPreview .evernoteEmailSelectedMessage .evernoteEmailCheckbox {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAJCAYAAADkZNYtAAAAdklEQVQY02NgIADUNqT4AfEXIE4npNAciL8C8X8gTsWnUAaIX0AVzoYJsgFxJBALIinkB+JLUIV7QWpgEtFQwctALArVvBcqBtLAj2ydEBBfgUqC6EVQ9isglsXmPlEkDf+hnjLH5yFkDXkMRISpIBBHwT2EBgAWlVclgyQZRwAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-size: 11px 9px;
+    background-position: 50% 50%; }
+    @media (min-resolution: 1.5dppx), (-webkit-min-device-pixel-ratio: 1.5) {
+      #evernoteEmailPreview .evernoteEmailSelectedMessage .evernoteEmailCheckbox {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAASCAYAAABfJS4tAAAA8klEQVQ4y2NgoAJQ25DiA8TPgfgBELszUMlQWyD+CcT/ofgWNQxVAeJXSIaC8ANKDRUA4ttohv4D4ghKDGUD4r1ohoJwLaWuXYDF0CVAzEiJoRVYDD0E8gU2xQpAPAuIpwOxFB5Dw6DhiGwoKJxFcWm4gByrIIuwqDEH4q9ohr4HpQx83vuFpuE+EMshycthSVagtOtEKNymYQm3u0AsC8T8QHwJi3w8MRHCDMQrsGi+A8QHsIi3kxLbIMNXYTEEHa8iOVkBNbAA8Wo8hp4AYi5KctVaLIY+xJmsSDR8PZrBjdQqDkGGzwHi79AIFGUYDAAAJtQhMY1X0mUAAAAASUVORK5CYII=); } }
+  #evernoteEmailPreview .evernoteEmailBody {
+    /* the color and font properties are gmail's default display for style-less text. don't override since most text will have styling */
+    color: #222;
+    display: none;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    margin-top: 24px; }
+  #evernoteEmailPreview .evernoteEmail.evernoteEmailSelectedMessage .evernoteEmailBody {
+    display: block; }
+  #evernoteEmailPreview .evernoteEmailAttachments {
+    display: none;
+    padding: 20px 0 0 40px; }
+  #evernoteEmailPreview .evernoteEmail.evernoteEmailSelectedMessage .evernoteEmailAttachments {
+    display: block; }
+  #evernoteEmailPreview .evernoteEmailAttachments .evernoteEmailSize {
+    margin-left: 10px; }
+  #evernoteEmailPreview .evernoteLargeLoading {
+    background-image: url(data:image/gif;base64,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);
+    background-repeat: no-repeat;
+    background-size: 118px 117px;
+    height: 117px;
+    left: calc(50% - 59px);
+    position: absolute;
+    top: calc(50% - 58px);
+    width: 118px; }
+    @media (min-resolution: 1.5dppx), (-webkit-min-device-pixel-ratio: 1.5) {
+      #evernoteEmailPreview .evernoteLargeLoading {
+        background-image: url(data:image/gif;base64,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); } }
+
+#evernoteContentVeil {
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.75);
+  border-style: solid;
+  box-sizing: border-box;
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: 2147483645; }
+
+#evernoteFullVeil {
+  background-color: rgba(255, 255, 255, 0.75);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 2147483645;
+  top: 0;
+  left: 0; }
+
+#evernoteInnerBox {
+  border: 4px solid #00A82D;
+  box-sizing: border-box;
+  height: 100%; }
+
+.veilBorder {
+  position: absolute;
+  pointer-events: all; }
+
+.veilControls {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 50%;
+  width: 54px;
+  height: 24px;
+  cursor: pointer;
+  transform: translate(-50%, -50%); }
+  .veilControls.bottom {
+    top: auto;
+    bottom: -24px; }
+
+.evernoteArticleExpand,
+.evernoteArticleContract {
+  background-color: #2F373D;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  height: 24px;
+  pointer-events: auto;
+  flex-basis: 27px; }
+
+.evernoteArticleExpand {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAPCAYAAADUFP50AAAAaklEQVR42s2RMQqAMAxFM3qEiiBBPHNmz+Hq5qVsEhoiEqTZ+uCNr4RfiFhwJ/ZpEvQiQUPjVHhetzhS6EO4nzCS9PUICwM0trNSajiv25E9VRpgJrawaAbj4Msizaj/2IkN5kMk0MH+hqgsT92xRhU9FAAAAABJRU5ErkJggg==);
+  background-repeat: no-repeat;
+  background-size: 14px 15px;
+  border-radius: 4px 0 0 4px;
+  border-right: none; }
+  @media (min-resolution: 1.5dppx), (-webkit-min-device-pixel-ratio: 1.5) {
+    .evernoteArticleExpand {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAeCAYAAAA/xX6fAAABB0lEQVR42u3WPQvCMBDG8ZgQUieLKL7SCgouCi6Cn921gy9fSp+DROSo5YarXRr4QwtNfkt7alabnbQDqtCLVaGDES4RhjXgGEfpGU3QpsPZ+qD0jCboBKDTBH06+Fo9vvsGvSYYBGDQBDMBmPVgVyCfIPU1gLLSRGKYOshRk26ki4PSlZzuQGxusw7BZbm9/eulIctMF+sLLp5tg2SQZbCGaIwKtEdHdGKdBR/+uWbfMZ5ZkBEt4+PFCE3QDM1ZpQAsa/bN4pmjaHgCLXLxJqCsplwA5j/2BuSjYftfix5sDQz4cO8NH/Vd+0+UTxOpYYJ4TdCxibSj2ARxmqBlE2lMsQliJd4bZK26zlAVL00AAAAASUVORK5CYII=); } }
+
+.evernoteArticleContract {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAFCAYAAAB1j90SAAAAOElEQVQY02OQVlCZBsT/ScTTGEAMUgFID1jjrsOnSMJgjZJySgtIdSpIDwMQcACxBBArEIlBajkARJCCvTPgYaUAAAAASUVORK5CYII=);
+  background-repeat: no-repeat;
+  background-size: 14px 5px;
+  border-left: none;
+  border-radius: 0 4px 4px 0; }
+  @media (min-resolution: 1.5dppx), (-webkit-min-device-pixel-ratio: 1.5) {
+    .evernoteArticleContract {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAKCAYAAACngj4SAAAAc0lEQVR42sXNPQqAMAyG4SwOnQqi1D9UUHBpwdGzu3YQeyn9CtETGBt4IFnyUjvOFjxcwjxYemI/8fQcwvNG0wV3f0pKGGyG6eBDXGxRWXcblvBDLMQWYRTk0MMCDtaPOP7Zc0MBZbxoKMBA9RHDPzU3shsVEAzVKaeBrgAAAABJRU5ErkJggg==); } }
+
+#evernoteBookmarkIframe {
+  font-size: initial;
+  color: initial;
+  background-color: white;
+  position: fixed;
+  width: 574px;
+  height: 276px;
+  padding: 15px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(123, 134, 138, 0.99);
+  pointer-events: all;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+  z-index: 2147483646;
+  clip: auto; }
+
+#evernoteClearlyArticle {
+  background: #f3f2ee;
+  border: none;
+  bottom: auto;
+  box-shadow: none;
+  box-sizing: content-box;
+  display: block;
+  height: 100%;
+  left: 0;
+  margin: 0;
+  max-height: none;
+  min-height: 100%;
+  max-width: none;
+  min-width: 0;
+  opacity: 1;
+  outline: invert none medium;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  position: fixed;
+  resize: none;
+  right: auto;
+  top: 0;
+  vertical-align: baseline;
+  visibility: visible;
+  animation-duration: 0;
+  transition: width 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  width: 0;
+  z-index: 2147483644;
+  clip: auto; }
+  #evernoteClearlyArticle.evernoteClipperVisible {
+    width: 100%; }
+
+#evernoteClearlyCustom {
+  background: none;
+  border: none;
+  bottom: auto;
+  box-shadow: none;
+  box-sizing: content-box;
+  display: none;
+  height: 100%;
+  max-height: none;
+  min-height: 100%;
+  min-width: 0;
+  opacity: 1;
+  outline: invert none medium;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0;
+  position: fixed;
+  resize: none;
+  right: auto;
+  top: 0;
+  visibility: visible;
+  animation-duration: 0;
+  transition-duration: 0;
+  z-index: 2147483644;
+  width: 70%;
+  max-width: 980px;
+  margin: 0 auto 0 auto;
+  left: 50%;
+  transform: translateX(-50%); }
+  #evernoteClearlyCustom.evernoteClipperVisible {
+    display: block; }
+
+#evernoteClipperCrosshair {
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 2147483645; }
+  #evernoteClipperCrosshair:before, #evernoteClipperCrosshair:after {
+    border: none;
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 100%; }
+  #evernoteClipperCrosshair:before {
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
+    left: -100%;
+    top: -100%; }
+  #evernoteClipperCrosshair:after {
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    left: 0;
+    top: 0; }
+
+#evernoteClipperCrosshairToast {
+  background: none;
+  border: none;
+  bottom: auto;
+  box-shadow: none;
+  box-sizing: content-box;
+  display: block;
+  height: 113px;
+  left: calc(50% - 200px);
+  margin: 0;
+  max-height: none;
+  min-height: 0;
+  max-width: none;
+  min-width: 0;
+  opacity: 1;
+  outline: invert none medium;
+  padding: 0;
+  position: fixed;
+  resize: none;
+  right: auto;
+  top: calc(50% - 56.5px);
+  vertical-align: baseline;
+  visibility: visible;
+  width: 400px;
+  z-index: 2147483646;
+  animation-duration: 0;
+  transition: opacity 250ms linear;
+  user-select: none; }
+  #evernoteClipperCrosshairToast.evernoteClipperHidden {
+    opacity: 0; }
+
+#evernoteScreenshotVeil {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: fixed;
+  border-style: solid;
+  border-width: 0;
+  z-index: 2147483644;
+  border-color: rgba(0, 0, 0, 0.27); }
+
+#EvernoteClipperPreloader {
+  position: fixed;
+  z-index: 2147483645;
+  top: 12px;
+  right: 12px;
+  width: 300px;
+  height: 60px; }
+
+.sh-tip {
+  font-family: Soleil, sans-serif;
+  border-radius: 4px;
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000000000;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500; }
+  .sh-tip.dark {
+    background-color: #1A1A1A;
+    color: white; }
+  .sh-tip.light {
+    background-color: white;
+    color: #333; }
+
+.nextPagesCounter {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.6);
+  background-size: 15px;
+  background-repeat: no-repeat;
+  background-position: 120px 10px;
+  color: #3d4a54;
+  font-size: 13px;
+  height: 36px;
+  line-height: 36px;
+  position: absolute;
+  top: -48px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #3d4a54;
+  border-image: initial;
+  border-radius: 2px;
+  padding: 0px 33px 0 20px;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwcHgiICBoZWlnaHQ9IjIwMHB4IiAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQiIGNsYXNzPSJsZHMtcm9sbGluZyIgc3R5bGU9ImJhY2tncm91bmQ6IG5vbmU7Ij4KICAgIDxjaXJjbGUgc3Ryb2tlPSIjMDBBODJEIiBjeD0iNTAiIGN5PSI1MCIgZmlsbD0ibm9uZSIgbmctYXR0ci1zdHJva2U9Int7Y29uZmlnLmNvbG9yfX0iIG5nLWF0dHItc3Ryb2tlLXdpZHRoPSJ7e2NvbmZpZy53aWR0aH19IiBuZy1hdHRyLXI9Int7Y29uZmlnLnJhZGl1c319IiBuZy1hdHRyLXN0cm9rZS1kYXNoYXJyYXk9Int7Y29uZmlnLmRhc2hhcnJheX19IiBzdHJva2Utd2lkdGg9IjEwIiByPSIzNSIgc3Ryb2tlLWRhc2hhcnJheT0iMTY0LjkzMzYxNDMxMzQ2NDE1IDU2Ljk3Nzg3MTQzNzgyMTM4IiB0cmFuc2Zvcm09InJvdGF0ZSgzNTQgNDkuOTk5OSA0OS45OTk5KSI+CiAgICAgICAgPGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIGNhbGNNb2RlPSJsaW5lYXIiIHZhbHVlcz0iMCA1MCA1MDszNjAgNTAgNTAiIGtleVRpbWVzPSIwOzEiIGR1cj0iMXMiIGJlZ2luPSIwcyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiPjwvYW5pbWF0ZVRyYW5zZm9ybT4KICAgIDwvY2lyY2xlPgo8L3N2Zz4=); }
+  .nextPagesCounter.loaded {
+    font-family: Arial, sans-serif;
+    padding: 0px 20px;
+    background-image: none; }
+
+.stopScroll {
+  height: 100% !important;
+  overflow: hidden !important; }
+
+</style><script type="text/javascript" src="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/FrameSerializer.js" data-evernote-id="299" class="js-evernote-checked"></script></head>
+
+<body class="single single-post postid-53 single-format-standard js-evernote-checked" data-evernote-id="1">
+<a class="sr-only sr-only-focusable js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/#content" data-evernote-id="53">Skip to main content</a>
+<div id="page" class="hfeed site js-evernote-checked" data-evernote-id="300">
+
+	<header id="masthead" class="site-header js-evernote-checked" role="banner" data-evernote-id="2">
+		<nav class="navbar navbar-default js-evernote-checked" role="navigation" data-evernote-id="3">
+			<div class="container js-evernote-checked" data-evernote-id="301">
+				<div class="row js-evernote-checked" data-evernote-id="302">
+					<div class="site-navigation-inner col-sm-12 js-evernote-checked" data-evernote-id="303">
+						<div class="navbar-header js-evernote-checked" data-evernote-id="304">
+							<button type="button" class="btn navbar-toggle js-evernote-checked" data-toggle="collapse" data-target=".navbar-ex1-collapse" data-evernote-id="253">
+								<span class="sr-only js-evernote-checked" data-evernote-id="305">Toggle navigation</span>
+								<span class="icon-bar js-evernote-checked" data-evernote-id="306"></span>
+								<span class="icon-bar js-evernote-checked" data-evernote-id="307"></span>
+								<span class="icon-bar js-evernote-checked" data-evernote-id="308"></span>
+							</button>
+
+							
+							
+							<div id="logo" data-evernote-id="309" class="js-evernote-checked">
+								<p class="site-name js-evernote-checked" data-evernote-id="310">									<a class="navbar-brand js-evernote-checked" href="http://hbasefly.com/" title="有态度的HBase/Spark/BigData" rel="home" data-evernote-id="54">有态度的HBase/Spark/BigData</a>
+								</p>							</div><!-- end of #logo -->
+
+							
+						</div>
+											</div>
+				</div>
+			</div>
+		</nav><!-- .site-navigation -->
+	</header><!-- #masthead -->
+
+	<div id="content" class="site-content js-evernote-checked" data-evernote-id="311">
+
+		<div class="top-section js-evernote-checked" data-evernote-id="312">
+								</div>
+
+		<div class="container main-content-area js-evernote-checked" data-evernote-id="313">
+            			<div class="row side-pull-left js-evernote-checked" data-evernote-id="314">
+				<div class="main-content-inner col-sm-12 col-md-8 js-evernote-checked" data-evernote-id="315">
+	<div id="primary" class="content-area en-serialize-target-74267 js-evernote-checked" data-evernote-id="316" style="">
+		<main id="main" class="site-main js-evernote-checked" role="main" data-evernote-id="4">
+
+		
+			
+<article id="post-53" class="post-53 post type-post status-publish format-standard hentry category-hbase tag-bloom-filter tag-hbase tag-hfile js-evernote-checked" data-evernote-id="5">
+		<div class="post-inner-content js-evernote-checked" data-evernote-id="317">
+		<header class="entry-header page-header js-evernote-checked" data-evernote-id="6">
+
+			<h1 class="entry-title js-evernote-checked" data-evernote-id="239">HBase – 存储文件HFile结构解析</h1>
+
+			<div class="entry-meta js-evernote-checked" data-evernote-id="318">
+				<span class="posted-on js-evernote-checked" data-evernote-id="319"><i class="fa fa-calendar js-evernote-checked" data-evernote-id="320"></i> <a href="http://hbasefly.com/2016/03/25/hbase-hfile/" rel="bookmark" data-evernote-id="55" class="js-evernote-checked"><time class="entry-date published js-evernote-checked" datetime="2016-03-25T20:45:54+00:00" data-evernote-id="321">2016年3月25日</time><time class="updated js-evernote-checked" datetime="2018-05-04T13:35:08+00:00" data-evernote-id="322">2018年5月4日</time></a></span><span class="byline js-evernote-checked" data-evernote-id="323"> <i class="fa fa-user js-evernote-checked" data-evernote-id="324"></i> <span class="author vcard js-evernote-checked" data-evernote-id="325"><a class="url fn n js-evernote-checked" href="http://hbasefly.com/author/libisthanksgmail-com/" data-evernote-id="56">范欣欣</a></span></span>
+								<span class="cat-links js-evernote-checked" data-evernote-id="326"><i class="fa fa-folder-open-o js-evernote-checked" data-evernote-id="327"></i>
+					 <a href="http://hbasefly.com/category/hbase/" rel="category tag" data-evernote-id="57" class="js-evernote-checked">HBase</a>				</span>
+								
+			</div><!-- .entry-meta -->
+		</header><!-- .entry-header -->
+
+		<div class="entry-content js-evernote-checked" data-evernote-id="328">
+			<p class="p1 js-evernote-checked" data-evernote-id="329">
+	<span class="s1 js-evernote-checked" data-evernote-id="330">HFile是HBase存储数据的文件组织形式，参考BigTable的SSTable和Hadoop的TFile实现。从HBase开始到现在，HFile经历了三个版本，其中V2在0.92引入，V3在0.98引入。HFileV1版本的在实际使用过程中发现它占用内存多，HFile&nbsp;V2版本针对此进行了优化，HFile&nbsp;V3版本基本和V2版本相同，只是在cell层面添加了Tag数组的支持。鉴于此，本文主要针对V2版本进行分析，对V1和V3版本感兴趣的同学可以参考其他信息。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="331">
+	<span class="s1 js-evernote-checked" data-evernote-id="332"></span>
+</p>
+<p class="p3 js-evernote-checked" data-evernote-id="333">
+	<span class="s1 js-evernote-checked" data-evernote-id="334"><b data-evernote-id="214" class="js-evernote-checked">HFile逻辑结构</b></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="335">
+	<span class="s1 js-evernote-checked" data-evernote-id="336">HFile V2的逻辑结构如下图所示：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="337">
+	<span class="s1 js-evernote-checked" data-evernote-id="338"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/1.png" alt="1" width="566" height="418" class="aligncenter size-full wp-image-54 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/1-300x222.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/1.png 566w" sizes="(max-width: 566px) 100vw, 566px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/1.png" data-evernote-id="242"><br data-evernote-id="339" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="340">
+	<span class="s1 js-evernote-checked" data-evernote-id="341"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="342">
+	<span class="s1 js-evernote-checked" data-evernote-id="343">文件主要分为四个部分：Scanned block section，Non-scanned block section，Opening-time data section和Trailer。</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="344">
+	<span class="s1 js-evernote-checked" data-evernote-id="345">Scanned block section：顾名思义，表示顺序扫描HFile时所有的数据块将会被读取，包括Leaf Index Block和Bloom Block。</span>
+</p>
+<p class="p4 js-evernote-checked" data-evernote-id="346">
+	<span class="s1 js-evernote-checked" data-evernote-id="347">Non-scanned block section：表示在HFile顺序扫描的时候数据不会被读取，主要包括Meta Block和Intermediate Level Data Index Blocks两部分。</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="348">
+	<span class="s1 js-evernote-checked" data-evernote-id="349">Load-on-open-section：这部分数据在HBase的region server启动时，需要加载到内存中。包括FileInfo、Bloom filter block、data block index和meta block index。</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="350">
+	<span class="s1 js-evernote-checked" data-evernote-id="351">Trailer：这部分主要记录了HFile的基本信息、各个部分的偏移值和寻址信息。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="352">
+	<span class="s1 js-evernote-checked" data-evernote-id="353"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="354">
+	<span class="s1 js-evernote-checked" data-evernote-id="355"></span>
+</p>
+<p class="p3 js-evernote-checked" data-evernote-id="356">
+	<span class="s1 js-evernote-checked" data-evernote-id="357"><b data-evernote-id="215" class="js-evernote-checked">HFile物理结构</b></span>
+</p>
+<p class="p3 js-evernote-checked" data-evernote-id="358">
+	<span class="s1 js-evernote-checked" data-evernote-id="359"><b data-evernote-id="216" class="js-evernote-checked"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/2.png" alt="2" width="751" height="546" class="aligncenter size-full wp-image-55 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/2-300x218.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/2.png 751w" sizes="(max-width: 751px) 100vw, 751px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/2.png" data-evernote-id="243"><br data-evernote-id="360" class="js-evernote-checked">
+</b></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="361">
+	<span class="s1 js-evernote-checked" data-evernote-id="362"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="363">
+	<span class="s1 js-evernote-checked" data-evernote-id="364"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="365">
+	<span class="s1 js-evernote-checked" data-evernote-id="366"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="367">
+	<span class="s1 js-evernote-checked" data-evernote-id="368">如上图所示， HFile会被切分为多个大小相等的block块，每个block的大小可以在创建表列簇的时候通过参数blocksize ＝&gt; ‘65535’进行指定，默认为64k，</span><span class="s2 js-evernote-checked" data-evernote-id="369">大号的Block有利于顺序Scan，小号Block利于随机查询，因而需要权衡</span><span class="s1 js-evernote-checked" data-evernote-id="370">。而且所有block块都拥有相同的数据结构，如图左侧所示，HBase将block块抽象为一个统一的HFileBlock。HFileBlock支持两种类型，一种类型不支持checksum，一种不支持。为方便讲解，下图选用不支持checksum的HFileBlock内部结构：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="371">
+	<span class="s1 js-evernote-checked" data-evernote-id="372"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/3-750x300.png" alt="3" width="751" height="300" class="aligncenter size-full wp-image-56 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/3-300x120.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/3-750x300.png 750w, http://hbasefly.com/wp-content/uploads/2016/03/3.png 751w" sizes="(max-width: 751px) 100vw, 751px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/3-750x300.png" data-evernote-id="244"><br data-evernote-id="373" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="374">
+	<span class="s1 js-evernote-checked" data-evernote-id="375"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="376">
+	<span class="s1 js-evernote-checked" data-evernote-id="377"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="378">
+	<span class="s1 js-evernote-checked" data-evernote-id="379"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="380">
+	<span class="s1 js-evernote-checked" data-evernote-id="381">上图所示HFileBlock主要包括两部分：BlockHeader和BlockData。其中BlockHeader主要存储block元数据，BlockData用来存储具体数据。block元数据中最核心的字段是BlockType字段，用来标示该block块的类型，HBase中定义了8种BlockType，每种BlockType对应的block都存储不同的数据内容，有的存储用户数据，有的存储索引数据，有的存储meta元数据。对于任意一种类型的HFileBlock，都拥有相同结构的BlockHeader，但是BlockData结构却不相同。下面通过一张表简单罗列最核心的几种BlockType，下文会详细针对每种BlockType进行详细的讲解：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="382">
+	<span class="s1 js-evernote-checked" data-evernote-id="383"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/4.png" alt="4" width="592" height="254" class="aligncenter size-full wp-image-57 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/4-300x129.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/4.png 592w" sizes="(max-width: 592px) 100vw, 592px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/4.png" data-evernote-id="245"><br data-evernote-id="384" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="385">
+	<span class="s1 js-evernote-checked" data-evernote-id="386"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="387">
+	<span class="s1 js-evernote-checked" data-evernote-id="388"></span>
+</p>
+<p class="p3 js-evernote-checked" data-evernote-id="389">
+	<span class="s1 js-evernote-checked" data-evernote-id="390"><b data-evernote-id="217" class="js-evernote-checked">HFile中Block块解析</b></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="391">
+	<span class="s1 js-evernote-checked" data-evernote-id="392"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="393">
+	<span class="s1 js-evernote-checked" data-evernote-id="394">上文从HFile的层面将文件切分成了多种类型的block，接下来针对几种重要block进行详细的介绍，因为篇幅的原因，索引相关的block不会在本文进行介绍，接下来会写一篇单独的文章对其进行分析和讲解。首先会介绍记录HFile基本信息的TrailerBlock，再介绍用户数据的实际存储块DataBlock，最后简单介绍布隆过滤器相关的block。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="395">
+	<span class="s1 js-evernote-checked" data-evernote-id="396"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="397">
+	<span class="s1 js-evernote-checked" data-evernote-id="398"></span>
+</p>
+<p class="p5 js-evernote-checked" data-evernote-id="399">
+	<span class="s1 js-evernote-checked" data-evernote-id="400"><b data-evernote-id="218" class="js-evernote-checked">Trailer Block&nbsp;</b></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="401">
+	<span class="s1 js-evernote-checked" data-evernote-id="402">主要记录了HFile的基本信息、各个部分的偏移值和寻址信息，下图为Trailer内存和磁盘中的数据结构，其中只显示了部分核心字段：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="403">
+	<span class="s1 js-evernote-checked" data-evernote-id="404"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/5.png" alt="5" width="581" height="350" class="aligncenter size-full wp-image-58 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/5-300x181.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/5.png 581w" sizes="(max-width: 581px) 100vw, 581px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/5.png" data-evernote-id="246"><br data-evernote-id="405" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="406">
+	<span class="s1 js-evernote-checked" data-evernote-id="407"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="408">
+	<span class="s1 js-evernote-checked" data-evernote-id="409"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="410">
+	<span class="s1 js-evernote-checked" data-evernote-id="411">HFile在读取的时候首先会解析Trailer Block并加载到内存，然后再进一步加载LoadOnOpen区的数据，具体步骤如下：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="412">
+	<span class="s1 js-evernote-checked" data-evernote-id="413">1. 首先加载version版本信息，HBase中version包含majorVersion和minorVersion两部分，前者决定了HFile的主版本： V1、V2 还是V3；后者在主版本确定的基础上决定是否支持一些微小修正，比如是否支持checksum等。不同的版本决定了使用不同的Reader对象对HFile进行读取解析</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="414">
+	<span class="s1 js-evernote-checked" data-evernote-id="415">2. 根据Version信息获取trailer的长度（不同version的trailer长度不同），再根据trailer长度加载整个HFileTrailer Block</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="416">
+	<span class="s1 js-evernote-checked" data-evernote-id="417">3. 最后加载load-on-open部分到内存中，起始偏移地址是trailer中的LoadOnOpenDataOffset字段，load-on-open部分的结束偏移量为HFile长度减去Trailer长度，load-on-open部分主要包括索引树的根节点以及FileInfo两个重要模块，</span><span class="s2 js-evernote-checked" data-evernote-id="418">FileInfo是固定长度的块，它纪录了文件的一些Meta信息，例如：AVG_KEY_LEN, AVG_VALUE_LEN, LAST_KEY, COMPARATOR, MAX_SEQ_ID_KEY等；索引树根节点放到下一篇文章进行介绍。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="419">
+	<span class="s1 js-evernote-checked" data-evernote-id="420"></span>
+</p>
+<p class="p5 js-evernote-checked" data-evernote-id="421">
+	<span class="s1 js-evernote-checked" data-evernote-id="422"><b data-evernote-id="219" class="js-evernote-checked">Data Block</b></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="423">
+	<span class="s1 js-evernote-checked" data-evernote-id="424">DataBlock是HBase中数据存储的最小单元。DataBlock中主要存储用户的KeyValue数据（KeyValue后面一般会跟一个timestamp，图中未标出），而KeyValue结构是HBase存储的核心，每个数据都是以KeyValue结构在HBase中进行存储。KeyValue结构在内存和磁盘中可以表示为：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="425">
+	<span class="s1 js-evernote-checked" data-evernote-id="426"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/1111.png" alt="1111" width="649" height="416" class="aligncenter size-full wp-image-614 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/1111-300x192.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/1111.png 649w" sizes="(max-width: 649px) 100vw, 649px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/1111.png" data-evernote-id="247"><br data-evernote-id="427" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="428">
+	<span class="s1 js-evernote-checked" data-evernote-id="429"></span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="430">
+	<span class="s1 js-evernote-checked" data-evernote-id="431"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="432">
+	<span class="s1 js-evernote-checked" data-evernote-id="433">每个KeyValue都由4个部分构成，分别为key length，value length，key和value。其中key value和value length是两个固定长度的数值，而key是一个复杂的结构，首先是rowkey的长度，接着是rowkey，然后是ColumnFamily的长度，再是ColumnFamily，之后是ColumnQualifier，最后是时间戳和KeyType（</span><span class="s3 js-evernote-checked" data-evernote-id="434">keytype有四种类型，分别是Put、Delete、 DeleteColumn和DeleteFamily</span><span class="s1 js-evernote-checked" data-evernote-id="435">），value就没有那么复杂，就是一串纯粹的二进制数据。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="436">
+	<span class="s1 js-evernote-checked" data-evernote-id="437"></span>
+</p>
+<p class="p5 js-evernote-checked" data-evernote-id="438">
+	<span class="s1 js-evernote-checked" data-evernote-id="439"><b data-evernote-id="220" class="js-evernote-checked">BloomFilter Meta Block &amp; Bloom Block</b></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="440">
+	<span class="s1 js-evernote-checked" data-evernote-id="441">BloomFilter对于HBase的随机读性能至关重要，对于get操作以及部分scan操作可以剔除掉不会用到的HFile文件，减少实际IO次数，提高随机读性能。在此简单地介绍一下Bloom Filter的工作原理，Bloom Filter使用位数组来实现过滤，初始状态下位数组每一位都为0，如下图所示：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="442">
+	<span class="s1 js-evernote-checked" data-evernote-id="443"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/7.png" alt="7" width="558" height="80" class="aligncenter size-full wp-image-60 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/7-300x43.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/7.png 558w" sizes="(max-width: 558px) 100vw, 558px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/7.png" data-evernote-id="248"><br data-evernote-id="444" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="445">
+	<span class="s1 js-evernote-checked" data-evernote-id="446"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="447">
+	<span class="s1 js-evernote-checked" data-evernote-id="448">假如此时有一个集合S = {x1, x2, … xn}，Bloom Filter使用k个独立的hash函数，分别将集合中的每一个元素映射到｛1,…,m｝的范围。对于任何一个元素，被映射到的数字作为对应的位数组的索引，该位会被置为1。比如元素x1被hash函数映射到数字8，那么位数组的第8位就会被置为1。下图中集合S只有两个元素x和y，分别被3个hash函数进行映射，映射到的位置分别为（0，3，6）和（4，7，10），对应的位会被置为1:</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="449">
+	<span class="s1 js-evernote-checked" data-evernote-id="450"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/8.png" alt="8" width="558" height="128" class="aligncenter size-full wp-image-61 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/8-300x69.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/8.png 558w" sizes="(max-width: 558px) 100vw, 558px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/8.png" data-evernote-id="249"><br data-evernote-id="451" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="452">
+	<span class="s1 js-evernote-checked" data-evernote-id="453"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="454">
+	<span class="s1 js-evernote-checked" data-evernote-id="455">现在假如要判断另一个元素是否是在此集合中，只需要被这3个hash函数进行映射，查看对应的位置是否有0存在，如果有的话，表示此元素肯定不存在于这个集合，否则有可能存在。下图所示就表示z肯定不在集合｛x，y｝中：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="456">
+	<span class="s1 js-evernote-checked" data-evernote-id="457"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/9.png" alt="9" width="575" height="153" class="aligncenter size-full wp-image-62 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/9-300x80.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/9.png 575w" sizes="(max-width: 575px) 100vw, 575px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/9.png" data-evernote-id="250"><br data-evernote-id="458" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="459">
+	<span class="s1 js-evernote-checked" data-evernote-id="460"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="461">
+	<span class="s1 js-evernote-checked" data-evernote-id="462">HBase中每个HFile都有对应的位数组，KeyValue在写入HFile时会先经过几个hash函数的映射，映射后将对应的数组位改为1，get请求进来之后再进行hash映射，如果在对应数组位上存在0，说明该get请求查询的数据不在该HFile中。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="463">
+	<span class="s1 js-evernote-checked" data-evernote-id="464"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="465">
+	<span class="s1 js-evernote-checked" data-evernote-id="466">HFile中的位数组就是上述Bloom Block中存储的值，可以想象，一个HFile文件越大，里面存储的KeyValue值越多，位数组就会相应越大。一旦太大就不适合直接加载到内存了，因此HFile V2在设计上将位数组进行了拆分，拆成了多个独立的位数组（根据Key进行拆分，一部分连续的Key使用一个位数组）。这样一个HFile中就会包含多个位数组，根据Key进行查询，首先会定位到具体的某个位数组，只需要加载此位数组到内存进行过滤即可，减少了内存开支。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="467">
+	<span class="s1 js-evernote-checked" data-evernote-id="468"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="469">
+	<span class="s1 js-evernote-checked" data-evernote-id="470">在结构上每个位数组对应HFile中一个Bloom Block，为了方便根据Key定位具体需要加载哪个位数组，HFile V2又设计了对应的索引Bloom Index Block，对应的内存和逻辑结构图如下：</span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="471">
+	<span class="s1 js-evernote-checked" data-evernote-id="472"><img src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/10.png" alt="10" width="624" height="447" class="aligncenter size-full wp-image-63 js-evernote-checked" srcset="http://hbasefly.com/wp-content/uploads/2016/03/10-300x215.png 300w, http://hbasefly.com/wp-content/uploads/2016/03/10.png 624w" sizes="(max-width: 624px) 100vw, 624px" data-evernote-lazy-src="http://hbasefly.com/wp-content/uploads/2016/03/10.png" data-evernote-id="251"><br data-evernote-id="473" class="js-evernote-checked">
+</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="474">
+	<span class="s1 js-evernote-checked" data-evernote-id="475"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="476">
+	<span class="s1 js-evernote-checked" data-evernote-id="477">Bloom Index Block结构中totalByteSize表示位数组的bit数，numChunks表示Bloom Block的个数，hashCount表示hash函数的个数，hashType表示hash函数的类型，totalKeyCount表示bloom filter当前已经包含的key的数目，totalMaxKeys表示bloom filter当前最多包含的key的数目, Bloom Index Entry对应每一个bloom filter block的索引条目，作为索引分别指向’scanned block section’部分的Bloom Block，Bloom Block中就存储了对应的位数组。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="478">
+	<span class="s1 js-evernote-checked" data-evernote-id="479"></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="480">
+	<span class="s1 js-evernote-checked" data-evernote-id="481">Bloom Index Entry的结构见上图左边所示，BlockOffset表示对应Bloom Block在HFile中的偏移量，FirstKey表示对应BloomBlock的第一个Key。根据上文所说，一次get请求进来，首先会根据key在所有的索引条目中进行二分查找，查找到对应的Bloom Index Entry，就可以定位到该key对应的位数组，加载到内存进行过滤判断。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="482">
+	<span class="s1 js-evernote-checked" data-evernote-id="483"></span>
+</p>
+<p class="p3 js-evernote-checked" data-evernote-id="484">
+	<span class="s1 js-evernote-checked" data-evernote-id="485"><b data-evernote-id="221" class="js-evernote-checked">总结</b></span>
+</p>
+<p class="p1 js-evernote-checked" data-evernote-id="486">
+	<span class="s1 js-evernote-checked" data-evernote-id="487">这篇小文首先从宏观的层面对HFile的逻辑结构和物理存储结构进行了讲解，并且将HFile从逻辑上分解为各种类型的Block，再接着从微观的视角分别对Trailer Block、Data Block在结构上进行了解析：通过对trailer block的解析，可以获取hfile的版本以及hfile中其他几个部分的偏移量，在读取的时候可以直接通过偏移量对其进行加载；而对data block的解析可以知道用户数据在hdfs中是如何实际存储的；最后通过介绍Bloom Filter的工作原理以及相关的Block块了解HFile中Bloom Filter的存储结构。接下来会以本文为基础，再写一篇文章分析HFile中索引块的结构以及相应的索引机制。</span>
+</p>
+<p class="p2 js-evernote-checked" data-evernote-id="488">
+	<span class="s1 js-evernote-checked" data-evernote-id="489"></span></p>
+<div style="clear:both; margin-top:5px; margin-bottom:5px;" data-evernote-id="490" class="js-evernote-checked"></div><div style="float:left" data-evernote-id="491" class="js-evernote-checked"><!-- JiaThis Button BEGIN -->
+<div id="jiathis_style_32x32" data-evernote-id="492" class="js-evernote-checked">
+	<a class="jiathis_button_qzone js-evernote-checked" data-evernote-id="58"></a>
+	<a class="jiathis_button_tsina js-evernote-checked" data-evernote-id="59"></a>
+	<a class="jiathis_button_tqq js-evernote-checked" data-evernote-id="60"></a>
+	<a class="jiathis_button_renren js-evernote-checked" data-evernote-id="61"></a>
+	<a class="jiathis_button_kaixin001 js-evernote-checked" data-evernote-id="62"></a>
+	<a href="http://www.jiathis.com/share/" class="jiathis jiathis_txt jtico jtico_jiathis js-evernote-checked" target="_blank" data-evernote-id="63"></a>
+	<a class="jiathis_counter_style js-evernote-checked" data-evernote-id="64"></a>
+</div>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/jia.js" charset="utf-8" data-evernote-id="493" class="js-evernote-checked"></script>
+<!-- JiaThis Button END --></div><div style="clear:both; margin-top:5px; margin-bottom:5px;" data-evernote-id="494" class="js-evernote-checked"></div>					</div><!-- .entry-content -->
+
+		<footer class="entry-meta js-evernote-checked" data-evernote-id="7">
+
+	    		      <!-- tags -->
+	      <div class="tagcloud js-evernote-checked" style="display: block;" data-evernote-id="495">
+
+	          <a href="http://hbasefly.com/tag/bloom-filter/" data-evernote-id="65" class="js-evernote-checked">Bloom Filter</a> <a href="http://hbasefly.com/tag/hbase/" data-evernote-id="66" class="js-evernote-checked">HBase</a> <a href="http://hbasefly.com/tag/hfile/" data-evernote-id="67" class="js-evernote-checked">HFile</a> 
+	      </div>
+	      <!-- end tags -->
+	      
+		</footer><!-- .entry-meta -->
+	</div>
+
+			<div class="post-inner-content secondary-content-box js-evernote-checked" data-evernote-id="496">
+      <!-- author bio -->
+      <div class="author-bio content-box-inner js-evernote-checked" data-evernote-id="497">
+
+        <!-- avatar -->
+        <div class="avatar js-evernote-checked" data-evernote-id="498">
+                    </div>
+        <!-- end avatar -->
+
+        <!-- user bio -->
+        <div class="author-bio-content js-evernote-checked" data-evernote-id="499">
+
+          <h4 class="author-name js-evernote-checked" data-evernote-id="500"><a href="http://hbasefly.com/author/libisthanksgmail-com/" data-evernote-id="68" class="js-evernote-checked">范欣欣</a></h4>
+          <p class="author-description js-evernote-checked" data-evernote-id="501">
+              就职于网易杭州研究院后台技术中心数据库技术组，从事HBase开发、运维，对HBase相关技术有浓厚的兴趣。邮箱：libisthanks@gmail.com          </p>
+
+        </div><!-- end .author-bio-content -->
+
+      </div><!-- end .author-bio  -->
+
+		</div>
+		
+</article><!-- #post-## -->
+
+			
+<div id="comments" class="comments-area js-evernote-checked" data-evernote-id="502">
+
+	
+			<h2 class="comments-title js-evernote-checked" data-evernote-id="503">
+			在 “<span data-evernote-id="504" class="js-evernote-checked">HBase – 存储文件HFile结构解析</span>” 上有 20 条评论		</h2>
+
+		
+		<ol class="comment-list js-evernote-checked" data-evernote-id="505">
+					<li id="comment-4" class="pingback even thread-even depth-1 js-evernote-checked" data-evernote-id="506">
+			<div class="comment-body js-evernote-checked" data-evernote-id="507">
+				Pingback： <a href="http://hbasefly.com/2016/04/03/hbase_hfile_index/" rel="external nofollow" class="url js-evernote-checked" data-evernote-id="69">HBase – 探索HFile索引机制 – 有态度的HBase</a> 			</div>
+</li><!-- #comment-## -->
+		<li id="comment-5" class="pingback odd alt thread-odd thread-alt depth-1 js-evernote-checked" data-evernote-id="508">
+			<div class="comment-body js-evernote-checked" data-evernote-id="509">
+				Pingback： <a href="http://www.bitstech.net/2016/04/14/hbase-%e6%8e%a2%e7%b4%a2hfile%e7%b4%a2%e5%bc%95%e6%9c%ba%e5%88%b6/" rel="external nofollow" class="url js-evernote-checked" data-evernote-id="70">比特科技: 存储、数据库、大数据技术 » HBase – 探索HFile索引机制</a> 			</div>
+</li><!-- #comment-## -->
+		<li id="comment-10" class="comment even thread-even depth-1 js-evernote-checked" data-evernote-id="510">
+			<article id="div-comment-10" class="comment-body js-evernote-checked" data-evernote-id="8">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="9">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="511">
+												<b class="fn js-evernote-checked" data-evernote-id="222"><a href="http://yintbopzyan.com/" rel="external nofollow" class="url js-evernote-checked" data-evernote-id="71">Sonny</a></b><span class="says js-evernote-checked" data-evernote-id="512">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="513">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-10" data-evernote-id="72" class="js-evernote-checked">
+							<time datetime="2016-05-06T12:40:09+00:00" data-evernote-id="514" class="js-evernote-checked">
+								2016年5月6日 下午12:40							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="515">
+					<p data-evernote-id="516" class="js-evernote-checked">Iâ€™m very pleased to uncover this website. I need to to thank you for ones time for this palutcirarly fantastic read!! I definitely liked every little bit of it and I have you book-marked to look at new information in your blog.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="517"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=10#respond" onclick="return addComment.moveForm( &quot;div-comment-10&quot;, &quot;10&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给Sonny" style="display: inline;" data-evernote-id="73">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-610" class="comment odd alt thread-odd thread-alt depth-1 parent js-evernote-checked" data-evernote-id="518">
+			<article id="div-comment-610" class="comment-body js-evernote-checked" data-evernote-id="10">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="11">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="519">
+												<b class="fn js-evernote-checked" data-evernote-id="223">顾汉杰</b><span class="says js-evernote-checked" data-evernote-id="520">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="521">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-610" data-evernote-id="74" class="js-evernote-checked">
+							<time datetime="2017-03-23T18:49:38+00:00" data-evernote-id="522" class="js-evernote-checked">
+								2017年3月23日 下午6:49							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="523">
+					<p data-evernote-id="524" class="js-evernote-checked">关于HBase的文件存储格式，我有几个问题想问博主以及各位网友：<br data-evernote-id="525" class="js-evernote-checked">
+1. 每个HFile文件是大小一样的吗？还是根据本次flush的数据大小动态申请？<br data-evernote-id="526" class="js-evernote-checked">
+2. 我们知道数据是从memstore刷写到HFile中的，承上，若HFile大小固定，如果本次memstore刷写的数据量小于HFile的容量，是否会造成HFile碎片？<br data-evernote-id="527" class="js-evernote-checked">
+3. 数据在memstore中肯定是按照rowkey字节有序的，单次flush时一定会保证HFile中顺序地写，但是多次flush呢？还有，即使单个HFile中数据按rowkey有序存储，但是貌似多个HFile仍然无法保证顺序性诶~读时如何处理呢？（我的意思是穿透blockcache层的情况下）<br data-evernote-id="528" class="js-evernote-checked">
+==================================================<br data-evernote-id="529" class="js-evernote-checked">
+我的微信号：Jack_Gu，加博主微信还没回，希望各位能够帮忙解答我的疑惑，谢谢。</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="530"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=610#respond" onclick="return addComment.moveForm( &quot;div-comment-610&quot;, &quot;610&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给顾汉杰" style="display: inline;" data-evernote-id="75">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="531">
+		<li id="comment-612" class="comment byuser comment-author-libisthanksgmail-com bypostauthor even depth-2 parent js-evernote-checked" data-evernote-id="532">
+			<article id="div-comment-612" class="comment-body js-evernote-checked" data-evernote-id="12">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="13">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="533">
+												<b class="fn js-evernote-checked" data-evernote-id="224">范欣欣</b><span class="says js-evernote-checked" data-evernote-id="534">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="535">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-612" data-evernote-id="76" class="js-evernote-checked">
+							<time datetime="2017-03-24T09:18:34+00:00" data-evernote-id="536" class="js-evernote-checked">
+								2017年3月24日 上午9:18							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="537">
+					<p data-evernote-id="538" class="js-evernote-checked">1. hfile文件大小不固定大小，flush大小可以确定，后期小文件也会合并成大文件<br data-evernote-id="539" class="js-evernote-checked">
+2. 单个hfile文件内部kv是有序的，不同文件之间不一定有序，所以读会很麻烦，具体一句两句也解释不清楚。在之后的文章里介绍了一部分读的流程，有兴趣的话可以参考</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="540"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=612#respond" onclick="return addComment.moveForm( &quot;div-comment-612&quot;, &quot;612&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给范欣欣" style="display: inline;" data-evernote-id="77">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="541">
+		<li id="comment-614" class="comment odd alt depth-3 parent js-evernote-checked" data-evernote-id="542">
+			<article id="div-comment-614" class="comment-body js-evernote-checked" data-evernote-id="14">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="15">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="543">
+												<b class="fn js-evernote-checked" data-evernote-id="225">顾汉杰</b><span class="says js-evernote-checked" data-evernote-id="544">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="545">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-614" data-evernote-id="78" class="js-evernote-checked">
+							<time datetime="2017-03-24T10:13:25+00:00" data-evernote-id="546" class="js-evernote-checked">
+								2017年3月24日 上午10:13							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="547">
+					<p data-evernote-id="548" class="js-evernote-checked">感谢回复。<br data-evernote-id="549" class="js-evernote-checked">
+还有一个问题想请教：<br data-evernote-id="550" class="js-evernote-checked">
+单个HFile的刷写过程是仅一次性的吗？memstore下一次的flush是否另开一个HFile去刷写？<br data-evernote-id="551" class="js-evernote-checked">
+如果不是的话，单个HFile内的kv如何保证有序？</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="552"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=614#respond" onclick="return addComment.moveForm( &quot;div-comment-614&quot;, &quot;614&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给顾汉杰" style="display: inline;" data-evernote-id="79">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="553">
+		<li id="comment-618" class="comment byuser comment-author-libisthanksgmail-com bypostauthor even depth-4 js-evernote-checked" data-evernote-id="554">
+			<article id="div-comment-618" class="comment-body js-evernote-checked" data-evernote-id="16">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="17">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="555">
+												<b class="fn js-evernote-checked" data-evernote-id="226">范欣欣</b><span class="says js-evernote-checked" data-evernote-id="556">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="557">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-618" data-evernote-id="80" class="js-evernote-checked">
+							<time datetime="2017-03-24T19:53:18+00:00" data-evernote-id="558" class="js-evernote-checked">
+								2017年3月24日 下午7:53							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="559">
+					<p data-evernote-id="560" class="js-evernote-checked">嗯，是一次性的，每flush一次就会生成一个新的文件</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="561"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=618#respond" onclick="return addComment.moveForm( &quot;div-comment-618&quot;, &quot;618&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给范欣欣" style="display: inline;" data-evernote-id="81">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-624" class="comment odd alt thread-even depth-1 parent js-evernote-checked" data-evernote-id="562">
+			<article id="div-comment-624" class="comment-body js-evernote-checked" data-evernote-id="18">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="19">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="563">
+												<b class="fn js-evernote-checked" data-evernote-id="227">顾汉杰</b><span class="says js-evernote-checked" data-evernote-id="564">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="565">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-624" data-evernote-id="82" class="js-evernote-checked">
+							<time datetime="2017-03-27T12:16:55+00:00" data-evernote-id="566" class="js-evernote-checked">
+								2017年3月27日 下午12:16							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="567">
+					<p data-evernote-id="568" class="js-evernote-checked">之前一直疑惑一个问题：<br data-evernote-id="569" class="js-evernote-checked">
+HFile的文件格式，为何Data区在前，而索引等信息反而放置在文件尾？<br data-evernote-id="570" class="js-evernote-checked">
+最近终于理清头绪：<br data-evernote-id="571" class="js-evernote-checked">
+数据在memstore刷写到HFile的同时，正好在内存中记下每条记录在文件中的位置以及bloom等信息；<br data-evernote-id="572" class="js-evernote-checked">
+这样等Data区写完，索引信息也就在内存中建立完毕；<br data-evernote-id="573" class="js-evernote-checked">
+再接着将索引信息追加写入到HFile；<br data-evernote-id="574" class="js-evernote-checked">
+整个过程一气呵成。<br data-evernote-id="575" class="js-evernote-checked">
+=========================<br data-evernote-id="576" class="js-evernote-checked">
+但是，随之而来存在一个问题，索引在尾部，读文件时怎么快速定位数据呢？<br data-evernote-id="577" class="js-evernote-checked">
+其实也是可以的，HFile的文件加载是从后往前读，Trailer大小固定，根据文件大小可以定位到Index区在哪儿，然后在每个区域内部再顺序去加载。<br data-evernote-id="578" class="js-evernote-checked">
+~~~~~~~~~~~~~~~~~~~~~~~~~<br data-evernote-id="579" class="js-evernote-checked">
+以上是我的理解，不吝赐教，谢谢。</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="580"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=624#respond" onclick="return addComment.moveForm( &quot;div-comment-624&quot;, &quot;624&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给顾汉杰" style="display: inline;" data-evernote-id="83">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="581">
+		<li id="comment-626" class="comment byuser comment-author-libisthanksgmail-com bypostauthor even depth-2 parent js-evernote-checked" data-evernote-id="582">
+			<article id="div-comment-626" class="comment-body js-evernote-checked" data-evernote-id="20">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="21">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="583">
+												<b class="fn js-evernote-checked" data-evernote-id="228">范欣欣</b><span class="says js-evernote-checked" data-evernote-id="584">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="585">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-626" data-evernote-id="84" class="js-evernote-checked">
+							<time datetime="2017-03-28T07:17:04+00:00" data-evernote-id="586" class="js-evernote-checked">
+								2017年3月28日 上午7:17							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="587">
+					<p data-evernote-id="588" class="js-evernote-checked">1. 为什么Data在前，元数据信息在文件末尾这个问题还真心么有想过，你的解释看起来倒是合理<br data-evernote-id="589" class="js-evernote-checked">
+2. 读取的时候是首先读取文件最尾部的version信息，不同verion的hfile trailer长度不同，但给定version的hfile的tailer长度固定。tailer信心包含元数据block区的起始结束offset信息，这样顺序读取</p>
+<p data-evernote-id="590" class="js-evernote-checked">总体说来就是，写的时候是顺序的，一气砢成，读的时候刚好反过来，也是一气砢成</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="591"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=626#respond" onclick="return addComment.moveForm( &quot;div-comment-626&quot;, &quot;626&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给范欣欣" style="display: inline;" data-evernote-id="85">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="592">
+		<li id="comment-1864" class="comment odd alt depth-3 js-evernote-checked" data-evernote-id="593">
+			<article id="div-comment-1864" class="comment-body js-evernote-checked" data-evernote-id="22">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="23">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="594">
+												<b class="fn js-evernote-checked" data-evernote-id="229">seancheer</b><span class="says js-evernote-checked" data-evernote-id="595">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="596">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-1864" data-evernote-id="86" class="js-evernote-checked">
+							<time datetime="2017-11-07T20:28:04+00:00" data-evernote-id="597" class="js-evernote-checked">
+								2017年11月7日 下午8:28							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="598">
+					<p data-evernote-id="599" class="js-evernote-checked">hbase默认先把filesize-trailersize加载到内存里面，而最开始的trailersize是按照最大的trailersize算的，当前是4k，可以在FixedFileTrailer.java找到这段代码：<br data-evernote-id="600" class="js-evernote-checked">
+  public static FixedFileTrailer readFromStream(FSDataInputStream istream,<br data-evernote-id="601" class="js-evernote-checked">
+      long fileSize) throws IOException {<br data-evernote-id="602" class="js-evernote-checked">
+    int bufferSize = MAX_TRAILER_SIZE;   //当前最大是4k<br data-evernote-id="603" class="js-evernote-checked">
+    long seekPoint = fileSize – bufferSize;   //跳到trailer的起点<br data-evernote-id="604" class="js-evernote-checked">
+    if (seekPoint &lt; 0) {<br data-evernote-id="605" class="js-evernote-checked">
+      // It is hard to imagine such a small HFile.<br data-evernote-id="606" class="js-evernote-checked">
+      seekPoint = 0;<br data-evernote-id="607" class="js-evernote-checked">
+      bufferSize = (int) fileSize;<br data-evernote-id="608" class="js-evernote-checked">
+    }<br data-evernote-id="609" class="js-evernote-checked">
+ HFileUtil.seekOnMultipleSources(istream, seekPoint);<br data-evernote-id="610" class="js-evernote-checked">
+//省略部分代码</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="611"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=1864#respond" onclick="return addComment.moveForm( &quot;div-comment-1864&quot;, &quot;1864&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给seancheer" style="display: inline;" data-evernote-id="87">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-1949" class="comment even thread-odd thread-alt depth-1 parent js-evernote-checked" data-evernote-id="612">
+			<article id="div-comment-1949" class="comment-body js-evernote-checked" data-evernote-id="24">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="25">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="613">
+												<b class="fn js-evernote-checked" data-evernote-id="230">mr.li</b><span class="says js-evernote-checked" data-evernote-id="614">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="615">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-1949" data-evernote-id="88" class="js-evernote-checked">
+							<time datetime="2017-11-29T13:44:26+00:00" data-evernote-id="616" class="js-evernote-checked">
+								2017年11月29日 下午1:44							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="617">
+					<p data-evernote-id="618" class="js-evernote-checked">文章写得非常棒，受教了。不过关于Data Block的模型图中，key值里缺少了column qualifier。</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="619"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=1949#respond" onclick="return addComment.moveForm( &quot;div-comment-1949&quot;, &quot;1949&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给mr.li" style="display: inline;" data-evernote-id="89">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="620">
+		<li id="comment-1952" class="comment byuser comment-author-libisthanksgmail-com bypostauthor odd alt depth-2 js-evernote-checked" data-evernote-id="621">
+			<article id="div-comment-1952" class="comment-body js-evernote-checked" data-evernote-id="26">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="27">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="622">
+												<b class="fn js-evernote-checked" data-evernote-id="231">范欣欣</b><span class="says js-evernote-checked" data-evernote-id="623">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="624">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-1952" data-evernote-id="90" class="js-evernote-checked">
+							<time datetime="2017-11-29T19:56:23+00:00" data-evernote-id="625" class="js-evernote-checked">
+								2017年11月29日 下午7:56							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="626">
+					<p data-evernote-id="627" class="js-evernote-checked">谢谢反馈 已修正</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="628"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=1952#respond" onclick="return addComment.moveForm( &quot;div-comment-1952&quot;, &quot;1952&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给范欣欣" style="display: inline;" data-evernote-id="91">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-3575" class="comment even thread-even depth-1 js-evernote-checked" data-evernote-id="629">
+			<article id="div-comment-3575" class="comment-body js-evernote-checked" data-evernote-id="28">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="29">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="630">
+												<b class="fn js-evernote-checked" data-evernote-id="232">DaveX</b><span class="says js-evernote-checked" data-evernote-id="631">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="632">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-3575" data-evernote-id="92" class="js-evernote-checked">
+							<time datetime="2018-04-05T18:47:20+00:00" data-evernote-id="633" class="js-evernote-checked">
+								2018年4月5日 下午6:47							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="634">
+					<p data-evernote-id="635" class="js-evernote-checked">文章很棒，回答也很耐心</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="636"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=3575#respond" onclick="return addComment.moveForm( &quot;div-comment-3575&quot;, &quot;3575&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给DaveX" style="display: inline;" data-evernote-id="93">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-4058" class="comment odd alt thread-odd thread-alt depth-1 parent js-evernote-checked" data-evernote-id="637">
+			<article id="div-comment-4058" class="comment-body js-evernote-checked" data-evernote-id="30">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="31">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="638">
+												<b class="fn js-evernote-checked" data-evernote-id="233">蒋正贵</b><span class="says js-evernote-checked" data-evernote-id="639">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="640">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-4058" data-evernote-id="94" class="js-evernote-checked">
+							<time datetime="2018-05-03T14:43:28+00:00" data-evernote-id="641" class="js-evernote-checked">
+								2018年5月3日 下午2:43							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="642">
+					<p data-evernote-id="643" class="js-evernote-checked">文章非常赞，全网都很难找到这么好的文章！</p>
+<p data-evernote-id="644" class="js-evernote-checked">分别被3个hash函数进行映射，映射到的位置分别为（0，2，6）和（4，7，10）。这句话我认为有个小错误，应该是<br data-evernote-id="645" class="js-evernote-checked">
+分别被3个hash函数进行映射，映射到的位置分别为（0，3，6）和（4，7，10）。</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="646"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=4058#respond" onclick="return addComment.moveForm( &quot;div-comment-4058&quot;, &quot;4058&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给蒋正贵" style="display: inline;" data-evernote-id="95">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="647">
+		<li id="comment-4071" class="comment byuser comment-author-libisthanksgmail-com bypostauthor even depth-2 js-evernote-checked" data-evernote-id="648">
+			<article id="div-comment-4071" class="comment-body js-evernote-checked" data-evernote-id="32">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="33">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="649">
+												<b class="fn js-evernote-checked" data-evernote-id="234">范欣欣</b><span class="says js-evernote-checked" data-evernote-id="650">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="651">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-4071" data-evernote-id="96" class="js-evernote-checked">
+							<time datetime="2018-05-04T13:35:32+00:00" data-evernote-id="652" class="js-evernote-checked">
+								2018年5月4日 下午1:35							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="653">
+					<p data-evernote-id="654" class="js-evernote-checked">谢谢关注和反馈，已修改</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="655"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=4071#respond" onclick="return addComment.moveForm( &quot;div-comment-4071&quot;, &quot;4071&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给范欣欣" style="display: inline;" data-evernote-id="97">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-7430" class="comment odd alt thread-even depth-1 parent js-evernote-checked" data-evernote-id="656">
+			<article id="div-comment-7430" class="comment-body js-evernote-checked" data-evernote-id="34">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="35">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="657">
+												<b class="fn js-evernote-checked" data-evernote-id="235">m</b><span class="says js-evernote-checked" data-evernote-id="658">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="659">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-7430" data-evernote-id="98" class="js-evernote-checked">
+							<time datetime="2018-11-09T09:59:11+00:00" data-evernote-id="660" class="js-evernote-checked">
+								2018年11月9日 上午9:59							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="661">
+					<p data-evernote-id="662" class="js-evernote-checked">范神，请问下文中的Bloom Index Block是不是就是BloomFilter Meta Block</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="663"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=7430#respond" onclick="return addComment.moveForm( &quot;div-comment-7430&quot;, &quot;7430&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给m" style="display: inline;" data-evernote-id="99">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="664">
+		<li id="comment-7447" class="comment byuser comment-author-libisthanksgmail-com bypostauthor even depth-2 parent js-evernote-checked" data-evernote-id="665">
+			<article id="div-comment-7447" class="comment-body js-evernote-checked" data-evernote-id="36">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="37">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="666">
+												<b class="fn js-evernote-checked" data-evernote-id="236">范欣欣</b><span class="says js-evernote-checked" data-evernote-id="667">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="668">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-7447" data-evernote-id="100" class="js-evernote-checked">
+							<time datetime="2018-11-12T09:38:15+00:00" data-evernote-id="669" class="js-evernote-checked">
+								2018年11月12日 上午9:38							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="670">
+					<p data-evernote-id="671" class="js-evernote-checked">不是的 Bloom Index Block是bloom数据块的索引信息，BloomFilter Meta Block从HFile角度看bloom数据块的一些元数据信息</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="672"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=7447#respond" onclick="return addComment.moveForm( &quot;div-comment-7447&quot;, &quot;7447&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给范欣欣" style="display: inline;" data-evernote-id="101">回复</a></div>			</article><!-- .comment-body -->
+<ol class="children js-evernote-checked" data-evernote-id="673">
+		<li id="comment-8746" class="comment odd alt depth-3 js-evernote-checked" data-evernote-id="674">
+			<article id="div-comment-8746" class="comment-body js-evernote-checked" data-evernote-id="38">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="39">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="675">
+												<b class="fn js-evernote-checked" data-evernote-id="237">Hoperxt</b><span class="says js-evernote-checked" data-evernote-id="676">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="677">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-8746" data-evernote-id="102" class="js-evernote-checked">
+							<time datetime="2019-04-01T17:54:20+00:00" data-evernote-id="678" class="js-evernote-checked">
+								2019年4月1日 下午5:54							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="679">
+					<p data-evernote-id="680" class="js-evernote-checked">那Bloom Index Block是位于哪里呢？按理应该是在Loaded-on-open section上吧</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="681"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=8746#respond" onclick="return addComment.moveForm( &quot;div-comment-8746&quot;, &quot;8746&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给Hoperxt" style="display: inline;" data-evernote-id="103">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+</ol><!-- .children -->
+</li><!-- #comment-## -->
+		<li id="comment-8205" class="comment even thread-odd thread-alt depth-1 js-evernote-checked" data-evernote-id="682">
+			<article id="div-comment-8205" class="comment-body js-evernote-checked" data-evernote-id="40">
+				<footer class="comment-meta js-evernote-checked" data-evernote-id="41">
+					<div class="comment-author vcard js-evernote-checked" data-evernote-id="683">
+												<b class="fn js-evernote-checked" data-evernote-id="238">华成强</b><span class="says js-evernote-checked" data-evernote-id="684">说道：</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata js-evernote-checked" data-evernote-id="685">
+						<a href="http://hbasefly.com/2016/03/25/hbase-hfile/#comment-8205" data-evernote-id="104" class="js-evernote-checked">
+							<time datetime="2019-01-24T19:11:58+00:00" data-evernote-id="686" class="js-evernote-checked">
+								2019年1月24日 下午7:11							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content js-evernote-checked" data-evernote-id="687">
+					<p data-evernote-id="688" class="js-evernote-checked">初次使用HBase的时候，要遍历Hbase中所有数据，不知道使用MR，使用的是Scan，起始rowKey是byte[0]，每次查1000条，最后一条的rowkey作为起始rowkey继续往下查，但是最后所得的数据总量与真实数据量相差一个量级。看到这篇文章，我的理解是hfile之内rowkey是顺序排列的，但是hfile之间的rowkey不一定是有序的，假如hfile1的rowkey是1、3、5，hfile2的rowkey是2、4、6第一次scan 从1开始，limit设置为3，那么返回的是1、3、5，第二次scan的起始key就是5，那么2，4就会遗漏，请问可以这么理解吗？</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply js-evernote-checked" data-evernote-id="689"><a rel="nofollow" class="comment-reply-link btn btn-sm btn-default js-evernote-checked" href="http://hbasefly.com/2016/03/25/hbase-hfile/?replytocom=8205#respond" onclick="return addComment.moveForm( &quot;div-comment-8205&quot;, &quot;8205&quot;, &quot;respond&quot;, &quot;53&quot; )" aria-label="回复给华成强" style="display: inline;" data-evernote-id="105">回复</a></div>			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-8316" class="pingback odd alt thread-even depth-1 js-evernote-checked" data-evernote-id="690">
+			<div class="comment-body js-evernote-checked" data-evernote-id="691">
+				Pingback： <a href="http://spark.coolplayer.net/?p=3379" rel="external nofollow" class="url js-evernote-checked" data-evernote-id="106">HBase – 探索HFile索引机制</a> 			</div>
+</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+		
+	
+	
+					<div id="respond" class="comment-respond js-evernote-checked" data-evernote-id="692">
+			<h3 id="reply-title" class="comment-reply-title js-evernote-checked" data-evernote-id="693">发表评论 <small data-evernote-id="241" class="js-evernote-checked"><a rel="nofollow" id="cancel-comment-reply-link" href="http://hbasefly.com/2016/03/25/hbase-hfile/#respond" style="display:none;" data-evernote-id="107" class="js-evernote-checked">取消回复</a></small></h3>				<form action="http://hbasefly.com/wp-comments-post.php" method="post" id="commentform" class="comment-form js-evernote-checked" novalidate="" data-evernote-id="694">
+					<p class="comment-notes js-evernote-checked" data-evernote-id="695"><span id="email-notes" data-evernote-id="696" class="js-evernote-checked">电子邮件地址不会被公开。</span> 必填项已用<span class="required js-evernote-checked" data-evernote-id="697">*</span>标注</p><p class="comment-form-comment js-evernote-checked" data-evernote-id="698"><label for="comment" data-evernote-id="699" class="js-evernote-checked">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true" required="required" data-evernote-id="254" class="js-evernote-checked"></textarea></p><p class="comment-form-author js-evernote-checked" data-evernote-id="700"><label for="author" data-evernote-id="701" class="js-evernote-checked">姓名 <span class="required js-evernote-checked" data-evernote-id="702">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true" required="required" data-evernote-id="255" class="js-evernote-checked"></p>
+<p class="comment-form-email js-evernote-checked" data-evernote-id="703"><label for="email" data-evernote-id="704" class="js-evernote-checked">电子邮件 <span class="required js-evernote-checked" data-evernote-id="705">*</span></label> <input id="email" name="email" type="email" value="" size="30" aria-describedby="email-notes" aria-required="true" required="required" data-evernote-id="256" class="js-evernote-checked"></p>
+<p class="comment-form-url js-evernote-checked" data-evernote-id="706"><label for="url" data-evernote-id="707" class="js-evernote-checked">站点</label> <input id="url" name="url" type="url" value="" size="30" data-evernote-id="257" class="js-evernote-checked"></p>
+<p class="form-submit js-evernote-checked" data-evernote-id="708"><input name="submit" type="submit" id="submit" class="submit btn btn-default js-evernote-checked" value="发表评论" style="display: inline-block;" data-evernote-id="258"> <input type="hidden" name="comment_post_ID" value="53" id="comment_post_ID" data-evernote-id="259" class="js-evernote-checked">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0" data-evernote-id="260" class="js-evernote-checked">
+</p>				</form>
+					</div><!-- #respond -->
+		
+</div><!-- #comments -->
+				<nav class="navigation post-navigation js-evernote-checked" role="navigation" data-evernote-id="42">
+		<h1 class="screen-reader-text js-evernote-checked" data-evernote-id="240">文章导航</h1>
+		<div class="nav-links js-evernote-checked" data-evernote-id="709">
+			<div class="nav-previous js-evernote-checked" data-evernote-id="710"><a href="http://hbasefly.com/2016/03/23/hbase-memstore-flush/" rel="prev" data-evernote-id="108" class="js-evernote-checked"><i class="fa fa-chevron-left js-evernote-checked" data-evernote-id="711"></i> HBase – Memstore Flush深度解析</a></div><div class="nav-next js-evernote-checked" data-evernote-id="712"><a href="http://hbasefly.com/2016/04/03/hbase_hfile_index/" rel="next" data-evernote-id="109" class="js-evernote-checked">HBase – 探索HFile索引机制 <i class="fa fa-chevron-right js-evernote-checked" data-evernote-id="713"></i></a></div>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+		
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+</div>
+	<div id="secondary" class="widget-area col-sm-12 col-md-4 js-evernote-checked" role="complementary" data-evernote-id="714">
+		<div class="well js-evernote-checked" data-evernote-id="715">
+						<aside id="search-2" class="widget widget_search js-evernote-checked" data-evernote-id="43">
+<form role="search" method="get" class="form-search js-evernote-checked" action="http://hbasefly.com/" data-evernote-id="716">
+  <div class="input-group js-evernote-checked" data-evernote-id="717">
+  	<label class="screen-reader-text js-evernote-checked" for="s" data-evernote-id="718">Search for:</label>
+    <input type="text" class="form-control search-query js-evernote-checked" placeholder="Search…" value="" name="s" title="Search for:" data-evernote-id="261">
+    <span class="input-group-btn js-evernote-checked" data-evernote-id="719">
+      <button type="submit" class="btn btn-default js-evernote-checked" name="submit" id="searchsubmit" value="Search" style="" data-evernote-id="262"><span class="glyphicon glyphicon-search js-evernote-checked" data-evernote-id="264"></span></button>
+    </span>
+  </div>
+</form></aside><aside id="rss-2" class="widget widget_rss js-evernote-checked" data-evernote-id="44"><h3 class="widget-title js-evernote-checked" data-evernote-id="720"><a class="rsswidget js-evernote-checked" href="http://www.hbasefly.com/feed" data-evernote-id="110"><img class="rss-widget-icon js-evernote-checked" style="border:0" width="14" height="14" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/rss.png" alt="RSS" data-evernote-id="252"></a> <a class="rsswidget js-evernote-checked" href="http://hbasefly.com/" data-evernote-id="111">有态度的HBase</a></h3><ul class="media-list js-evernote-checked" style="display: block;" data-evernote-id="721"><li data-evernote-id="722" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2020/01/12/hbase221_perf/" data-evernote-id="112">HBase 2.2.1随机读写性能测试</a></li><li data-evernote-id="723" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2019/10/18/hbase-memstore-evolution/" data-evernote-id="113">HBase内存管理之MemStore进化论</a></li><li data-evernote-id="724" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2019/09/18/hbase-book/" data-evernote-id="114">学习HBase,你需要这样一本书</a></li><li data-evernote-id="725" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2018/06/19/timeseries-database-8/" data-evernote-id="115">时序数据库技术体系 – Druid 多维查询之Bitmap索引</a></li><li data-evernote-id="726" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2018/05/02/timeseries-database-7/" data-evernote-id="116">时序数据库技术体系 – InfluxDB TSM存储引擎之数据读取</a></li><li data-evernote-id="727" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2018/03/27/timeseries-database-6/" data-evernote-id="117">时序数据库技术体系 – InfluxDB TSM存储引擎之数据写入</a></li><li data-evernote-id="728" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2018/02/09/timeseries-database-5/" data-evernote-id="118">时序数据库技术体系 – InfluxDB 多维查询之倒排索引</a></li><li data-evernote-id="729" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2018/01/13/timeseries-database-4/" data-evernote-id="119">时序数据库技术体系 – InfluxDB TSM存储引擎之TSMFile</a></li><li data-evernote-id="730" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2017/12/08/influxdb-1/" data-evernote-id="120">时序数据库技术体系 – 初识InfluxDB</a></li><li data-evernote-id="731" class="js-evernote-checked"><a class="rsswidget js-evernote-checked" href="http://hbasefly.com/2017/11/19/timeseries-database-2/" data-evernote-id="121">时序数据库技术体系－时序数据存储模型设计</a></li></ul></aside><aside id="text-3" class="widget widget_text js-evernote-checked" data-evernote-id="45"><h3 class="widget-title js-evernote-checked" data-evernote-id="732">关于我</h3>			<div class="textwidget js-evernote-checked" data-evernote-id="733">本人范欣欣，男，就职于网易杭州研究院后台技术中心数据库技术组，专注于HBase的开发运维，热衷于MySQL等相关数据库技术。联系方式：libisthanks@gmail.com   微信：libisthanks（申请好友请注明城市-公司-姓名）</div>
+		</aside><aside id="archives-2" class="widget widget_archive js-evernote-checked" data-evernote-id="46"><h3 class="widget-title js-evernote-checked" data-evernote-id="734">文章归档</h3>		<ul data-evernote-id="735" class="js-evernote-checked">
+			<li data-evernote-id="736" class="js-evernote-checked"><a href="http://hbasefly.com/2020/01/" data-evernote-id="122" class="js-evernote-checked">2020年一月</a></li>
+	<li data-evernote-id="737" class="js-evernote-checked"><a href="http://hbasefly.com/2019/10/" data-evernote-id="123" class="js-evernote-checked">2019年十月</a></li>
+	<li data-evernote-id="738" class="js-evernote-checked"><a href="http://hbasefly.com/2019/09/" data-evernote-id="124" class="js-evernote-checked">2019年九月</a></li>
+	<li data-evernote-id="739" class="js-evernote-checked"><a href="http://hbasefly.com/2018/06/" data-evernote-id="125" class="js-evernote-checked">2018年六月</a></li>
+	<li data-evernote-id="740" class="js-evernote-checked"><a href="http://hbasefly.com/2018/05/" data-evernote-id="126" class="js-evernote-checked">2018年五月</a></li>
+	<li data-evernote-id="741" class="js-evernote-checked"><a href="http://hbasefly.com/2018/03/" data-evernote-id="127" class="js-evernote-checked">2018年三月</a></li>
+	<li data-evernote-id="742" class="js-evernote-checked"><a href="http://hbasefly.com/2018/02/" data-evernote-id="128" class="js-evernote-checked">2018年二月</a></li>
+	<li data-evernote-id="743" class="js-evernote-checked"><a href="http://hbasefly.com/2018/01/" data-evernote-id="129" class="js-evernote-checked">2018年一月</a></li>
+	<li data-evernote-id="744" class="js-evernote-checked"><a href="http://hbasefly.com/2017/12/" data-evernote-id="130" class="js-evernote-checked">2017年十二月</a></li>
+	<li data-evernote-id="745" class="js-evernote-checked"><a href="http://hbasefly.com/2017/11/" data-evernote-id="131" class="js-evernote-checked">2017年十一月</a></li>
+	<li data-evernote-id="746" class="js-evernote-checked"><a href="http://hbasefly.com/2017/10/" data-evernote-id="132" class="js-evernote-checked">2017年十月</a></li>
+	<li data-evernote-id="747" class="js-evernote-checked"><a href="http://hbasefly.com/2017/09/" data-evernote-id="133" class="js-evernote-checked">2017年九月</a></li>
+	<li data-evernote-id="748" class="js-evernote-checked"><a href="http://hbasefly.com/2017/08/" data-evernote-id="134" class="js-evernote-checked">2017年八月</a></li>
+	<li data-evernote-id="749" class="js-evernote-checked"><a href="http://hbasefly.com/2017/07/" data-evernote-id="135" class="js-evernote-checked">2017年七月</a></li>
+	<li data-evernote-id="750" class="js-evernote-checked"><a href="http://hbasefly.com/2017/06/" data-evernote-id="136" class="js-evernote-checked">2017年六月</a></li>
+	<li data-evernote-id="751" class="js-evernote-checked"><a href="http://hbasefly.com/2017/05/" data-evernote-id="137" class="js-evernote-checked">2017年五月</a></li>
+	<li data-evernote-id="752" class="js-evernote-checked"><a href="http://hbasefly.com/2017/04/" data-evernote-id="138" class="js-evernote-checked">2017年四月</a></li>
+	<li data-evernote-id="753" class="js-evernote-checked"><a href="http://hbasefly.com/2017/03/" data-evernote-id="139" class="js-evernote-checked">2017年三月</a></li>
+	<li data-evernote-id="754" class="js-evernote-checked"><a href="http://hbasefly.com/2017/02/" data-evernote-id="140" class="js-evernote-checked">2017年二月</a></li>
+	<li data-evernote-id="755" class="js-evernote-checked"><a href="http://hbasefly.com/2017/01/" data-evernote-id="141" class="js-evernote-checked">2017年一月</a></li>
+	<li data-evernote-id="756" class="js-evernote-checked"><a href="http://hbasefly.com/2016/12/" data-evernote-id="142" class="js-evernote-checked">2016年十二月</a></li>
+	<li data-evernote-id="757" class="js-evernote-checked"><a href="http://hbasefly.com/2016/11/" data-evernote-id="143" class="js-evernote-checked">2016年十一月</a></li>
+	<li data-evernote-id="758" class="js-evernote-checked"><a href="http://hbasefly.com/2016/10/" data-evernote-id="144" class="js-evernote-checked">2016年十月</a></li>
+	<li data-evernote-id="759" class="js-evernote-checked"><a href="http://hbasefly.com/2016/09/" data-evernote-id="145" class="js-evernote-checked">2016年九月</a></li>
+	<li data-evernote-id="760" class="js-evernote-checked"><a href="http://hbasefly.com/2016/08/" data-evernote-id="146" class="js-evernote-checked">2016年八月</a></li>
+	<li data-evernote-id="761" class="js-evernote-checked"><a href="http://hbasefly.com/2016/07/" data-evernote-id="147" class="js-evernote-checked">2016年七月</a></li>
+	<li data-evernote-id="762" class="js-evernote-checked"><a href="http://hbasefly.com/2016/06/" data-evernote-id="148" class="js-evernote-checked">2016年六月</a></li>
+	<li data-evernote-id="763" class="js-evernote-checked"><a href="http://hbasefly.com/2016/05/" data-evernote-id="149" class="js-evernote-checked">2016年五月</a></li>
+	<li data-evernote-id="764" class="js-evernote-checked"><a href="http://hbasefly.com/2016/04/" data-evernote-id="150" class="js-evernote-checked">2016年四月</a></li>
+	<li data-evernote-id="765" class="js-evernote-checked"><a href="http://hbasefly.com/2016/03/" data-evernote-id="151" class="js-evernote-checked">2016年三月</a></li>
+		</ul>
+		</aside><aside id="categories-2" class="widget widget_categories js-evernote-checked" data-evernote-id="47"><h3 class="widget-title js-evernote-checked" data-evernote-id="766">分类目录</h3>		<ul data-evernote-id="767" class="js-evernote-checked">
+	<li class="cat-item cat-item-60 js-evernote-checked" data-evernote-id="768"><a href="http://hbasefly.com/category/bigdata/" data-evernote-id="152" class="js-evernote-checked">BigData</a>
+</li>
+	<li class="cat-item cat-item-70 js-evernote-checked" data-evernote-id="769"><a href="http://hbasefly.com/category/database/" data-evernote-id="153" class="js-evernote-checked">DataBase</a>
+</li>
+	<li class="cat-item cat-item-2 js-evernote-checked" data-evernote-id="770"><a href="http://hbasefly.com/category/hbase/" data-evernote-id="154" class="js-evernote-checked">HBase</a>
+</li>
+	<li class="cat-item cat-item-54 js-evernote-checked" data-evernote-id="771"><a href="http://hbasefly.com/category/spark/" data-evernote-id="155" class="js-evernote-checked">Spark</a>
+</li>
+	<li class="cat-item cat-item-71 js-evernote-checked" data-evernote-id="772"><a href="http://hbasefly.com/category/%e4%ba%8b%e5%8a%a1/" data-evernote-id="156" class="js-evernote-checked">事务</a>
+</li>
+	<li class="cat-item cat-item-79 js-evernote-checked" data-evernote-id="773"><a href="http://hbasefly.com/category/%e6%97%b6%e5%ba%8f%e6%95%b0%e6%8d%ae%e5%ba%93/" data-evernote-id="157" class="js-evernote-checked">时序数据库</a>
+</li>
+	<li class="cat-item cat-item-1 js-evernote-checked" data-evernote-id="774"><a href="http://hbasefly.com/category/uncategorized/" data-evernote-id="158" class="js-evernote-checked">未分类</a>
+</li>
+	<li class="cat-item cat-item-53 js-evernote-checked" data-evernote-id="775"><a href="http://hbasefly.com/category/%e6%9d%82%e8%b0%88/" data-evernote-id="159" class="js-evernote-checked">杂谈</a>
+</li>
+		</ul>
+</aside><aside id="nav_menu-4" class="widget widget_nav_menu js-evernote-checked" data-evernote-id="48"><h3 class="widget-title js-evernote-checked" data-evernote-id="776">友情链接</h3><div class="menu-%e5%8f%8b%e6%83%85%e9%93%be%e6%8e%a5-container js-evernote-checked" data-evernote-id="777"><ul id="menu-%e5%8f%8b%e6%83%85%e9%93%be%e6%8e%a5" class="menu js-evernote-checked" data-evernote-id="778"><li id="menu-item-44" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-44 js-evernote-checked" data-evernote-id="779"><a href="http://bitstech.net/" data-evernote-id="160" class="js-evernote-checked">网易杭研后台技术中心</a></li>
+<li id="menu-item-45" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-45 js-evernote-checked" data-evernote-id="780"><a href="http://innomysql.net/" data-evernote-id="161" class="js-evernote-checked">有态度的MySQL社区－姜老大博客</a></li>
+<li id="menu-item-46" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-46 js-evernote-checked" data-evernote-id="781"><a href="http://sysdb.cn/" data-evernote-id="162" class="js-evernote-checked">数据库技术－老蒋博客</a></li>
+<li id="menu-item-47" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-47 js-evernote-checked" data-evernote-id="782"><a href="http://mingxinglai.com/" data-evernote-id="163" class="js-evernote-checked">明星博客</a></li>
+<li id="menu-item-48" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-48 js-evernote-checked" data-evernote-id="783"><a href="http://openinx.github.io/" data-evernote-id="164" class="js-evernote-checked">争神博客</a></li>
+<li id="menu-item-49" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-49 js-evernote-checked" data-evernote-id="784"><a href="http://majin163.com/" data-evernote-id="165" class="js-evernote-checked">进击的程序员－马进技术博客</a></li>
+<li id="menu-item-52" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-52 js-evernote-checked" data-evernote-id="785"><a href="http://www.d-kai.me/" data-evernote-id="166" class="js-evernote-checked">再见－凯哥博客</a></li>
+</ul></div></aside><aside id="tag_cloud-2" class="widget widget_tag_cloud js-evernote-checked" data-evernote-id="49"><h3 class="widget-title js-evernote-checked" data-evernote-id="786">标签</h3><div class="tagcloud js-evernote-checked" style="display: block;" data-evernote-id="787"><a href="http://hbasefly.com/tag/blockcache/" class="tag-link-15 js-evernote-checked" title="3个话题" style="font-size: 11.716814159292pt;" data-evernote-id="167">BlockCache</a>
+<a href="http://hbasefly.com/tag/blocksize/" class="tag-link-32 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="168">BlockSize</a>
+<a href="http://hbasefly.com/tag/bloom-filter/" class="tag-link-9 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="169">Bloom Filter</a>
+<a href="http://hbasefly.com/tag/bucketcache/" class="tag-link-18 js-evernote-checked" title="3个话题" style="font-size: 11.716814159292pt;" data-evernote-id="170">BucketCache</a>
+<a href="http://hbasefly.com/tag/cf%e4%bc%98%e5%8c%96/" class="tag-link-31 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="171">CF优化</a>
+<a href="http://hbasefly.com/tag/client/" class="tag-link-27 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="172">client</a>
+<a href="http://hbasefly.com/tag/cms/" class="tag-link-23 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="173">cms</a>
+<a href="http://hbasefly.com/tag/cms-failure-mode/" class="tag-link-24 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="174">CMS Failure Mode</a>
+<a href="http://hbasefly.com/tag/cms-gc/" class="tag-link-35 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="175">cms gc</a>
+<a href="http://hbasefly.com/tag/compaction/" class="tag-link-33 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="176">compaction</a>
+<a href="http://hbasefly.com/tag/gc/" class="tag-link-22 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="177">GC</a>
+<a href="http://hbasefly.com/tag/hbase/" class="tag-link-3 js-evernote-checked" title="26个话题" style="font-size: 22pt;" data-evernote-id="178">HBase</a>
+<a href="http://hbasefly.com/tag/hfile/" class="tag-link-8 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="179">HFile</a>
+<a href="http://hbasefly.com/tag/hlog/" class="tag-link-43 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="180">hlog</a>
+<a href="http://hbasefly.com/tag/influxdb/" class="tag-link-83 js-evernote-checked" title="6个话题" style="font-size: 14.814159292035pt;" data-evernote-id="181">influxdb</a>
+<a href="http://hbasefly.com/tag/join/" class="tag-link-59 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="182">join</a>
+<a href="http://hbasefly.com/tag/lrublockcache/" class="tag-link-16 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="183">LRUBlockCache</a>
+<a href="http://hbasefly.com/tag/memstore/" class="tag-link-5 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="184">Memstore</a>
+<a href="http://hbasefly.com/tag/mscp/" class="tag-link-26 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="185">MSCP</a>
+<a href="http://hbasefly.com/tag/mvcc/" class="tag-link-74 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="186">mvcc</a>
+<a href="http://hbasefly.com/tag/quotas/" class="tag-link-42 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="187">quotas</a>
+<a href="http://hbasefly.com/tag/recover/" class="tag-link-44 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="188">recover</a>
+<a href="http://hbasefly.com/tag/region-in-transition/" class="tag-link-40 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="189">region-in-transition</a>
+<a href="http://hbasefly.com/tag/regionserver/" class="tag-link-19 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="190">RegionServer</a>
+<a href="http://hbasefly.com/tag/region%e8%a7%84%e5%88%92/" class="tag-link-38 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="191">region规划</a>
+<a href="http://hbasefly.com/tag/rit/" class="tag-link-39 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="192">rit</a>
+<a href="http://hbasefly.com/tag/scan/" class="tag-link-67 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="193">scan</a>
+<a href="http://hbasefly.com/tag/slabcache/" class="tag-link-17 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="194">SlabCache</a>
+<a href="http://hbasefly.com/tag/spark/" class="tag-link-55 js-evernote-checked" title="3个话题" style="font-size: 11.716814159292pt;" data-evernote-id="195">spark</a>
+<a href="http://hbasefly.com/tag/sparksql/" class="tag-link-57 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="196">sparksql</a>
+<a href="http://hbasefly.com/tag/thread-local-allocation-buffer/" class="tag-link-25 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="197">Thread-Local Allocation Buffer</a>
+<a href="http://hbasefly.com/tag/%e4%ba%8b%e5%8a%a1/" class="tag-link-72 js-evernote-checked" title="3个话题" style="font-size: 11.716814159292pt;" data-evernote-id="198">事务</a>
+<a href="http://hbasefly.com/tag/%e5%86%85%e5%ad%98/" class="tag-link-30 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="199">内存</a>
+<a href="http://hbasefly.com/tag/%e5%86%99%e5%85%a5%e6%b5%81%e7%a8%8b/" class="tag-link-4 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="200">写入流程</a>
+<a href="http://hbasefly.com/tag/%e5%a4%9a%e7%a7%9f%e6%88%b7/" class="tag-link-41 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="201">多租户</a>
+<a href="http://hbasefly.com/tag/%e5%ae%95%e6%9c%ba/" class="tag-link-20 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="202">宕机</a>
+<a href="http://hbasefly.com/tag/%e6%80%a7%e8%83%bd/" class="tag-link-21 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="203">性能</a>
+<a href="http://hbasefly.com/tag/%e6%95%b0%e6%8d%ae%e6%81%a2%e5%a4%8d/" class="tag-link-45 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="204">数据恢复</a>
+<a href="http://hbasefly.com/tag/%e6%b5%81%e7%a8%8b/" class="tag-link-34 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="205">流程</a>
+<a href="http://hbasefly.com/tag/%e7%b4%a2%e5%bc%95/" class="tag-link-14 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="206">索引</a>
+<a href="http://hbasefly.com/tag/%e8%af%bb%e5%8f%96%e6%b5%81%e7%a8%8b/" class="tag-link-52 js-evernote-checked" title="2个话题" style="font-size: 10.230088495575pt;" data-evernote-id="207">读取流程</a>
+<a href="http://hbasefly.com/tag/%e8%b0%83%e4%bc%98/" class="tag-link-36 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="208">调优</a>
+<a href="http://hbasefly.com/tag/%e8%b6%85%e6%97%b6/" class="tag-link-29 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="209">超时</a>
+<a href="http://hbasefly.com/tag/%e9%87%8d%e8%af%95/" class="tag-link-28 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="210">重试</a>
+<a href="http://hbasefly.com/tag/%e9%9b%86%e7%be%a4%e8%a7%84%e5%88%92/" class="tag-link-37 js-evernote-checked" title="1个话题" style="font-size: 8pt;" data-evernote-id="211">集群规划</a></div>
+</aside><aside id="nav_menu-5" class="widget widget_nav_menu js-evernote-checked" data-evernote-id="50"><h3 class="widget-title js-evernote-checked" data-evernote-id="788">HBase学习交流群</h3></aside>		</div>
+	</div><!-- #secondary -->
+		</div><!-- close .row -->
+	</div><!-- close .container -->
+</div><!-- close .site-content -->
+
+	<div id="footer-area" data-evernote-id="789" class="js-evernote-checked">
+		<div class="container footer-inner js-evernote-checked" data-evernote-id="790">
+			<div class="row js-evernote-checked" data-evernote-id="791">
+				
+				</div>
+		</div>
+
+		<footer id="colophon" class="site-footer js-evernote-checked" role="contentinfo" data-evernote-id="51">
+			<div class="site-info container js-evernote-checked" data-evernote-id="792">
+				<div class="row js-evernote-checked" data-evernote-id="793">
+										<nav role="navigation" class="col-md-6 js-evernote-checked" data-evernote-id="52">
+											</nav>
+					<div class="copyright col-md-6 js-evernote-checked" data-evernote-id="794">
+						sparkling						Theme by <a href="http://colorlib.com/" target="_blank" data-evernote-id="212" class="js-evernote-checked">Colorlib</a> Powered by <a href="http://wordpress.org/" target="_blank" data-evernote-id="213" class="js-evernote-checked">WordPress</a>					</div>
+				</div>
+			</div><!-- .site-info -->
+			<div class="scroll-to-top js-evernote-checked" style="display: block;" data-evernote-id="795"><i class="fa fa-angle-up js-evernote-checked" data-evernote-id="796"></i></div><!-- .scroll-to-top -->
+		</footer><!-- #colophon -->
+	</div>
+</div><!-- #page -->
+
+  <script type="text/javascript" data-evernote-id="797" class="js-evernote-checked">
+    jQuery( document ).ready( function( $ ){
+      if ( $( window ).width() >= 767 ){
+        $( '.navbar-nav > li.menu-item > a' ).click( function(){
+            if( $( this ).attr('target') !== '_blank' ){
+                window.location = $( this ).attr( 'href' );
+            }else{
+                var win = window.open($( this ).attr( 'href' ), '_blank');
+                win.focus();
+            }
+        });
+      }
+    });
+  </script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/skip-link-focus-fix.js" data-evernote-id="798" class="js-evernote-checked"></script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/comment-reply.min.js" data-evernote-id="799" class="js-evernote-checked"></script>
+<script type="text/javascript" src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/wp-embed.min.js" data-evernote-id="800" class="js-evernote-checked"></script>
+
+
+<input type="file" id="" name="file" style="display: none;" data-evernote-id="263" class="js-evernote-checked"><div data-v-cef78672="" class="container_selected_area js-evernote-checked" style="cursor: url(&quot;chrome-extension://ialiedlpfknneamnbemcgmaboleiccdd/assets/images/cursor-imagen.svg&quot;) 9 9, crosshair;" data-evernote-id="801"><div data-v-cef78672="" class="area js-evernote-checked" data-evernote-id="802"></div></div><iframe src="./HBase – 存储文件HFile结构解析 – 有态度的HBase_Spark_BigData_files/ContentFrame.html" class="en-serializer-ignore js-evernote-checked" id="evernoteClipperTools" style="position: fixed; user-select: none; top: 12px; right: 12px; bottom: initial; left: initial; width: 306px; height: 479px; border: 0px; z-index: 2147483646; clip: auto; display: block !important;" data-evernote-id="803"></iframe></body></html>
