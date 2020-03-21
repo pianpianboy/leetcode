@@ -1,8 +1,6 @@
 package com.pianpianboy.leetcode.leetcode;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * @ClassName Test1
@@ -13,12 +11,24 @@ import java.util.HashMap;
 public class Test1 {
 
     public static void main(String[] args) {
+        HashMap<Character,Integer> map = new HashMap<>();
+
+        for(Map.Entry<Character,Integer> entry: map.entrySet()){
+            entry.getKey();
+        }
+        String t = "";
+        String[] split = t.split(",");
+
+
         String[] words= {"cat","bt","hat","tree"};
         String chars = "atach";
         System.out.println('a'-97);
         int [] arr = {1,1};
         int[] arr1;
         arr1 = Arrays.copyOf(arr,26);
+
+        List<Integer> list = new LinkedList<>();
+        ((LinkedList<Integer>) list).removeLast();
         //countCharacters(words,chars);
     }
 

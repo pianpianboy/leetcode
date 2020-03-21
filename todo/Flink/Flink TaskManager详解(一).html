@@ -1,0 +1,2110 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>body {
+  max-width: 980px;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 45px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,d09GRgABAAAAABE0AA8AAAAAHWwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABWAAAADsAAABUIIslek9TLzIAAAGUAAAAQwAAAFY3d1HZY21hcAAAAdgAAACqAAACOvWLi0FjdnQgAAAChAAAABMAAAAgBtX/BGZwZ20AAAKYAAAFkAAAC3CKkZBZZ2FzcAAACCgAAAAIAAAACAAAABBnbHlmAAAIMAAABdQAAAjkYT9TNWhlYWQAAA4EAAAAMwAAADYQ6WvNaGhlYQAADjgAAAAfAAAAJAc6A1pobXR4AAAOWAAAACAAAAA0Kmz/7mxvY2EAAA54AAAAHAAAABwQPBJubWF4cAAADpQAAAAgAAAAIAEHC/NuYW1lAAAOtAAAAYQAAALxhQT4h3Bvc3QAABA4AAAAfgAAAMS3SYh9cHJlcAAAELgAAAB6AAAAhuVBK7x4nGNgZGBg4GIwYLBjYHJx8wlh4MtJLMljkGJgYYAAkDwymzEnMz2RgQPGA8qxgGkOIGaDiAIAJjsFSAB4nGNgZHZmnMDAysDAVMW0h4GBoQdCMz5gMGRkAooysDIzYAUBaa4pDA4Pwz+yMwf9z2KIYg5imAYUZgTJAQDcoQvQAHic7ZHNDYJAFIRnBXf94cDRIiyCKkCpwFCPJ092RcKNDoYKcN4+EmMPvpdvk539zQyAPYBCXEUJhBcCrJ5SQ9YLnLJe4qF5rdb+uWPDngNHTkta101pNyWa8lMhn6xx2dqUnW4q9YOIhAOOeueMSgsR/6ry+P7O5s6xVNg4chBsHUuFnWNJ8uZYwrw7chrsHXkODo7cB0dHOYCTY8kv0VE2WJKD6gOlWjsxAAB4nGNgQAMSEMgc9D8LhAESbAPdAHicrVZpd9NGFB15SZyELCULLWphxMRpsEYmbMGACUGyYyBdnK2VoIsUO+m+8Ynf4F/zZNpz6Dd+Wu8bLySQtOdwmpOjd+fN1czbZRJaktgL65GUmy/F1NYmjew8CemGTctRfCg7eyFlisnfBVEQrZbatx2HREQiULWusEQQ+x5ZmmR86FFGy7akV03KLT3pLlvjQb1V334aOsqxO6GkZjN0aD2yJVUYVaJIpj1S0qZlqPorSSu8v8LMV81QwohOImm8GcbQSN4bZ7TKaDW24yiKbLLcKFIkmuFBFHmU1RLn5IoJDMoHzZDyyqcR5cP8iKzYo5xWsEu20/y+L3mndzk/sV9vUbbkQB/Ijuzg7HQlX4RbW2HctJPtKFQRdtd3QmzZ7FT/Zo/ymkYDtysyvdCMYKl8hRArP6HM/iFZLZxP+ZJHo1qykRNB62VO7Es+gdbjiClxzRhZ0N3RCRHU/ZIzDPaYPh788d4plgsTAngcy3pHJZwIEylhczRJ2jByYCVliyqp9a6YOOV1WsRbwn7t2tGXzmjjUHdiPFsPHVs5UcnxaFKnmUyd2knNoykNopR0JnjMrwMoP6JJXm1jNYmVR9M4ZsaERCICLdxLU0EsO7GkKQTNoxm9uRumuXYtWqTJA/Xco/f05la4udNT2g70s0Z/VqdiOtgL0+lp5C/xadrlIkXp+ukZfkziQdYCMpEtNsOUgwdv/Q7Sy9eWHIXXBtju7fMrqH3WRPCkAfsb0B5P1SkJTIWYVYhWQGKta1mWydWsFqnI1HdDmla+rNMEinIcF8e+jHH9XzMzlpgSvt+J07MjLj1z7UsI0xx8m3U9mtepxXIBcWZ5TqdZlu/rNMfyA53mWZ7X6QhLW6ejLD/UaYHlRzodY3lBC5p038GQizDkAg6QMISlA0NYXoIhLBUMYbkIQ1gWYQjLJRjC8mMYwnIZhrC8rGXV1FNJ49qZWAZsQmBijh65zEXlaiq5VEK7aFRqQ54SbpVUFM+qf2WgXjzyhjmwFkiXyJpfMc6Vj0bl+NYVLW8aO1fAsepvH472OfFS1ouFPwX/1dZUJb1izcOTq/Abhp5sJ6o2qXh0TZfPVT26/l9UVFgL9BtIhVgoyrJscGcihI86nYZqoJVDzGzMPLTrdcuan8P9NzFCFlD9+DcUGgvcg05ZSVnt4KzV19uy3DuDcjgTLEkxN/P6VvgiI7PSfpFZyp6PfB5wBYxKZdhqA60VvNknMQ+Z3iTPBHFbUTZI2tjOBIkNHPOAefOdBCZh6qoN5E7hhg34BWFuwXknXKJ6oyyH7kXs8yik/Fun4kT2qGiMwLPZG2Gv70LKb3EMJDT5pX4MVBWhqRg1FdA0Um6oBl/G2bptQsYO9CMqdsOyrOLDxxb3lZJtGYR8pIjVo6Of1l6iTqrcfmYUl++dvgXBIDUxf3vfdHGQyrtayTJHbQNTtxqVU9eaQ+NVh+rmUfW94+wTOWuabronHnpf06rbwcVcLLD2bQ7SUiYX1PVhhQ2iy8WlUOplNEnvuAcYFhjQ71CKjf+r+th8nitVhdFxJN9O1LfR52AM/A/Yf0f1A9D3Y+hyDS7P95oTn2704WyZrqIX66foNzBrrblZugbc0HQD4iFHrY64yg18pwZxeqS5HOkh4GPdFeIBwCaAxeAT3bWM5lMAo/mMOT7A58xh0GQOgy3mMNhmzhrADnMY7DKHwR5zGHzBnHWAL5nDIGQOg4g5DJ4wJwB4yhwGXzGHwdfMYfANc+4DfMscBjFzGCTMYbCv6dYwzC1e0F2gtkFVoANTT1jcw+JQU2XI/o4Xhv29Qcz+wSCm/qjp9pD6Ey8M9WeDmPqLQUz9VdOdIfU3Xhjq7wYx9Q+DmPpMvxjLZQa/jHyXCgeUXWw+5++J9w/bxUC5AAEAAf//AA94nIVVX2hbZRQ/5/t7893s5ja9f7ouzdZ0TTqz3bRJmogbWya6bG6Cq0VbSV2ddIJjFtfIQHEig80Hda8yUN/0YQz8AyriiyD+xQd92R4HCnaCb3samnpumrpsCsLlfPf7zvedc37nL3CAtc/5W/wQZGA3tOBSY/g+TMjHmwzEoM1Q8+ZjRZY4oJhmBw5/YB6Za0yC5AkhlwA1A1yCBIBOwCII0Cj0U8BAMdUCzq05sKwkP7SlUY6fcJk4Fb/RyE79/6P5hjM/F4aZiXBoeMgzcqQ4Xi1hPqfDLG5FT+lchCVU3lYMyvuwhl1mqndQL0RsuloLywHtthLXI06OblTrhfWVnpSJ5+mwu/JdbtuN3IAnkW0LLMcRwaC7ktrlzridM6kVdyf9uO1UNBByI7JhwtG2sEwab07ORBeilWhqavJCqV0qzZTOl/7ZXQ5TbTcdcFelyGhhRDAQpdqp1FEX3w3cFTc1k9pJQkmm4ySCbSikxRP2QOfN+0tHS5MrpQuTU1Mk5nw0E5Xa0WvrOwDyGax9yB9ma6DAg82wHc43SAGTI4GjBWebOePAERFE8/AHaQpZASSTy8A4WwZiLQMQ82mFKATO0ILicRAoDm9p5P99E5b/fXG+kQYY3TYUuqmERWYoT0u/GNYL2q/4WB3LaVS+VynXsVYIcWw6DkCh3nX1D+VzlYN4LClF5yexSQos8exqZ3KVP+wtrC54u4Nznq6cq+xpMpUUnZ8FUYzE86ud0g28NOIv3Gj5/rmA3ABs7S/ywzFuQ4qyd6QxfNtiQIaEgp3w/entQg4Vcbqa16M5FfpeUB8t1+qeg7mI7cUyOe79wOk86gSxkVec4KPTX69++5x68Yubn5/F+w52z7u08sJX7fZXv8ekT/d2mILJxq6sn+SC6qEJknzLJCxyZEKwWVqYmAPBxBE/9DLeZiWHu7lcr/VytrCRuHojncNuTt9h46tmacmYisnSamdN2bZptcsmSysdVsy1PrOvOzF3xN64Rb937t/og9KHxYdcjIUqFAmIAHGHNzlns+RTPgeUYAQm9DwpNxfxbhhBHPaw3/gfTcXO2L+eJVIx5nsyGkvm9X4/f+bGkH45G0PaSjcMXTjcZyTvi3UdHoCDjQd3IDUVsgwYmUoJK/gp4JJxeRI0MKHZIkgynyIBqBTOUs6rOVCojvjZ4mCQz49ZMlMcp8QoYk6NoBfsxnJtsBohpa8iGJS+ZH7gU7NxME6cmF+t7cO9vB8d3jTWSct0ycW9ranXmolNDwmVkNnxe+8JtoztwS5rKJ0xWS95tQ/1zMYzg69MzUZnNtl1ofNbsml/OJm6f9wjRjpnu2o4MzHzn77IQkRd+1DjwMQ2pqSjGMMhyjrgTbBAKksuUm0iU7hI0aN2wOKOq7WYBSH0HGihj/jkiPxAfmwsEbfYrjMG+j3ij932Db/LV7I/xruNrhnroxjR9HRMb2nTvO0ZXOoHPk8H2ZhDPx93qcE/53sH5np/dkIP7zzhTVKdR/BAY/9ElkkR+A6lJGsqpJ4oQcTxpvBT3Kn58VkaJjgHyPEIws57xkaHh9KuVpDEpJZeMbZ5w/zBHi5NMQ4r5VphsFqID7TyB9eR4pX216c3AHxpdAwoqU9qg0ZJ6yVLKmMSz1iG2z27ifx18NkY0LPx1W/wCc2l5LrznrIsiKsqbmB78A9wIGx4tI8rjihVHJyY9pgMirenVq0yWg7Iw7eogG7ZgYM3qR9959A/fZkg6MnD/exlkmc+jWV4SB15XUR+eqC6l6ZmgPtN9z5JMfik05OV8ljylunJ4J+wA/FUaQSSKotsYsCWqaPBidBLcxkWx7XKFRIb45TGaEhjlF9uUVPqXOtcIwsXbBvfoZXIyRYFdkfnqjExH98xpnPczqzjX/uNdO1Y17Wpi5+6Ts8BXtjVFasp9KZ1mOiNbH65c5w6HgmyF2jFCZywM8mWjRc7T5Pmt0lRy7Y71+jYbpGyvwG4sH0XeJxjYGRgYADiwBB/53h+m68M3MwvgCIM1z5N/g6j///9v5H5BbMnkMvBwAQSBQCIcA9gAHicY2BkYGAO+p8FJF/8//v/F/MLBqAICuAFALYQB5kAeJxjfsHAwLwAiCNB+P9fbJjJmoGBMRUo/wKCAfO2EnQAAAAAANoBXgGcAgICVALaA1IDvAPkBAYEPARyAAEAAAANAF0ABAAAAAAAAgAUACQAcwAAAG4LcAAAAAB4nHWRzWrCQBSFT+pPqUIXLXTTzayKUohGKIibCoLuhbrrYtTRxCYZmYyKyz5Fd32HvlDfoO/QkziIFJtw9bvnnpl7ZwLgBt/wcHieGAf2UGd24Atcou+4RH3kuEweO66QXx1XyaHjGh6ROa7jFp/cwStfMVvhy7GHO+/e8QWuvcBxifqz4zL5xXGF/Oa4Sn53XMPE+3Bcx4P3M9DrvYmWoRWNQVN02kFXTPdCU4pSGQu5saE2meiLhU6timPtz3SSs9ypTCdqrJabWJoT5QQnymSRTkXgt0/UkUqVkVbN807ZdtmxdiEWRidi6HqItdErNbN+aO2612qd9sYAGmvsYRBhyUu0EGhQbfK/gzYCdElTOgSdB1eEFBIxFYkNV4RFJWPeZyyYpVQVHTHZx4y/yVGX2LGWFZri51TccUOn5B7nPefVCSPvGhVVwUl9znveO2KkhV8Wk82PZ8qwZf8OVcu1+fSmWCMw/HMOwXvKaysqM+p+cVuWag8tvv+c+xdd+4+teJxtjUEOwiAURJla24KliQfhUA2g/Sl+CKXx+loNrpzVezOLEY34Ron/0WhwQoszOvQYIKFwwQiNSbSBeO2SZ0tBP4j3zVjKNng32ZmtD1VVXCuOiw/pJ8S3WOU6l+K5UOTaDC4+2TjKMtN9KQf1ezLx/Sg/00FCvABHhjDjAAB4nGPw3sFwIihiIyNjX+QGxp0cDBwMyQUbGVidNjEwMmiBGJu5mBg5ICw+BjCLzWkX0wGgNCeQze60i8EBwmZmcNmowtgRGLHBoSNiI3OKy0Y1EG8XRwMDI4tDR3JIBEhJJBBs5mFi5NHawfi/dQNL70YmBhcADHYj9AAA) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headerlink {
+  font: normal 400 16px fontawesome-mini;
+  vertical-align: middle;
+  margin-left: -16px;
+  float: left;
+  display: inline-block;
+  text-decoration: none;
+  opacity: 0;
+  color: #333;
+}
+
+.markdown-body .headerlink:focus {
+  outline: none;
+}
+
+.markdown-body h1 .headerlink {
+  margin-top: 0.8rem;
+}
+
+.markdown-body h2 .headerlink,
+.markdown-body h3 .headerlink {
+  margin-top: 0.6rem;
+}
+
+.markdown-body h4 .headerlink {
+  margin-top: 0.2rem;
+}
+
+.markdown-body h5 .headerlink,
+.markdown-body h6 .headerlink {
+  margin-top: 0;
+}
+
+.markdown-body .headerlink:hover,
+.markdown-body h1:hover .headerlink,
+.markdown-body h2:hover .headerlink,
+.markdown-body h3:hover .headerlink,
+.markdown-body h4:hover .headerlink,
+.markdown-body h5:hover .headerlink,
+.markdown-body h6:hover .headerlink {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* MultiMarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px fontawesome-mini;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\e157';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><style>/*GitHub*/
+.codehilite {background-color:#fff;color:#333333;}
+.codehilite .hll {background-color:#ffffcc;}
+.codehilite .c{color:#999988;font-style:italic}
+.codehilite .err{color:#a61717;background-color:#e3d2d2}
+.codehilite .k{font-weight:bold}
+.codehilite .o{font-weight:bold}
+.codehilite .cm{color:#999988;font-style:italic}
+.codehilite .cp{color:#999999;font-weight:bold}
+.codehilite .c1{color:#999988;font-style:italic}
+.codehilite .cs{color:#999999;font-weight:bold;font-style:italic}
+.codehilite .gd{color:#000000;background-color:#ffdddd}
+.codehilite .ge{font-style:italic}
+.codehilite .gr{color:#aa0000}
+.codehilite .gh{color:#999999}
+.codehilite .gi{color:#000000;background-color:#ddffdd}
+.codehilite .go{color:#888888}
+.codehilite .gp{color:#555555}
+.codehilite .gs{font-weight:bold}
+.codehilite .gu{color:#800080;font-weight:bold}
+.codehilite .gt{color:#aa0000}
+.codehilite .kc{font-weight:bold}
+.codehilite .kd{font-weight:bold}
+.codehilite .kn{font-weight:bold}
+.codehilite .kp{font-weight:bold}
+.codehilite .kr{font-weight:bold}
+.codehilite .kt{color:#445588;font-weight:bold}
+.codehilite .m{color:#009999}
+.codehilite .s{color:#dd1144}
+.codehilite .n{color:#333333}
+.codehilite .na{color:teal}
+.codehilite .nb{color:#0086b3}
+.codehilite .nc{color:#445588;font-weight:bold}
+.codehilite .no{color:teal}
+.codehilite .ni{color:purple}
+.codehilite .ne{color:#990000;font-weight:bold}
+.codehilite .nf{color:#990000;font-weight:bold}
+.codehilite .nn{color:#555555}
+.codehilite .nt{color:navy}
+.codehilite .nv{color:teal}
+.codehilite .ow{font-weight:bold}
+.codehilite .w{color:#bbbbbb}
+.codehilite .mf{color:#009999}
+.codehilite .mh{color:#009999}
+.codehilite .mi{color:#009999}
+.codehilite .mo{color:#009999}
+.codehilite .sb{color:#dd1144}
+.codehilite .sc{color:#dd1144}
+.codehilite .sd{color:#dd1144}
+.codehilite .s2{color:#dd1144}
+.codehilite .se{color:#dd1144}
+.codehilite .sh{color:#dd1144}
+.codehilite .si{color:#dd1144}
+.codehilite .sx{color:#dd1144}
+.codehilite .sr{color:#009926}
+.codehilite .s1{color:#dd1144}
+.codehilite .ss{color:#990073}
+.codehilite .bp{color:#999999}
+.codehilite .vc{color:teal}
+.codehilite .vg{color:teal}
+.codehilite .vi{color:teal}
+.codehilite .il{color:#009999}
+.codehilite .gc{color:#999;background-color:#EAF2F5}
+</style><title>Flink TaskManager详解(一)</title></head><body><article class="markdown-body"><h3 id="flink-taskmanager">Flink TaskManager详解(一)<a class="headerlink" href="#flink-taskmanager" title="Permanent link"></a></h3>
+<ul>
+<li>0、简介</li>
+<li>1、TaskManager启动流程<ul>
+<li>1.1、TaskManager相关服务的初始化</li>
+<li>1.2、TaskExecutor的启动<ul>
+<li>1.2.1、启动心跳服务</li>
+<li>1.2.2、向RM注册TM</li>
+<li>1.2.3、启动TaskSlotTable服务</li>
+<li>1.2.4、启动JobLeaderService服务</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>2、TaskManager提供了哪些能力/功能？</li>
+<li>3、TaskManager怎么发现RM Leader（在使用ZK做HA的情况下）？</li>
+<li>4、TM Slot资源是如何管理的？<ul>
+<li>4.1、Slot的申请</li>
+<li>4.2、Slot的释放</li>
+</ul>
+</li>
+<li>5、总结</li>
+</ul>
+<p>这篇文章会讲述Flink中的TaskManager的一些内容，TaskManager是Flink的worker节点，它flink中本机slot资源的管理以及具体task的执行。TaskManager上基本资源单位是slot，一个作业的task最终会部署在一个TM的slot上运行，TM会负责维护本地的slot资源列表，并来与Flink Master和JobManager通信。本篇将采用先提出问题，然后再根据源码实现去解答这些问题的形式叙述。</p>
+<h5 id="taskmanager">对于TaskManager的内容，这里将会聚焦下面几个问题上，下面的文章将逐个分析这些问题：<a class="headerlink" href="#taskmanager" title="Permanent link"></a></h5>
+<ol>
+<li>TaskManager 启动流程？</li>
+<li>TaskManager提供了哪些能力/功能？</li>
+<li>TaskManager怎么发现RM Leader(在使用ZK做HA的情况下)？</li>
+<li>TM如何维护JobManager的关系，如果JobManager挂掉，TM会如何处理？</li>
+<li>TM Slot资源是如何管理的？</li>
+<li>TM如何处理提交过来的Task？（另外再讲）</li>
+<li>TM如何处理Task之间的Shuffle的需求？（另外再讲）</li>
+</ol>
+<h3 id="1taskmanager">1、TaskManager启动流程<a class="headerlink" href="#1taskmanager" title="Permanent link"></a></h3>
+<p>与JobManager类似，TaskManager的启动类是TaskManagerRunner，大概的流程如下图所示：</p>
+<p>TaskManager启动的入口的方式是runTaskManager(),它会首先初始化一些TaskManager,比如：初始化RpcService、初始化HighAvailityServices等等，这写都是为TaskManager服务的启动做准备工作。其实TaskManager初始化主要分为两大块：</p>
+<ol>
+<li>TaskManager相关service的初始化：主要是TaskManager相关的服务的初始化，比如内存管理器、IO管理器、TaskSlotTable（TM维护task与Slot的对象）等，这里包括TaskExecutor的初始化，主要这里对于一些需要启动的服务在这一步并没有启动</li>
+<li>TaskExecutor的启动 ：它会启动TM上的相关服务，Task的提交和运行也是在TaskExecutor中完成，上一步TM相关的服务初始化之后也是再TaskExecutor中使用的。</li>
+</ol>
+<p>TM的服务真正Run起来之后，核心流程还是在TaskExecutor中。</p>
+<h4 id="11taskmanager">1.1、TaskManager相关服务的初始<a class="headerlink" href="#11taskmanager" title="Permanent link"></a></h4>
+<p><div class="codehilite"><pre><span class="n">TaskerManagerRunner</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//0. TaskManager入口</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">// startup checks and logging</span>
+    <span class="n">EnvironmentInformation</span><span class="o">.</span><span class="na">logEnvironmentInfo</span><span class="o">(</span><span class="n">LOG</span><span class="o">,</span> <span class="s">&quot;TaskManager&quot;</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="n">SignalHandler</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">LOG</span><span class="o">);</span>
+    <span class="n">JvmShutdownSafeguard</span><span class="o">.</span><span class="na">installAsShutdownHook</span><span class="o">(</span><span class="n">LOG</span><span class="o">);</span>
+    <span class="kt">long</span> <span class="n">maxOpenFileHandles</span> <span class="o">=</span> <span class="n">EnvironmentInformation</span><span class="o">.</span><span class="na">getOpenFileHandlesLimit</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">maxOpenFileHandles</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1L</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Maximum number of open file descriptors is {}.&quot;</span><span class="o">,</span> <span class="n">maxOpenFileHandles</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Cannot determine the maximum number of open file descriptors&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c1">// 入口</span>
+<span class="err">★</span>    <span class="n">runTaskManagerSecurely</span><span class="o">(</span><span class="n">args</span><span class="o">,</span> <span class="n">ResourceID</span><span class="o">.</span><span class="na">generate</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">TaskerManagerRunner</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">// main()方法-&gt;入口</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">runTaskManagerSecurely</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">,</span> <span class="n">ResourceID</span> <span class="n">resourceID</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">loadConfiguration</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+
+    <span class="n">FileSystem</span><span class="o">.</span><span class="na">initialize</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">PluginUtils</span><span class="o">.</span><span class="na">createPluginManagerFromRootFolder</span><span class="o">(</span><span class="n">configuration</span><span class="o">));</span>
+
+    <span class="n">SecurityUtils</span><span class="o">.</span><span class="na">install</span><span class="o">(</span><span class="k">new</span> <span class="n">SecurityConfiguration</span><span class="o">(</span><span class="n">configuration</span><span class="o">));</span>
+
+    <span class="n">SecurityUtils</span><span class="o">.</span><span class="na">getInstalledContext</span><span class="o">().</span><span class="na">runSecured</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+        <span class="c1">//0. 入口</span>
+<span class="err">★</span>        <span class="n">runTaskManager</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">resourceID</span><span class="o">);</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">});</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="c1">// 1. 入口方法</span>
+<span class="c1">//note: 启动TaskManagerRunner TaskManager启动的入口方法是runTaskManager()</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">runTaskManager</span><span class="o">(</span><span class="n">Configuration</span> <span class="n">configuration</span><span class="o">,</span> <span class="n">ResourceID</span> <span class="n">resourceId</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">//它首先会初始化一些TaskManager的相关服务，比如：初始化RpcService、初始化HighAvailabilityServices等等</span>
+    <span class="c1">//这些都是为TaskManager服务的启动做准备工作。</span>
+    <span class="c1">//2. 创建TaskManagerRunner对象-&gt; 在初始化TaskManagerRunner的时候启动TaskManager服务</span>
+<span class="err">★</span><span class="n">①</span> <span class="kd">final</span> <span class="n">TaskManagerRunner</span> <span class="n">taskManagerRunner</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskManagerRunner</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">resourceId</span><span class="o">);</span>
+    <span class="c1">//启动TaskManagerRunner</span>
+<span class="err">★</span><span class="n">②</span> <span class="n">taskManagerRunner</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+我们先看①处的代码
+<div class="codehilite"><pre><span class="n">TaskManagerRunner</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//note: 初始化 TaskManagerRunner</span>
+<span class="kd">public</span> <span class="nf">TaskManagerRunner</span><span class="o">(</span><span class="n">Configuration</span> <span class="n">configuration</span><span class="o">,</span> <span class="n">ResourceID</span> <span class="n">resourceId</span><span class="o">){</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">configuration</span> <span class="o">=</span> <span class="n">checkNotNull</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">resourceId</span> <span class="o">=</span> <span class="n">checkNotNull</span><span class="o">(</span><span class="n">resourceId</span><span class="o">);</span>
+    <span class="c1">//note: akka 超时设置</span>
+<span class="err">★</span>    <span class="n">timeout</span> <span class="o">=</span> <span class="n">AkkaUtils</span><span class="o">.</span><span class="na">getTimeoutAsTime</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+
+<span class="err">★</span>    <span class="k">this</span><span class="o">.</span><span class="na">executor</span> <span class="o">=</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">concurrent</span><span class="o">.</span><span class="na">Executors</span><span class="o">.</span><span class="na">newScheduledThreadPool</span><span class="o">(</span>
+        <span class="n">Hardware</span><span class="o">.</span><span class="na">getNumberCPUCores</span><span class="o">(),</span>
+        <span class="k">new</span> <span class="n">ExecutorThreadFactory</span><span class="o">(</span><span class="s">&quot;taskmanager-future&quot;</span><span class="o">));</span>
+    <span class="c1">//note: HA 的配置及服务初始化</span>
+<span class="err">★</span>    <span class="n">highAvailabilityServices</span> <span class="o">=</span> <span class="n">HighAvailabilityServicesUtils</span><span class="o">.</span><span class="na">createHighAvailabilityServices</span><span class="o">(</span>
+        <span class="n">configuration</span><span class="o">,</span>
+        <span class="n">executor</span><span class="o">,</span>
+        <span class="n">HighAvailabilityServicesUtils</span><span class="o">.</span><span class="na">AddressResolution</span><span class="o">.</span><span class="na">TRY_ADDRESS_RESOLUTION</span><span class="o">);</span>
+    <span class="c1">//note: 创建Rpc Service</span>
+<span class="err">★</span>    <span class="n">rpcService</span> <span class="o">=</span> <span class="n">createRpcService</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">highAvailabilityServices</span><span class="o">);</span>
+    <span class="c1">//note: 初始化心跳服务</span>
+<span class="err">★</span>    <span class="n">HeartbeatServices</span> <span class="n">heartbeatServices</span> <span class="o">=</span> <span class="n">HeartbeatServices</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+    <span class="c1">//note: metrics 服务</span>
+<span class="err">★</span>    <span class="n">metricRegistry</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MetricRegistryImpl</span><span class="o">(</span>
+        <span class="n">MetricRegistryConfiguration</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">configuration</span><span class="o">),</span>
+        <span class="n">ReporterSetup</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">configuration</span><span class="o">));</span>
+    <span class="c1">//note: 启动相应的metrics服务</span>
+<span class="err">★</span>    <span class="kd">final</span> <span class="n">RpcService</span> <span class="n">metricQueryServiceRpcService</span> <span class="o">=</span> <span class="n">MetricUtils</span><span class="o">.</span><span class="na">startMetricsRpcService</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">rpcService</span><span class="o">.</span><span class="na">getAddress</span><span class="o">());</span>
+    <span class="n">metricRegistry</span><span class="o">.</span><span class="na">startQueryService</span><span class="o">(</span><span class="n">metricQueryServiceRpcService</span><span class="o">,</span> <span class="n">resourceId</span><span class="o">);</span>
+
+    <span class="c1">//note: 初始化blob服务</span>
+<span class="err">★</span>    <span class="n">blobCacheService</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlobCacheService</span><span class="o">(</span>
+        <span class="n">configuration</span><span class="o">,</span> <span class="n">highAvailabilityServices</span><span class="o">.</span><span class="na">createBlobStore</span><span class="o">(),</span> <span class="kc">null</span>
+    <span class="o">);</span>
+    <span class="c1">//3. 启动TaskManager服务-》4.初始化相关的服务</span>
+    <span class="c1">//note: 启动TaskManager服务及创建TaskExecutor对象</span>
+<span class="err">★</span><span class="n">③</span>  <span class="n">taskManager</span> <span class="o">=</span> <span class="n">startTaskManager</span><span class="o">(</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">resourceId</span><span class="o">,</span> <span class="n">rpcService</span><span class="o">,</span>
+        <span class="n">highAvailabilityServices</span><span class="o">,</span> <span class="n">heartbeatServices</span><span class="o">,</span>
+        <span class="n">metricRegistry</span><span class="o">,</span> <span class="n">blobCacheService</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="na">terminationFuture</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CompletableFuture</span><span class="o">&lt;&gt;();</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">shutdown</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="c1">//note: 周期性地输出内存相关的日志信息，直到terminationFuture complete</span>
+<span class="err">★</span>    <span class="n">MemoryLogger</span><span class="o">.</span><span class="na">startIfConfigured</span><span class="o">(</span><span class="n">LOG</span><span class="o">,</span> <span class="n">configuration</span><span class="o">,</span> <span class="n">terminationFuture</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+接下来我们看下★③处的代码，显然这里和上面的都代码都是初始化一些Services，但是上面的主要是初始化一些Flink中基本service，比如HAservice、HeartbeatService、blobService、RpcService等等，而真正和TM相关的service都封装在taskManager中也就是★③处的代码实现。
+<div class="codehilite"><pre><span class="n">TaskManagerRunner</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//note: TaskManager == TaskExecutor</span>
+<span class="c1">//note: 创建并初始化 TaskExecutor对象, 注意这里是static方法</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">TaskExecutor</span> <span class="nf">startTaskManager</span><span class="o">(</span>
+        <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">,</span> <span class="n">ResourceID</span> <span class="n">resourceID</span><span class="o">,</span>
+        <span class="n">RpcService</span> <span class="n">rpcService</span><span class="o">,</span>
+        <span class="n">HighAvailabilityServices</span> <span class="n">highAvailabilityServices</span><span class="o">,</span>
+        <span class="n">HeartbeatServices</span> <span class="n">heartbeatServices</span><span class="o">,</span> <span class="n">MetricRegistry</span> <span class="n">metricRegistry</span><span class="o">,</span>
+        <span class="n">BlobCacheService</span> <span class="n">blobCacheService</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">localCommunicationOnly</span><span class="o">,</span>
+        <span class="n">FatalErrorHandler</span> <span class="n">fatalErrorHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Starting TaskManager with ResourceID: {}&quot;</span><span class="o">,</span> <span class="n">resourceID</span><span class="o">);</span>
+    <span class="n">InetAddress</span> <span class="n">remoteAddress</span> <span class="o">=</span> <span class="n">InetAddress</span><span class="o">.</span><span class="na">getByName</span><span class="o">(</span><span class="n">rpcService</span><span class="o">.</span><span class="na">getAddress</span><span class="o">());</span>
+    <span class="c1">//Specification of resources to use in running</span>
+    <span class="c1">//note: 比如执行yarnCpuCores、taskHeapSize、taskOffHeapSzie、netWorkMemSize</span>
+<span class="err">★</span>    <span class="kd">final</span> <span class="n">TaskExecutorResourceSpec</span> <span class="n">taskExecutorResourceSpec</span> <span class="o">=</span> <span class="n">TaskExecutorResourceUtils</span><span class="o">.</span><span class="na">resourceSpecFromConfig</span><span class="o">(</span><span class="n">configuration</span><span class="o">);</span>
+
+    <span class="c1">//note: TM服务相关的配置都维护在这个对象中，这里会把使用的相关参数解析并维护起来</span>
+<span class="err">★★</span>  <span class="n">TaskManagerServicesConfiguration</span> <span class="n">taskManagerServicesConfiguration</span> <span class="o">=</span>
+        <span class="n">TaskManagerServicesConfiguration</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span>
+            <span class="n">resourceID</span><span class="o">,</span> <span class="n">remoteAddress</span><span class="o">,</span> <span class="n">localCommunicationOnly</span><span class="o">,</span>
+            <span class="n">taskExecutorResourceSpec</span><span class="o">);</span>
+    <span class="c1">//note: 初始化TM的TaskManagerMetricGroup，并相应地初始化TM的基本状态（内存、CPU等）监控</span>
+ <span class="err">★</span>   <span class="n">Tuple2</span><span class="o">&lt;</span><span class="n">TaskManagerMetricGroup</span><span class="o">,</span> <span class="n">MetricGroup</span><span class="o">&gt;</span> <span class="n">taskManagerMetricGroup</span> <span class="o">=</span> <span class="n">MetricUtils</span><span class="o">.</span><span class="na">instantiateTaskManagerMetricGroup</span><span class="o">(</span>
+        <span class="n">metricRegistry</span><span class="o">,</span>
+        <span class="n">TaskManagerLocation</span><span class="o">.</span><span class="na">getHostName</span><span class="o">(</span><span class="n">remoteAddress</span><span class="o">),</span>
+        <span class="n">resourceID</span><span class="o">,</span> <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getSystemResourceMetricsProbingInterval</span><span class="o">());</span>
+    <span class="c1">//4.创建一个TaskManagerServices，初始化相关服务</span>
+    <span class="c1">//note: 初始化TaskManagerServices（TM的相关服务初始化都在这里）</span>
+<span class="err">★★</span>  <span class="n">TaskManagerServices</span> <span class="n">taskManagerServices</span> <span class="o">=</span> <span class="n">TaskManagerServices</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">taskManagerServicesConfiguration</span><span class="o">,</span>
+        <span class="n">taskManagerMetricGroup</span><span class="o">.</span><span class="na">f1</span><span class="o">,</span>
+        <span class="n">rpcService</span><span class="o">.</span><span class="na">getExecutor</span><span class="o">());</span> <span class="c1">// TODO replace this later with some dedicated executor for io.</span>
+    <span class="c1">//note: TaskManager相关配置，主要用于TaskExecutor的初始化</span>
+<span class="err">★</span>   <span class="n">TaskManagerConfiguration</span> <span class="n">taskManagerConfiguration</span> <span class="o">=</span>
+        <span class="n">TaskManagerConfiguration</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">taskExecutorResourceSpec</span><span class="o">);</span>
+
+    <span class="n">String</span> <span class="n">metricQueryServiceAddress</span> <span class="o">=</span> <span class="n">metricRegistry</span><span class="o">.</span><span class="na">getMetricQueryServiceGatewayRpcAddress</span><span class="o">();</span>
+
+    <span class="c1">//TaskExecutor的初始化</span>
+    <span class="c1">//note: 最后创建TaskExecutor对象</span>
+<span class="err">★</span>   <span class="k">return</span> <span class="k">new</span> <span class="n">TaskExecutor</span><span class="o">(</span> <span class="n">rpcService</span><span class="o">,</span>
+        <span class="n">taskManagerConfiguration</span><span class="o">,</span> <span class="n">highAvailabilityServices</span><span class="o">,</span>
+        <span class="n">taskManagerServices</span><span class="o">,</span> <span class="n">heartbeatServices</span><span class="o">,</span>
+        <span class="n">taskManagerMetricGroup</span><span class="o">.</span><span class="na">f0</span><span class="o">,</span> <span class="n">metricQueryServiceAddress</span><span class="o">,</span>
+        <span class="n">blobCacheService</span><span class="o">,</span> <span class="n">fatalErrorHandler</span><span class="o">,</span>
+<span class="err">★</span>        <span class="k">new</span> <span class="n">TaskExecutorPartitionTrackerImpl</span><span class="o">(</span><span class="n">taskManagerServices</span><span class="o">.</span><span class="na">getShuffleEnvironment</span><span class="o">()),</span>
+        <span class="n">createBackPressureSampleService</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">rpcService</span><span class="o">.</span><span class="na">getScheduledExecutor</span><span class="o">()));</span>
+<span class="o">}</span>
+</pre></div>
+这里，来着重看下 TaskManagerServices.fromConfiguration()这个方法，在这个方法初始化了很多TM服务，从下面的实现中可以看出</p>
+<p><div class="codehilite"><pre><span class="n">TaskManagerServices</span><span class="o">.</span><span class="na">java</span>
+<span class="cm">/**</span>
+<span class="cm"> * Creates and returns the task manager services.</span>
+<span class="cm"> */</span>
+<span class="c1">// 创建TaskManagerServices</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">TaskManagerServices</span> <span class="nf">fromConfiguration</span><span class="o">(</span>
+        <span class="n">TaskManagerServicesConfiguration</span> <span class="n">taskManagerServicesConfiguration</span><span class="o">,</span>
+        <span class="n">MetricGroup</span> <span class="n">taskManagerMetricGroup</span><span class="o">,</span>
+        <span class="n">Executor</span> <span class="n">taskIOExecutor</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">// pre-start checks</span>
+    <span class="n">checkTempDirs</span><span class="o">(</span><span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTmpDirPaths</span><span class="o">());</span>
+    <span class="c1">//note: 1.创建taskEventDispatcher</span>
+<span class="err">★</span><span class="mi">1</span>  <span class="kd">final</span> <span class="n">TaskEventDispatcher</span> <span class="n">taskEventDispatcher</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskEventDispatcher</span><span class="o">();</span>
+
+    <span class="c1">//note: 2.初始化I/O管理器</span>
+    <span class="c1">// start the I/O manager, it will create some temp directories.</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">IOManager</span> <span class="n">ioManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">IOManagerAsync</span><span class="o">(</span><span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTmpDirPaths</span><span class="o">());</span>
+    <span class="c1">//note: 3.创建ShuttleEnvironment对象（默认是NettyShuffleEnvironment）</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">ShuffleEnvironment</span><span class="o">&lt;?,</span> <span class="o">?&gt;</span> <span class="n">shuffleEnvironment</span> <span class="o">=</span> <span class="n">createShuffleEnvironment</span><span class="o">(</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">,</span>
+        <span class="n">taskEventDispatcher</span><span class="o">,</span>
+        <span class="n">taskManagerMetricGroup</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="kt">int</span> <span class="n">dataPort</span> <span class="o">=</span> <span class="n">shuffleEnvironment</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+    <span class="c1">//note: 4.创建KvStateService实例并启动</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">KvStateService</span> <span class="n">kvStateService</span> <span class="o">=</span> <span class="n">KvStateService</span><span class="o">.</span><span class="na">fromConfiguration</span><span class="o">(</span><span class="n">taskManagerServicesConfiguration</span><span class="o">);</span>
+    <span class="n">kvStateService</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+    <span class="c1">//note: 5.初始化 taskManagerLocation,记录connection信息</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">TaskManagerLocation</span> <span class="n">taskManagerLocation</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskManagerLocation</span><span class="o">(</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getResourceID</span><span class="o">(),</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTaskManagerAddress</span><span class="o">(),</span>
+        <span class="n">dataPort</span><span class="o">);</span>
+    <span class="c1">//note: 6.初始化BroadcastVariableManager对象</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">BroadcastVariableManager</span> <span class="n">broadcastVariableManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BroadcastVariableManager</span><span class="o">();</span>
+
+    <span class="c1">// TaskSlotTable(TM维护task与slot的对象)</span>
+    <span class="c1">//note: 7.这里维护slot的相关列表</span>
+<span class="err">★</span>  <span class="kd">final</span> <span class="n">TaskSlotTable</span><span class="o">&lt;</span><span class="n">Task</span><span class="o">&gt;</span> <span class="n">taskSlotTable</span> <span class="o">=</span> <span class="n">createTaskSlotTable</span><span class="o">(</span>
+        <span class="c1">//note: 当前TM拥有的slot及每个slot的资源信息</span>
+        <span class="c1">//note: 当前 TM 拥有的 slot 及每个 slot 的资源信息</span>
+        <span class="c1">//note: TM 的 slot 数由 taskmanager.numberOfTaskSlots 决定，默认是 1</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getNumberOfSlots</span><span class="o">(),</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTaskExecutorResourceSpec</span><span class="o">(),</span>
+        <span class="c1">//note: 注册一个超时（AKKA超时设置）服务（在TaskSlotTable用于监控slot分配是否超时）</span>
+        <span class="c1">//note: 超时参数由akka.ask.timeout控制，默认是10s</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTimerServiceShutdownTimeout</span><span class="o">(),</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getPageSize</span><span class="o">());</span>
+
+    <span class="c1">//note: 8.维护jobId与JobManager connection之间的关系</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">JobManagerTable</span> <span class="n">jobManagerTable</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobManagerTable</span><span class="o">();</span>
+    <span class="c1">//note: 9.监控注册的Job的JobManager leader信息</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">JobLeaderService</span> <span class="n">jobLeaderService</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobLeaderService</span><span class="o">(</span><span class="n">taskManagerLocation</span><span class="o">,</span> <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getRetryingRegistrationConfiguration</span><span class="o">());</span>
+
+    <span class="kd">final</span> <span class="n">String</span><span class="o">[]</span> <span class="n">stateRootDirectoryStrings</span> <span class="o">=</span> <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getLocalRecoveryStateRootDirectories</span><span class="o">();</span>
+
+    <span class="kd">final</span> <span class="n">File</span><span class="o">[]</span> <span class="n">stateRootDirectoryFiles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">[</span><span class="n">stateRootDirectoryStrings</span><span class="o">.</span><span class="na">length</span><span class="o">];</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">stateRootDirectoryStrings</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">stateRootDirectoryFiles</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">stateRootDirectoryStrings</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">LOCAL_STATE_SUB_DIRECTORY_ROOT</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="c1">//note: 10.创建 TaskExecutorLocalStateStoresManager对象：维护状态信息</span>
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">TaskExecutorLocalStateStoresManager</span> <span class="n">taskStateManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskExecutorLocalStateStoresManager</span><span class="o">(</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">isLocalRecoveryEnabled</span><span class="o">(),</span>
+        <span class="n">stateRootDirectoryFiles</span><span class="o">,</span>
+        <span class="n">taskIOExecutor</span><span class="o">);</span>
+    <span class="c1">//note: 11.将上面初始化的这些服务，都封装到一个 TaskManagerServices对象中</span>
+<span class="err">★</span>   <span class="k">return</span> <span class="k">new</span> <span class="n">TaskManagerServices</span><span class="o">(</span>
+        <span class="n">taskManagerLocation</span><span class="o">,</span>
+        <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getManagedMemorySize</span><span class="o">().</span><span class="na">getBytes</span><span class="o">(),</span>
+        <span class="n">ioManager</span><span class="o">,</span>
+        <span class="n">shuffleEnvironment</span><span class="o">,</span>
+        <span class="n">kvStateService</span><span class="o">,</span>
+        <span class="n">broadcastVariableManager</span><span class="o">,</span>
+        <span class="n">taskSlotTable</span><span class="o">,</span>
+        <span class="n">jobManagerTable</span><span class="o">,</span>
+        <span class="n">jobLeaderService</span><span class="o">,</span>
+        <span class="n">taskStateManager</span><span class="o">,</span>
+        <span class="n">taskEventDispatcher</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+看到这里，是不是有点懵圈了，是不是感觉TaskManager实现还挺复杂的，但TaskManager要做的功能相比，上面的实现还不够，真正在TaskManager处理复杂繁琐工作的组件是TaskExecutor,这个才是TaskManager的核心</p>
+<h4 id="12taskexecutor">1.2、TaskExecutor的启动<a class="headerlink" href="#12taskexecutor" title="Permanent link"></a></h4>
+<p>我们再看②处的代码
+<div class="codehilite"><pre><span class="n">TaskManagerRunner</span><span class="o">.</span><span class="na">java</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+<span class="err">★</span>    <span class="n">taskManager</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">RpcEndpoint</span><span class="o">.</span><span class="na">java</span>
+<span class="cm">/**</span>
+<span class="cm"> * Triggers start of the rpc endpoint. This tells the underlying rpc server that the rpc endpoint is ready to process remote procedure calls.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
+<span class="err">★</span>    <span class="n">rpcServer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div></p>
+<p><div class="codehilite"><pre><span class="n">RpcEndpoint</span><span class="o">.</span><span class="na">java</span>
+<span class="cm">/**</span>
+<span class="cm"> * Internal method which is called by the RpcService implementation to start the RpcEndpoint.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">internalCallOnStart</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">validateRunsInMainThread</span><span class="o">();</span>
+    <span class="n">isRunning</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+<span class="err">★</span>    <span class="n">onStart</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+回顾下文章最开始的流程图，TaskManagerRunner调用run()方法之后，真正要启动的是TaskExecutor服务，其onStart()具体实现如下：
+<div class="codehilite"><pre><span class="c1">//note: 启动服务</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onStart</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">//note: 启动TM的相关服务</span>
+    <span class="n">startTaskExecutorServices</span><span class="o">();</span>
+    <span class="c1">//note: 注册超时检测，如果超时还未注册完成，就抛出错误，启动失败</span>
+    <span class="n">startRegistrationTimeout</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+由于private final TaskExecutor taskManager，即一个taskManager核心还是taskExecutor,从TaskManagerRunner.java# taskManager.start() &mdash;&gt; TaskExecutor.java</p>
+<p>这里主要分为两个部分：</p>
+<ol>
+<li>startTaskExecutorServices(): 启动TaskManager相关的服务，结合流程图主要是三大块：<ul>
+<li>向Flink Master的ResourceManager注册TaskManager；</li>
+<li>启动TaskSlotTable服务（从名字也可以看出，它主要是维护slot、task相关的信息）</li>
+<li>启动JobLeaderService服务，主要是根据监控到的各个作业JobManager leader的变化去做相应的处理；</li>
+</ul>
+</li>
+<li>startRegistrationTimeout(): 启动注册（注册到RM）超时的检测，默认是5 min，如果超过这个时间还没注册完成，就会抛出异常退出进程，启动失败。</li>
+</ol>
+<p>TaskExecutor启动的核心实现是在startTaskExecutorServices()中，接下来重点看下TaskExecutor#startTaskExecutorServices()
+<div class="codehilite"><pre><span class="c1">//note: 启动TM的相关服务</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">startTaskExecutorServices</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">//startHeartbeatServices() 这部分的逻辑被放到了JobMaster当中startHeartbeatServices()</span>
+    <span class="c1">// start by connecting to the ResourceManager</span>
+    <span class="c1">//note：与集群的ResourceManager建立连接(并创建一个listener)</span>
+<span class="err">★</span>    <span class="n">resourceManagerLeaderRetriever</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="k">new</span> <span class="n">ResourceManagerLeaderListener</span><span class="o">());</span>
+
+    <span class="c1">// tell the task slot table who&#39;s responsible for the task slot actions</span>
+    <span class="c1">//note: taskSlotTable启动</span>
+<span class="err">★</span>    <span class="n">taskSlotTable</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="k">new</span> <span class="n">SlotActionsImpl</span><span class="o">(),</span> <span class="n">getMainThreadExecutor</span><span class="o">());</span>
+
+    <span class="c1">// start the job leader service</span>
+    <span class="c1">//note: 启动job leader服务</span>
+    <span class="c1">//note: 通过JobLeaderListenerImpl监控Job的JobManager leader的变化，如果leader被选举出来之后</span>
+    <span class="c1">//这里将会与JobManager建立通信连接</span>
+<span class="err">★</span>    <span class="n">jobLeaderService</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">getAddress</span><span class="o">(),</span> <span class="n">getRpcService</span><span class="o">(),</span> <span class="n">haServices</span><span class="o">,</span> <span class="k">new</span> <span class="n">JobLeaderListenerImpl</span><span class="o">());</span>
+
+<span class="err">★</span>    <span class="n">fileCache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileCache</span><span class="o">(</span><span class="n">taskManagerConfiguration</span><span class="o">.</span><span class="na">getTmpDirectories</span><span class="o">(),</span> <span class="n">blobCacheService</span><span class="o">.</span><span class="na">getPermanentBlobService</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+接下来上述代码详细的实现：</p>
+<h5 id="1">1).启动心跳服务<a class="headerlink" href="#1" title="Permanent link"></a></h5>
+<h5 id="2rmtm">2).向RM注册TM<a class="headerlink" href="#2rmtm" title="Permanent link"></a></h5>
+<p>TaskManager向ResourceManager注册是通过ResourceManagerLeaderListener来完成的，它会监控ResourceManager的变化，如果有新的leader被选举出来，将会调用notifyLeaderAddress()方法去触发与ResourceManager的重连，其实现如下：
+<div class="codehilite"><pre><span class="n">TaskExecutor</span><span class="o">.</span><span class="na">java</span>
+<span class="cm">/**</span>
+<span class="cm"> * The listener for leader changes of the resource manager.</span>
+<span class="cm"> * note: 监控ResourceManager leader变化的listener</span>
+<span class="cm"> * note: TaskManger向ResourceManager注册是通过ResourceManagerLeaderListener来完成的，它会监控</span>
+<span class="cm"> * ResourceManager的leader变化，如果有新的leader被选举出来，就会调用notifyLeaderAddress()方法去</span>
+<span class="cm"> * 触发与ResourceManager的重连，其实现如下：</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ResourceManagerLeaderListener</span> <span class="kd">implements</span> <span class="n">LeaderRetrievalListener</span> <span class="o">{</span>
+    <span class="c1">//note: 如果leader被选举处理(包括挂掉之后重新选举)，将会调用这个方法通知TM</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">notifyLeaderAddress</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">leaderAddress</span><span class="o">,</span> <span class="kd">final</span> <span class="n">UUID</span> <span class="n">leaderSessionID</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">runAsync</span><span class="o">(</span>
+<span class="err">★★</span>            <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">notifyOfNewResourceManagerLeader</span><span class="o">(</span>
+                <span class="n">leaderAddress</span><span class="o">,</span>
+                <span class="n">ResourceManagerId</span><span class="o">.</span><span class="na">fromUuidOrNull</span><span class="o">(</span><span class="n">leaderSessionID</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleError</span><span class="o">(</span><span class="n">Exception</span> <span class="n">exception</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">onFatalError</span><span class="o">(</span><span class="n">exception</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">//note：如果RM的new leader选举出来了，这里会新创建一个ResourceManagerAddress对象，并重新建立连接</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">notifyOfNewResourceManagerLeader</span><span class="o">(</span><span class="n">String</span> <span class="n">newLeaderAddress</span><span class="o">,</span> <span class="n">ResourceManagerId</span> <span class="n">newResourceManagerId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">resourceManagerAddress</span> <span class="o">=</span> <span class="n">createResourceManagerAddress</span><span class="o">(</span><span class="n">newLeaderAddress</span><span class="o">,</span> <span class="n">newResourceManagerId</span><span class="o">);</span>
+<span class="err">★</span>    <span class="n">reconnectToResourceManager</span><span class="o">(</span><span class="k">new</span> <span class="n">FlinkException</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;ResourceManager leader changed to new address %s&quot;</span><span class="o">,</span> <span class="n">resourceManagerAddress</span><span class="o">)));</span>
+<span class="o">}</span>
+
+
+<span class="c1">//note: 重新与ResourceManager连接（可能是RM leader切换）</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">reconnectToResourceManager</span><span class="o">(</span><span class="n">Exception</span> <span class="n">cause</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">closeResourceManagerConnection</span><span class="o">(</span><span class="n">cause</span><span class="o">);</span>
+    <span class="c1">//note: 注册超时检测，如果timeout还没有注册成功，这里就会failed</span>
+    <span class="n">startRegistrationTimeout</span><span class="o">();</span>
+    <span class="c1">//note: 与RM重新建立连接</span>
+<span class="err">★</span>    <span class="n">tryConnectToResourceManager</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="c1">//note: 建立与 ResourceManager 的连接</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">tryConnectToResourceManager</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">resourceManagerAddress</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">connectToResourceManager</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">//note: 与ResourceManager建立连接</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">connectToResourceManager</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Connecting to ResourceManager {}.&quot;</span><span class="o">,</span> <span class="n">resourceManagerAddress</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="n">TaskExecutorRegistration</span> <span class="n">taskExecutorRegistration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskExecutorRegistration</span><span class="o">(</span><span class="n">getAddress</span><span class="o">(),</span> <span class="n">getResourceID</span><span class="o">(),</span>
+        <span class="n">taskManagerLocation</span><span class="o">.</span><span class="na">dataPort</span><span class="o">(),</span> <span class="n">hardwareDescription</span><span class="o">,</span>
+        <span class="n">taskManagerConfiguration</span><span class="o">.</span><span class="na">getDefaultSlotResourceProfile</span><span class="o">(),</span>
+        <span class="n">taskManagerConfiguration</span><span class="o">.</span><span class="na">getTotalResourceProfile</span><span class="o">()</span>
+    <span class="o">);</span>
+    <span class="c1">//note: 在上面的最后一步，创建了TaskExecutorToResourceManagerConnection对象，它启动以后</span>
+    <span class="c1">//，会向ResourceManager注册到TM，具体的方法实现如下：</span>
+    <span class="c1">//note: 与RM建立连接</span>
+<span class="err">★</span>   <span class="n">resourceManagerConnection</span> <span class="o">=</span>
+        <span class="k">new</span> <span class="n">TaskExecutorToResourceManagerConnection</span><span class="o">(</span>
+            <span class="n">log</span><span class="o">,</span> <span class="n">getRpcService</span><span class="o">(),</span>
+            <span class="n">taskManagerConfiguration</span><span class="o">.</span><span class="na">getRetryingRegistrationConfiguration</span><span class="o">(),</span>
+            <span class="n">resourceManagerAddress</span><span class="o">.</span><span class="na">getAddress</span><span class="o">(),</span>
+            <span class="n">resourceManagerAddress</span><span class="o">.</span><span class="na">getResourceManagerId</span><span class="o">(),</span>
+            <span class="n">getMainThreadExecutor</span><span class="o">(),</span>
+            <span class="k">new</span> <span class="n">ResourceManagerRegistrationListener</span><span class="o">(),</span>
+            <span class="n">taskExecutorRegistration</span><span class="o">);</span>
+<span class="err">★</span>   <span class="n">resourceManagerConnection</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="c1">//ResourceManager 在收到这个请求，会做相应的处理，主要要做的事情就是：先从缓存里移除旧的TM注册信息（如果之前存在的话），然后再更新缓存，并增加心跳监控，只有这些工作完成之后，TM的注册才会被认为是成功的。</span>
+<span class="o">}</span>
+</pre></div>
+上述的代码最终会调用rpcService.connect(targetAddress)与ResourceManager建立连接。</p>
+<p>具体逻辑
+<div class="codehilite"><pre><span class="c1">//RegisteredRpcConnection.java</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">checkState</span><span class="o">(!</span><span class="n">closed</span><span class="o">,</span> <span class="s">&quot;The RPC connection is already closed&quot;</span><span class="o">);</span>
+    <span class="n">checkState</span><span class="o">(!</span><span class="n">isConnected</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">pendingRegistration</span> <span class="o">==</span> <span class="kc">null</span><span class="o">,</span> <span class="s">&quot;The RPC connection is already started&quot;</span><span class="o">);</span>
+
+<span class="err">★</span>   <span class="kd">final</span> <span class="n">RetryingRegistration</span><span class="o">&lt;</span><span class="n">F</span><span class="o">,</span> <span class="n">G</span><span class="o">,</span> <span class="n">S</span><span class="o">&gt;</span> <span class="n">newRegistration</span> <span class="o">=</span> <span class="n">createNewRegistration</span><span class="o">();</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">REGISTRATION_UPDATER</span><span class="o">.</span><span class="na">compareAndSet</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">newRegistration</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">newRegistration</span><span class="o">.</span><span class="na">startRegistration</span><span class="o">();</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="c1">// concurrent start operation</span>
+        <span class="n">newRegistration</span><span class="o">.</span><span class="na">cancel</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div></p>
+<p><div class="codehilite"><pre><span class="c1">//RegisteredRpcConnection.java</span>
+<span class="kd">private</span> <span class="n">RetryingRegistration</span><span class="o">&lt;</span><span class="n">F</span><span class="o">,</span> <span class="n">G</span><span class="o">,</span> <span class="n">S</span><span class="o">&gt;</span> <span class="nf">createNewRegistration</span><span class="o">()</span> <span class="o">{</span>
+<span class="c1">//重点在generateRegistration()</span>
+<span class="err">★</span>   <span class="n">RetryingRegistration</span><span class="o">&lt;</span><span class="n">F</span><span class="o">,</span> <span class="n">G</span><span class="o">,</span> <span class="n">S</span><span class="o">&gt;</span> <span class="n">newRegistration</span> <span class="o">=</span> <span class="n">checkNotNull</span><span class="o">(</span><span class="n">generateRegistration</span><span class="o">());</span>
+
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Tuple2</span><span class="o">&lt;</span><span class="n">G</span><span class="o">,</span> <span class="n">S</span><span class="o">&gt;&gt;</span> <span class="n">future</span> <span class="o">=</span> <span class="n">newRegistration</span><span class="o">.</span><span class="na">getFuture</span><span class="o">();</span>
+
+    <span class="k">return</span> <span class="n">newRegistration</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">TaskExecutorToResourceManagerConnection</span><span class="o">.</span><span class="na">java</span>
+<span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="n">RetryingRegistration</span><span class="o">&lt;</span><span class="n">ResourceManagerId</span><span class="o">,</span> <span class="n">ResourceManagerGateway</span><span class="o">,</span> <span class="n">TaskExecutorRegistrationSuccess</span><span class="o">&gt;</span> <span class="nf">generateRegistration</span><span class="o">()</span> <span class="o">{</span>
+<span class="err">★</span>    <span class="k">return</span> <span class="k">new</span> <span class="n">TaskExecutorToResourceManagerConnection</span><span class="o">.</span><span class="na">ResourceManagerRegistration</span><span class="o">(</span>
+        <span class="n">log</span><span class="o">,</span>
+        <span class="n">rpcService</span><span class="o">,</span>
+        <span class="n">getTargetAddress</span><span class="o">(),</span>
+        <span class="n">getTargetLeaderId</span><span class="o">(),</span>
+        <span class="n">retryingRegistrationConfiguration</span><span class="o">,</span>
+        <span class="n">taskExecutorRegistration</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">//在前面创建了TaskExecutorToResourceManangerConnection对象，它启动后，会向ResourManager注册TM，具体的方法实现如下：</span>
+<span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">RegistrationResponse</span><span class="o">&gt;</span> <span class="nf">invokeRegistration</span><span class="o">(</span>
+        <span class="n">ResourceManagerGateway</span> <span class="n">resourceManager</span><span class="o">,</span> <span class="n">ResourceManagerId</span> <span class="n">fencingToken</span><span class="o">,</span> <span class="kt">long</span> <span class="n">timeoutMillis</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+    <span class="n">Time</span> <span class="n">timeout</span> <span class="o">=</span> <span class="n">Time</span><span class="o">.</span><span class="na">milliseconds</span><span class="o">(</span><span class="n">timeoutMillis</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">resourceManager</span><span class="o">.</span><span class="na">registerTaskExecutor</span><span class="o">(</span>
+        <span class="n">taskExecutorRegistration</span><span class="o">,</span>
+        <span class="n">timeout</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+ResourceManager 在收到这个请求，会做相应的处理，主要要做的事情就是：先从缓存里移除旧的 TM 注册信息（如果之前存在的话），然后再更新缓存，并增加心跳监控，只有这些工作完成之后，TM 的注册才会被认为是成功的。</p>
+<h5 id="3taskslottable">3).启动TaskSlotTable服务<a class="headerlink" href="#3taskslottable" title="Permanent link"></a></h5>
+<p>TaskSlotTable从名字也可以看出，它主要是为TaskSlot服务的，它主要的功能有以下三点：</p>
+<ol>
+<li>维护这个TM上所有TaskSlot与Task及Job的关系</li>
+<li>维护这个TM上所有TaskSlot的状态；</li>
+<li>TaskSlot在进行allocate/free操作，通过TimeService做超时检测
+先看看TaskSlotTable是如何初始化的？
+<div class="codehilite"><pre><span class="n">TaskManagerServices</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//note: 这里维护slot的相关列表</span>
+<span class="kd">final</span> <span class="n">TaskSlotTable</span><span class="o">&lt;</span><span class="n">Task</span><span class="o">&gt;</span> <span class="n">taskSlotTable</span> <span class="o">=</span> <span class="n">createTaskSlotTable</span><span class="o">(</span>
+    <span class="c1">//note: 当前TM拥有的slot及每个slot的资源信息</span>
+    <span class="c1">//note: 当前 TM 拥有的 slot 及每个 slot 的资源信息</span>
+    <span class="c1">//note: TM 的 slot 数由 taskmanager.numberOfTaskSlots 决定，默认是 1</span>
+    <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getNumberOfSlots</span><span class="o">(),</span>
+    <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTaskExecutorResourceSpec</span><span class="o">(),</span>
+    <span class="c1">//note: 注册一个超时（AKKA超时设置）服务（在TaskSlotTable用于监控slot分配是否超时）</span>
+    <span class="c1">//note: 超时参数由akka.ask.timeout控制，默认是10s</span>
+    <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getTimerServiceShutdownTimeout</span><span class="o">(),</span>
+    <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getPageSize</span><span class="o">());</span>
+</pre></div></li>
+</ol>
+<div class="codehilite"><pre><span class="cm">/**</span>
+<span class="cm"> * note: TaskSlotTable从名字也可以看出，他主要是为TaskSlot服务，他主要的功能有以下三点</span>
+<span class="cm"> * 1、维护这个TM上所有TaskSlot与Task、及Job的关系</span>
+<span class="cm"> * 2、维护这个TM上所有TaskSlot的状态</span>
+<span class="cm"> * 3、TaskSlot在进行allocate/freee操作，通过TimeService做超时检测</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">TaskSlotTable</span><span class="o">&lt;</span><span class="n">Task</span><span class="o">&gt;</span> <span class="nf">createTaskSlotTable</span><span class="o">(</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">numberOfSlots</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">TaskExecutorResourceSpec</span> <span class="n">taskExecutorResourceSpec</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="kt">long</span> <span class="n">timerServiceShutdownTimeout</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">pageSize</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">TimerService</span><span class="o">&lt;</span><span class="n">AllocationID</span><span class="o">&gt;</span> <span class="n">timerService</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TimerService</span><span class="o">&lt;&gt;(</span>
+        <span class="k">new</span> <span class="n">ScheduledThreadPoolExecutor</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span>
+        <span class="n">timerServiceShutdownTimeout</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">TaskSlotTableImpl</span><span class="o">&lt;&gt;(</span>
+        <span class="n">numberOfSlots</span><span class="o">,</span>
+<span class="err">★</span>       <span class="n">TaskExecutorResourceUtils</span><span class="o">.</span><span class="na">generateTotalAvailableResourceProfile</span><span class="o">(</span><span class="n">taskExecutorResourceSpec</span><span class="o">),</span>
+<span class="err">🌟</span>      <span class="n">TaskExecutorResourceUtils</span><span class="o">.</span><span class="na">generateDefaultSlotResourceProfile</span><span class="o">(</span><span class="n">taskExecutorResourceSpec</span><span class="o">,</span> <span class="n">numberOfSlots</span><span class="o">),</span>
+        <span class="n">pageSize</span><span class="o">,</span>
+        <span class="n">timerService</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+
+<p><div class="codehilite"><pre><span class="kd">public</span> <span class="nf">TaskSlotTableImpl</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">numberSlots</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">ResourceProfile</span> <span class="n">totalAvailableResourceProfile</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">ResourceProfile</span> <span class="n">defaultSlotResourceProfile</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">memoryPageSize</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">TimerService</span><span class="o">&lt;</span><span class="n">AllocationID</span><span class="o">&gt;</span> <span class="n">timerService</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkArgument</span><span class="o">(</span><span class="mi">0</span> <span class="o">&lt;</span> <span class="n">numberSlots</span><span class="o">,</span> <span class="s">&quot;The number of task slots must be greater than 0.&quot;</span><span class="o">);</span>
+    <span class="c1">//note: 当前TM拥有的slot及每个slot的资源信息</span>
+    <span class="c1">//note：TM的slot数由taskmanager.numberOfTaskSlots决定 默认是1</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">numberSlots</span> <span class="o">=</span> <span class="n">numberSlots</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">defaultSlotResourceProfile</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">defaultSlotResourceProfile</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">memoryPageSize</span> <span class="o">=</span> <span class="n">memoryPageSize</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">taskSlots</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">numberSlots</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">timerService</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">timerService</span><span class="o">);</span>
+    <span class="n">budgetManager</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ResourceBudgetManager</span><span class="o">(</span><span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">totalAvailableResourceProfile</span><span class="o">));</span>
+    <span class="n">allocatedSlots</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="n">numberSlots</span><span class="o">);</span>
+    <span class="n">taskSlotMappings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">numberSlots</span><span class="o">);</span>
+    <span class="n">slotsPerJob</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;(</span><span class="mi">4</span><span class="o">);</span>
+    <span class="n">slotActions</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="na">CREATED</span><span class="o">;</span>
+    <span class="n">closingFuture</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CompletableFuture</span><span class="o">&lt;&gt;();</span>
+<span class="o">}</span>
+</pre></div>
+TaskSlotTable的初始化，比较重要的两个变量：
+1. resourceProfiles: TM上每个slot的资源信息；
+2. timerService：用来保证操作超时时做相应的处理</p>
+<p>TaskSlotTable的启动流程如下：
+<div class="codehilite"><pre><span class="n">TaskExecutor</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">// tell the task slot table who&#39;s responsible for the task slot actions</span>
+<span class="c1">//note: taskSlotTable启动</span>
+<span class="n">taskSlotTable</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="k">new</span> <span class="n">SlotActionsImpl</span><span class="o">(),</span> <span class="n">getMainThreadExecutor</span><span class="o">());</span>
+</pre></div></p>
+<div class="codehilite"><pre><span class="n">TaskSlotTableImpl</span><span class="o">.</span><span class="na">java</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="n">SlotActions</span> <span class="n">initialSlotActions</span><span class="o">,</span> <span class="n">ComponentMainThreadExecutor</span> <span class="n">mainThreadExecutor</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkState</span><span class="o">(</span>
+        <span class="n">state</span> <span class="o">==</span> <span class="n">State</span><span class="o">.</span><span class="na">CREATED</span><span class="o">,</span>
+        <span class="s">&quot;The %s has to be just created before starting&quot;</span><span class="o">,</span>
+        <span class="n">TaskSlotTableImpl</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">());</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">slotActions</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">initialSlotActions</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">mainThreadExecutor</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">mainThreadExecutor</span><span class="o">);</span>
+
+    <span class="n">timerService</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="na">RUNNING</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<h5 id="4jobleaderservice">4).启动JobLeaderService服务<a class="headerlink" href="#4jobleaderservice" title="Permanent link"></a></h5>
+<p>TaskExecutor启动的最后一步是，启动JobLeader服务，这个服务通过JobLeaderListenerImpl监控Job的JobManagerLeader的变化，如果leader被选举出来之后，这里将会与JobManager建立通信连接
+<div class="codehilite"><pre><span class="n">TaskExecutor</span><span class="err">#</span><span class="n">startTaskExecutorServices</span><span class="o">()</span>
+<span class="c1">// start the job leader service</span>
+<span class="c1">//note: 启动job leader服务</span>
+<span class="c1">//note: 通过JobLeaderListenerImpl监控Job的JobManager leader的变化，如果leader被选举出来之后</span>
+<span class="c1">//这里将会与JobManager建立通信连接</span>
+<span class="n">jobLeaderService</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">getAddress</span><span class="o">(),</span> <span class="n">getRpcService</span><span class="o">(),</span> <span class="n">haServices</span><span class="o">,</span> <span class="k">new</span> <span class="n">JobLeaderListenerImpl</span><span class="o">());</span>
+
+<span class="c1">//note: JobLeaderListener的实现</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">JobLeaderListenerImpl</span> <span class="kd">implements</span> <span class="n">JobLeaderListener</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">jobManagerGainedLeadership</span><span class="o">(</span><span class="kd">final</span> <span class="n">JobID</span> <span class="n">jobId</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">JobMasterGateway</span> <span class="n">jobManagerGateway</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">JMTMRegistrationSuccess</span> <span class="n">registrationMessage</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//note:建立与JobManager的连接</span>
+        <span class="n">runAsync</span><span class="o">(()</span> <span class="o">-&gt;</span>
+<span class="err">★</span>               <span class="n">establishJobManagerConnection</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span>
+                    <span class="n">jobManagerGateway</span><span class="o">,</span> <span class="n">registrationMessage</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">jobManagerLostLeadership</span><span class="o">(</span><span class="kd">final</span> <span class="n">JobID</span> <span class="n">jobId</span><span class="o">,</span> <span class="kd">final</span> <span class="n">JobMasterId</span> <span class="n">jobMasterId</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;JobManager for job {} with leader id {} lost leadership.&quot;</span><span class="o">,</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">jobMasterId</span><span class="o">);</span>
+
+        <span class="n">runAsync</span><span class="o">(()</span> <span class="o">-&gt;</span><span class="n">closeJobManagerConnection</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span>
+                <span class="k">new</span> <span class="n">Exception</span><span class="o">(</span><span class="s">&quot;Job leader for job id &quot;</span> <span class="o">+</span> <span class="n">jobId</span> <span class="o">+</span> <span class="s">&quot; lost leadership.&quot;</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleError</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">onFatalError</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+到这里，TaskManager 的启动流程就梳理完了，TaskManager 在实现上整体的复杂度还是比较高的，毕竟它要做的事情是非常多的，下面的几个问题，将会进一步分析 TaskManager 内部的实现机制。</p>
+<h3 id="2taskmanager">2、TaskManager提供了哪些能力/功能？<a class="headerlink" href="#2taskmanager" title="Permanent link"></a></h3>
+<p>要想知道TaskManager提供了哪些能力，个人认为有一个最简单的方法就是查看其对外提供的API接口，它向上层暴露了哪些API，这些API背后都是TaskManager能力的体现，TaskManager对外包括API列表如下：
+<div class="codehilite"><pre><span class="n">TaskExecutorGateway</span><span class="o">.</span><span class="na">java</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">TaskExecutorGateway</span> <span class="kd">extends</span> <span class="n">RpcGateway</span> <span class="o">{</span>
+    <span class="c1">//把下面的API列表分分类，大概有以下几块：</span>
+    <span class="cm">/**</span>
+<span class="cm">     * 1.slot的资源管理：slot的分配/释放；</span>
+<span class="cm">     * 2.task运行：接收来自JobManager的task提交，也包括task对应的Partition(中间结果)信息；</span>
+<span class="cm">     * 3.checkpoint相关的处理；</span>
+<span class="cm">     * 4.心跳监控、连接建立等</span>
+<span class="cm">     */</span>
+    <span class="c1">//RM向TM请求一个slot资源</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">requestSlot</span><span class="o">()</span>
+
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">TaskBackPressureResponse</span><span class="o">&gt;</span> <span class="nf">requestTaskBackPressure</span><span class="o">()</span>
+
+    <span class="c1">//JobManager向TM提交task</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">submitTask</span><span class="o">();</span>
+
+    <span class="c1">//更新这个task对应的Partition信息</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">updatePartitions</span><span class="o">();</span>
+
+    <span class="kt">void</span> <span class="nf">releaseOrPromotePartitions</span><span class="o">(</span><span class="n">JobID</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">ResultPartitionID</span><span class="o">&gt;</span> <span class="n">partitionToRelease</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">ResultPartitionID</span><span class="o">&gt;</span> <span class="n">partitionsToPromote</span><span class="o">);</span>
+
+    <span class="c1">//CheckpointCoordinator触发task的checkpoint</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">triggerCheckpoint</span><span class="o">();</span>
+
+    <span class="c1">//Checkpoint Coordinator通知task这个checkpoint完成；</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">confirmCheckpoint</span><span class="o">();</span>
+
+    <span class="c1">//task 取消</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">cancelTask</span><span class="o">();</span>
+
+    <span class="c1">//接收来自JobManager的心跳请求</span>
+    <span class="kt">void</span> <span class="nf">heartbeatFromJobManager</span><span class="o">();</span>
+
+    <span class="c1">//接收来自ResourceManager的心跳请求</span>
+    <span class="kt">void</span> <span class="nf">heartbeatFromResourceManager</span><span class="o">(</span><span class="n">ResourceID</span> <span class="n">heartbeatOrigin</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">disconnectJobManager</span><span class="o">(</span><span class="n">JobID</span> <span class="n">jobId</span><span class="o">,</span> <span class="n">Exception</span> <span class="n">cause</span><span class="o">);</span>
+
+    <span class="kt">void</span> <span class="nf">disconnectResourceManager</span><span class="o">(</span><span class="n">Exception</span> <span class="n">cause</span><span class="o">);</span>
+
+    <span class="c1">//JobManager释放Slot</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Acknowledge</span><span class="o">&gt;</span> <span class="nf">freeSlot</span><span class="o">();</span>
+
+    <span class="c1">//一些文件（log等）的上传请求</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">TransientBlobKey</span><span class="o">&gt;</span> <span class="nf">requestFileUpload</span><span class="o">(</span><span class="n">FileType</span> <span class="n">fileType</span><span class="o">,</span> <span class="nd">@RpcTimeout</span> <span class="n">Time</span> <span class="n">timeout</span><span class="o">);</span>
+
+    <span class="c1">//请求TM的metric query service地址</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">SerializableOptional</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;&gt;</span> <span class="nf">requestMetricQueryServiceAddress</span><span class="o">(</span><span class="nd">@RpcTimeout</span> <span class="n">Time</span> <span class="n">timeout</span><span class="o">);</span>
+    <span class="c1">//检查TM是否可以被realease；</span>
+    <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="o">&gt;</span> <span class="nf">canBeReleased</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+把上面的API列表分分类，大概有以下几块：</p>
+<ol>
+<li>slot的资源管理器：slot的分配/释放</li>
+<li>task运行：接收来自JobManager的task提交、也包括task对应的Partition（中间结果）信息；</li>
+<li>checkpoint相关的处理</li>
+<li>心跳监控、连接建立等</li>
+</ol>
+<p>通常，TaskManager提供的功能主要是前三点，如下图所示：</p>
+<p><img alt="" src="/Users/liaomengjie/workspace/learngit/leetcode/todo/Flink/TaskManager%E5%8A%9F%E8%83%BD.png" /></p>
+<h3 id="3taskmanagerrm-leaderzkha">3、TaskManager怎么发现RM Leader(在使用ZK做HA的情况下)？<a class="headerlink" href="#3taskmanagerrm-leaderzkha" title="Permanent link"></a></h3>
+<p>这个是Flink HA内容，Flink HA机制是有一套统一的框架，它跟这个问题（<strong>TM如何维护JobManager的关系，如果JobManager挂掉，TM会如何处理？</strong>）原理是一样的，这里以ResourceManager Leader的发现为例简单介绍以下。</p>
+<p>这里，我们以使用 Zookeeper 模式的情况来讲述，ZooKeeper 做 HA 是业内最常用的方案，Flink 在实现并没有使用 ZkClient 这个包，而是使用 curator 来做的。</p>
+<p>关于 Flink HA 的使用，可以参考官方文档——JobManager High Availability (HA)。这里TaskExecutor在注册完ResourcManagerLeaderListener后，如果Leader被选举出来或者节点有变化，就通过notifyLeaderAddress()方法来通知TaskExecutor，核心还是利用ZK的watcher机制。同理JobManager leader的处理也是一样的。</p>
+<h3 id="4tmjobmanagerjobmanagertm">4、TM如何维护JobManager的关系，如果JobManager挂掉，TM会如何处理？<a class="headerlink" href="#4tmjobmanagerjobmanagertm" title="Permanent link"></a></h3>
+<h4 id="flink-taskmanagerresourcemanager-ha">这里重点分析下Flink 在TaskManager中ResourceManager 这一块的HA<a class="headerlink" href="#flink-taskmanagerresourcemanager-ha" title="Permanent link"></a></h4>
+<p>首先分析下 ZooKeeperLeaderRetrievalService.java，这个类是在Flink的package org.apache.flink.runtime.leaderretrieval包下面。</p>
+<p><div class="codehilite"><pre><span class="n">TaskExecutor</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//首先在构造函数中初始化jobLeaderService和resouceManagerLeaderRetriever</span>
+<span class="kd">public</span> <span class="nf">TaskExecutor</span><span class="o">(){</span>
+<span class="err">★</span><span class="n">④</span>   <span class="k">this</span><span class="o">.</span><span class="na">jobLeaderService</span> <span class="o">=</span> <span class="n">taskExecutorServices</span><span class="o">.</span><span class="na">getJobLeaderService</span><span class="o">();</span>
+<span class="err">★</span><span class="n">③</span>   <span class="k">this</span><span class="o">.</span><span class="na">resourceManagerLeaderRetriever</span> <span class="o">=</span> <span class="n">haServices</span><span class="o">.</span><span class="na">getResourceManagerLeaderRetriever</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+接下来先研究resourceManagerLeaderRetriever和jobLeaderService</p>
+<h5 id="resourcemanagerleaderretriever">resourceManagerLeaderRetriever<a class="headerlink" href="#resourcemanagerleaderretriever" title="Permanent link"></a></h5>
+<p><div class="codehilite"><pre><span class="n">HighAvailabilityServices</span><span class="o">.</span><span class="na">java</span>
+<span class="cm">/**</span>
+<span class="cm"> * Gets the leader retriever for the cluster&#39;s resource manager.</span>
+<span class="cm"> */</span>
+<span class="n">LeaderRetrievalService</span> <span class="nf">getResourceManagerLeaderRetriever</span><span class="o">();</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">ZooKeeperHaServices</span><span class="o">.</span><span class="na">java</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">RESOURCE_MANAGER_LEADER_PATH</span> <span class="o">=</span> <span class="s">&quot;/resource_manager_lock&quot;</span><span class="o">;</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">LeaderRetrievalService</span> <span class="nf">getResourceManagerLeaderRetriever</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">ZooKeeperUtils</span><span class="o">.</span><span class="na">createLeaderRetrievalService</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="n">configuration</span><span class="o">,</span> <span class="n">RESOURCE_MANAGER_LEADER_PATH</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div></p>
+<p><div class="codehilite"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="n">ZooKeeperLeaderRetrievalService</span> <span class="nf">createLeaderRetrievalService</span><span class="o">(</span>
+    <span class="kd">final</span> <span class="n">CuratorFramework</span> <span class="n">client</span><span class="o">,</span>
+    <span class="kd">final</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">,</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">pathSuffix</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//组装路径leaderPath = /leader/resource_manager_lock</span>
+    <span class="n">String</span> <span class="n">leaderPath</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span>
+        <span class="n">HighAvailabilityOptions</span><span class="o">.</span><span class="na">HA_ZOOKEEPER_LEADER_PATH</span><span class="o">)</span> <span class="o">+</span> <span class="n">pathSuffix</span><span class="o">;</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">ZooKeeperLeaderRetrievalService</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="n">leaderPath</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="c1">//note: 使用zookeeper去创建一个leader检索服务，用于检索leader的信息</span>
+<span class="kd">public</span> <span class="nf">ZooKeeperLeaderRetrievalService</span><span class="o">(</span><span class="n">CuratorFramework</span> <span class="n">client</span><span class="o">,</span> <span class="n">String</span> <span class="n">retrievalPath</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">client</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="s">&quot;CuratorFramework client&quot;</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NodeCache</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="n">retrievalPath</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">retrievalPath</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">retrievalPath</span><span class="o">);</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="na">leaderListener</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">lastLeaderAddress</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">lastLeaderSessionID</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+上述的这些代码就做了一件事：new一个ZookeeperLeaderRetrievalService，它的属性retrievalPath赋值为/leader/resource_manager_lock</p>
+<p>下面是启动ZookeeperLeaderRetrievalService.start()，主要就是在zk中这个节点上/leader/resource_manager_lock添加监听器ResourceManagerLeaderListener()
+<div class="codehilite"><pre><span class="c1">//note: 启动TM的相关服务</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">startTaskExecutorServices</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="c1">//note：与集群的ResourceManager建立连接(并创建一个listener)</span>
+<span class="err">★★</span> <span class="n">②resourceManagerLeaderRetriever</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="k">new</span> <span class="n">ResourceManagerLeaderListener</span><span class="o">());</span>
+
+    <span class="c1">//note: taskSlotTable启动</span>
+    <span class="n">taskSlotTable</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="k">new</span> <span class="n">SlotActionsImpl</span><span class="o">(),</span> <span class="n">getMainThreadExecutor</span><span class="o">());</span>
+
+<span class="err">★★</span> <span class="n">①jobLeaderService</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">getAddress</span><span class="o">(),</span> <span class="n">getRpcService</span><span class="o">(),</span> <span class="n">haServices</span><span class="o">,</span> <span class="k">new</span> <span class="n">JobLeaderListenerImpl</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div></p>
+<p><div class="codehilite"><pre><span class="n">①</span>
+<span class="n">ZooKeeperLeaderRetievalService</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//启动ZooKeeperLeaderRetievalService服务，给需要监听的节点添加watcher</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="n">LeaderRetrievalListener</span> <span class="n">listener</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Starting ZooKeeperLeaderRetrievalService {}.&quot;</span><span class="o">,</span> <span class="n">retrievalPath</span><span class="o">);</span>
+
+    <span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">leaderListener</span> <span class="o">=</span> <span class="n">listener</span><span class="o">;</span>
+        <span class="n">client</span><span class="o">.</span><span class="na">getUnhandledErrorListenable</span><span class="o">().</span><span class="na">addListener</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="c1">//启动监听节点的变化(主备切换)</span>
+        <span class="n">cache</span><span class="o">.</span><span class="na">getListenable</span><span class="o">().</span><span class="na">addListener</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="n">cache</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="c1">//connectionStateListener，是客户端对于zk的连接监控</span>
+        <span class="n">client</span><span class="o">.</span><span class="na">getConnectionStateListenable</span><span class="o">().</span><span class="na">addListener</span><span class="o">(</span><span class="n">connectionStateListener</span><span class="o">);</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+在zk的ZookeeperLeaderRetrievalService类中有个方法nodeChanged()即当zkclient要监听的节点发生变化就会触发client端编写监听事件
+<div class="codehilite"><pre><span class="n">ZookeeperLeaderRetrievalService</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">//当zk中的节点发生变化后的ZK watcher应该执行的操作</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">nodeChanged</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="kd">synchronized</span> <span class="o">(</span><span class="n">lock</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;Leader node has changed.&quot;</span><span class="o">);</span>
+        <span class="n">ChildData</span> <span class="n">childData</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">getCurrentData</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">leaderAddress</span><span class="o">;</span>
+        <span class="n">UUID</span> <span class="n">leaderSessionID</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">childData</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">leaderAddress</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="n">leaderSessionID</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="kt">byte</span><span class="o">[]</span> <span class="n">data</span> <span class="o">=</span> <span class="n">childData</span><span class="o">.</span><span class="na">getData</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">data</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">data</span><span class="o">.</span><span class="na">length</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">leaderAddress</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="n">leaderSessionID</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">ByteArrayInputStream</span> <span class="n">bais</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+                <span class="n">ObjectInputStream</span> <span class="n">ois</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="o">(</span><span class="n">bais</span><span class="o">);</span>
+                <span class="n">leaderAddress</span> <span class="o">=</span> <span class="n">ois</span><span class="o">.</span><span class="na">readUTF</span><span class="o">();</span>
+                <span class="n">leaderSessionID</span> <span class="o">=</span> <span class="o">(</span><span class="n">UUID</span><span class="o">)</span> <span class="n">ois</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="c1">//不相等，说明有新leader竞选成功（成功的zk上建立节点）</span>
+        <span class="k">if</span> <span class="o">(!(</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">leaderAddress</span><span class="o">,</span> <span class="n">lastLeaderAddress</span><span class="o">)</span> <span class="o">&amp;&amp;</span>
+            <span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">leaderSessionID</span><span class="o">,</span> <span class="n">lastLeaderSessionID</span><span class="o">)))</span> <span class="o">{</span>
+            <span class="n">lastLeaderAddress</span> <span class="o">=</span> <span class="n">leaderAddress</span><span class="o">;</span>
+            <span class="n">lastLeaderSessionID</span> <span class="o">=</span> <span class="n">leaderSessionID</span><span class="o">;</span>
+            <span class="c1">//执行listener中的相关通知操作</span>
+<span class="err">★★</span>          <span class="n">leaderListener</span><span class="o">.</span><span class="na">notifyLeaderAddress</span><span class="o">(</span><span class="n">leaderAddress</span><span class="o">,</span> <span class="n">leaderSessionID</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+上面★★中的触发的事件notifyLeaderAddress()是在用户的代码中写好的，
+<div class="codehilite"><pre><span class="c1">//TaskExecutor.java</span>
+<span class="cm">/**</span>
+<span class="cm"> * The listener for leader changes of the resource manager.</span>
+<span class="cm"> * note: 监控ResourceManager leader变化的listener</span>
+<span class="cm"> * note: TaskManger向ResourceManager注册是通过ResourceManagerLeaderListener来完成的，它会监控</span>
+<span class="cm"> * ResourceManager的leader变化，如果有新的leader被选举出来，就会调用notifyLeaderAddress()方法去</span>
+<span class="cm"> * 触发与ResourceManager的重连，其实现如下：</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ResourceManagerLeaderListener</span> <span class="kd">implements</span> <span class="n">LeaderRetrievalListener</span> <span class="o">{</span>
+
+    <span class="c1">//note: 如果leader被选举处理(包括挂掉之后重新选举)，将会调用这个方法通知TM</span>
+    <span class="nd">@Override</span>
+<span class="err">★★</span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">notifyLeaderAddress</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">leaderAddress</span><span class="o">,</span> <span class="kd">final</span> <span class="n">UUID</span> <span class="n">leaderSessionID</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">runAsync</span><span class="o">(</span>
+            <span class="o">()</span> <span class="o">-&gt;</span> <span class="n">notifyOfNewResourceManagerLeader</span><span class="o">(</span>
+                <span class="n">leaderAddress</span><span class="o">,</span>
+                <span class="n">ResourceManagerId</span><span class="o">.</span><span class="na">fromUuidOrNull</span><span class="o">(</span><span class="n">leaderSessionID</span><span class="o">)));</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleError</span><span class="o">(</span><span class="n">Exception</span> <span class="n">exception</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">onFatalError</span><span class="o">(</span><span class="n">exception</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+TaskExecutor#ResourceManagerLeaderListener#notifyLeaderAddress()会调用notifyOfNewResourceManagerLeader() 执行当前TaskManager到ResourcManager 的Leader的注册。</p>
+<h4 id="flink-taskmanager-jobmanagerha">这里重点分析下Flink 在TaskManager 关于JobManager这一块的HA<a class="headerlink" href="#flink-taskmanager-jobmanagerha" title="Permanent link"></a></h4>
+<p>首先启动TaskManager的时候，会先在TaskManagerServices#fromConfiguration()方法中初始化JobLeaderService;具体如下
+<div class="codehilite"><pre><span class="n">TaskManagerServices</span><span class="o">.</span><span class="na">java</span>
+<span class="c1">// 创建TaskManagerServices</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">TaskManagerServices</span> <span class="nf">fromConfiguration</span><span class="o">(</span>
+    <span class="n">TaskManagerServicesConfiguration</span> <span class="n">taskManagerServicesConfiguration</span><span class="o">,</span>
+    <span class="n">MetricGroup</span> <span class="n">taskManagerMetricGroup</span><span class="o">,</span>
+    <span class="n">Executor</span> <span class="n">taskIOExecutor</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="c1">//note: 监控注册的Job的JobManager leader信息</span>
+    <span class="kd">final</span> <span class="n">JobLeaderService</span> <span class="n">jobLeaderService</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobLeaderService</span><span class="o">(</span><span class="n">taskManagerLocation</span><span class="o">,</span> <span class="n">taskManagerServicesConfiguration</span><span class="o">.</span><span class="na">getRetryingRegistrationConfiguration</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+然后我们来看看JobLeaderServices（看下与ResourceManagerLeaderRetriever的区别）分析下两者HA的区别：</p>
+<div class="codehilite"><pre><span class="cm">/**</span>
+<span class="cm"> * JobLeaderService的作用主要监控所有注册作业Jobs的Job leader(每个给定的作业都会有一个Job manager),上面job leader是被jobleaderService监测到的。</span>
+<span class="cm"> * 这个服务会尝试与job leader建立连接，一旦连接成功建立后，job leader listener就会收到通知：job leader和tm建立连接</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JobLeaderService</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">JobID</span><span class="o">,</span> <span class="n">Tuple2</span><span class="o">&lt;</span><span class="n">LeaderRetrievalService</span><span class="o">,</span> <span class="n">JobLeaderService</span><span class="o">.</span><span class="na">JobManagerLeaderListener</span><span class="o">&gt;&gt;</span> <span class="n">jobLeaderServices</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">RpcService</span> <span class="n">rpcService</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">HighAvailabilityServices</span> <span class="n">highAvailabilityServices</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">JobLeaderListener</span> <span class="n">jobLeaderListener</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">JobLeaderService</span><span class="o">(</span><span class="n">TaskManagerLocation</span> <span class="n">location</span><span class="o">,</span>
+        <span class="n">RetryingRegistrationConfiguration</span> <span class="n">retryingRegistrationConfiguration</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">ownLocation</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">location</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">retryingRegistrationConfiguration</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">retryingRegistrationConfiguration</span><span class="o">);</span>
+        <span class="n">jobLeaderServices</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ConcurrentHashMap</span><span class="o">&lt;&gt;(</span><span class="mi">4</span><span class="o">);</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">JobLeaderService</span><span class="o">.</span><span class="na">State</span><span class="o">.</span><span class="na">CREATED</span><span class="o">;</span>
+        <span class="n">ownerAddress</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">rpcService</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">highAvailabilityServices</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">jobLeaderListener</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Start the job leader service with the given services.</span>
+<span class="cm"> * 与ZooKeeperLeaderRetievalService的start()方法的区别在于 JobLeaderService仅仅是启动各种services包括rpcService、highAvailabilityServices、jobLeaderListener及更改状态，并不会像ResourceManagerLeaderRetriever在zk中新建一个节点并对该节点添加listener.</span>
+<span class="cm"> 为什么呢？</span>
+<span class="cm"> 可能是因为：ResourceManager和TaskManager都是在集群启动（flink-on-yarn集群）的时候就已经启动，而JobManager只有在提交作业的时候才会由Dispatcher拉起。特别是在Flink yarn sesion模式下。</span>
+<span class="cm"> 因此在JobLeaderService类中会有另外一个方法addJob()，在这个方法中会添加一个作业，在zk中添加一个节点，并对该节点进行监听</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span>
+        <span class="kd">final</span> <span class="n">String</span> <span class="n">initialOwnerAddress</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">RpcService</span> <span class="n">initialRpcService</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">HighAvailabilityServices</span> <span class="n">initialHighAvailabilityServices</span><span class="o">,</span>
+        <span class="kd">final</span> <span class="n">JobLeaderListener</span> <span class="n">initialJobLeaderListener</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">JobLeaderService</span><span class="o">.</span><span class="na">State</span><span class="o">.</span><span class="na">CREATED</span> <span class="o">!=</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="s">&quot;The service has already been started.&quot;</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Start job leader service.&quot;</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">ownerAddress</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">initialOwnerAddress</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">rpcService</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">initialRpcService</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">highAvailabilityServices</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">initialHighAvailabilityServices</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">jobLeaderListener</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">initialJobLeaderListener</span><span class="o">);</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">JobLeaderService</span><span class="o">.</span><span class="na">State</span><span class="o">.</span><span class="na">STARTED</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Add the given job to be monitored. This means that the service tries to detect leaders for</span>
+<span class="cm"> * this job and then tries to establish a connection to it.</span>
+<span class="cm"> */</span>
+<span class="err">★★</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addJob</span><span class="o">(</span><span class="kd">final</span> <span class="n">JobID</span> <span class="n">jobId</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">defaultTargetAddress</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkState</span><span class="o">(</span><span class="n">JobLeaderService</span><span class="o">.</span><span class="na">State</span><span class="o">.</span><span class="na">STARTED</span> <span class="o">==</span> <span class="n">state</span><span class="o">,</span> <span class="s">&quot;The service is currently not running.&quot;</span><span class="o">);</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Add job {} for job leader monitoring.&quot;</span><span class="o">,</span> <span class="n">jobId</span><span class="o">);</span>
+
+<span class="err">★★</span><span class="n">①</span>    <span class="kd">final</span> <span class="n">LeaderRetrievalService</span> <span class="n">leaderRetrievalService</span> <span class="o">=</span> <span class="n">highAvailabilityServices</span><span class="o">.</span><span class="na">getJobManagerLeaderRetriever</span><span class="o">(</span>
+        <span class="n">jobId</span><span class="o">,</span><span class="n">defaultTargetAddress</span><span class="o">);</span>
+
+    <span class="n">JobLeaderService</span><span class="o">.</span><span class="na">JobManagerLeaderListener</span> <span class="n">jobManagerLeaderListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobManagerLeaderListener</span><span class="o">(</span><span class="n">jobId</span><span class="o">);</span>
+
+    <span class="kd">final</span> <span class="n">Tuple2</span><span class="o">&lt;</span><span class="n">LeaderRetrievalService</span><span class="o">,</span> <span class="n">JobManagerLeaderListener</span><span class="o">&gt;</span> <span class="n">oldEntry</span> <span class="o">=</span> <span class="n">jobLeaderServices</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">Tuple2</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">leaderRetrievalService</span><span class="o">,</span> <span class="n">jobManagerLeaderListener</span><span class="o">));</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">oldEntry</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">oldEntry</span><span class="o">.</span><span class="na">f0</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+        <span class="n">oldEntry</span><span class="o">.</span><span class="na">f1</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="n">leaderRetrievalService</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">jobManagerLeaderListener</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Leader listener which tries to establish a connection to a newly detected job leader.</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">JobManagerLeaderListener</span> <span class="kd">implements</span> <span class="n">LeaderRetrievalListener</span> <span class="o">{</span>
+<span class="cm">/** Job id identifying the job to look for a leader. */</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="n">JobID</span> <span class="n">jobId</span><span class="o">;</span>
+<span class="cm">/** Rpc connection to the job leader. */</span>
+<span class="kd">private</span> <span class="kd">volatile</span> <span class="n">RegisteredRpcConnection</span><span class="o">&lt;</span><span class="n">JobMasterId</span><span class="o">,</span> <span class="n">JobMasterGateway</span><span class="o">,</span> <span class="n">JMTMRegistrationSuccess</span><span class="o">&gt;</span> <span class="n">rpcConnection</span><span class="o">;</span>
+<span class="kd">private</span> <span class="nf">JobManagerLeaderListener</span><span class="o">(</span><span class="n">JobID</span> <span class="n">jobId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">jobId</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">jobId</span><span class="o">);</span>
+    <span class="n">stopped</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="n">rpcConnection</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">currentJobMasterId</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="nd">@Override</span>
+<span class="err">★★</span><span class="n">②public</span> <span class="kt">void</span> <span class="nf">notifyLeaderAddress</span><span class="o">(</span><span class="kd">final</span> <span class="nd">@Nullable</span> <span class="n">String</span> <span class="n">leaderAddress</span><span class="o">,</span> <span class="kd">final</span> <span class="nd">@Nullable</span> <span class="n">UUID</span> <span class="n">leaderId</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">JobMasterId</span> <span class="n">jobMasterId</span> <span class="o">=</span> <span class="n">JobMasterId</span><span class="o">.</span><span class="na">fromUuidOrNull</span><span class="o">(</span><span class="n">leaderId</span><span class="o">);</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;New leader information for job {}. Address: {}, leader id: {}.&quot;</span><span class="o">,</span>
+        <span class="n">jobId</span><span class="o">,</span> <span class="n">leaderAddress</span><span class="o">,</span> <span class="n">jobMasterId</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">leaderAddress</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">leaderAddress</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="c1">// the leader lost leadership but there is no other leader yet.</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">rpcConnection</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">rpcConnection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">jobLeaderListener</span><span class="o">.</span><span class="na">jobManagerLostLeadership</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">currentJobMasterId</span><span class="o">);</span>
+        <span class="n">currentJobMasterId</span> <span class="o">=</span> <span class="n">jobMasterId</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">currentJobMasterId</span> <span class="o">=</span> <span class="n">jobMasterId</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">rpcConnection</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// check if we are already trying to connect to this leader</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">jobMasterId</span><span class="o">,</span> <span class="n">rpcConnection</span><span class="o">.</span><span class="na">getTargetLeaderId</span><span class="o">()))</span> <span class="o">{</span>
+                <span class="n">rpcConnection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+
+                <span class="n">rpcConnection</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobManagerRegisteredRpcConnection</span><span class="o">(</span>
+                    <span class="n">LOG</span><span class="o">,</span><span class="n">leaderAddress</span><span class="o">,</span>
+                    <span class="n">jobMasterId</span><span class="o">,</span><span class="n">rpcService</span><span class="o">.</span><span class="na">getExecutor</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">rpcConnection</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobManagerRegisteredRpcConnection</span><span class="o">(</span>
+                <span class="n">LOG</span><span class="o">,</span><span class="n">leaderAddress</span><span class="o">,</span>
+                <span class="n">jobMasterId</span><span class="o">,</span><span class="n">rpcService</span><span class="o">.</span><span class="na">getExecutor</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="c1">// double check for a concurrent stop operation</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">stopped</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">rpcConnection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Try to register at job manager {} with leader id {}.&quot;</span><span class="o">,</span> <span class="n">leaderAddress</span><span class="o">,</span> <span class="n">leaderId</span><span class="o">);</span>
+            <span class="n">rpcConnection</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+
+    <span class="cm">/**</span>
+<span class="cm">     * Rpc connection for the job manager &lt;--&gt; task manager connection.</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">JobManagerRegisteredRpcConnection</span> <span class="kd">extends</span> <span class="n">RegisteredRpcConnection</span><span class="o">&lt;</span><span class="n">JobMasterId</span><span class="o">,</span> <span class="n">JobMasterGateway</span><span class="o">,</span> <span class="n">JMTMRegistrationSuccess</span><span class="o">&gt;</span> <span class="o">{</span>
+
+        <span class="n">JobManagerRegisteredRpcConnection</span><span class="o">(</span>
+                <span class="n">Logger</span> <span class="n">log</span><span class="o">,</span>
+                <span class="n">String</span> <span class="n">targetAddress</span><span class="o">,</span>
+                <span class="n">JobMasterId</span> <span class="n">jobMasterId</span><span class="o">,</span>
+                <span class="n">Executor</span> <span class="n">executor</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">(</span><span class="n">log</span><span class="o">,</span> <span class="n">targetAddress</span><span class="o">,</span> <span class="n">jobMasterId</span><span class="o">,</span> <span class="n">executor</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onRegistrationSuccess</span><span class="o">(</span><span class="n">JMTMRegistrationSuccess</span> <span class="n">success</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// filter out old registration attempts</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">getTargetLeaderId</span><span class="o">(),</span> <span class="n">currentJobMasterId</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Successful registration at job manager {} for job {}.&quot;</span><span class="o">,</span> <span class="n">getTargetAddress</span><span class="o">(),</span> <span class="n">jobId</span><span class="o">);</span>
+
+<span class="err">★★</span><span class="n">③</span>              <span class="n">jobLeaderListener</span><span class="o">.</span><span class="na">jobManagerGainedLeadership</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">getTargetGateway</span><span class="o">(),</span> <span class="n">success</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;Encountered obsolete JobManager registration success from {} with leader session ID {}.&quot;</span><span class="o">,</span> <span class="n">getTargetAddress</span><span class="o">(),</span> <span class="n">getTargetLeaderId</span><span class="o">());</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="nd">@Override</span>
+        <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onRegistrationFailure</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">failure</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// filter out old registration attempts</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">getTargetLeaderId</span><span class="o">(),</span> <span class="n">currentJobMasterId</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Failed to register at job  manager {} for job {}.&quot;</span><span class="o">,</span> <span class="n">getTargetAddress</span><span class="o">(),</span> <span class="n">jobId</span><span class="o">);</span>
+                <span class="n">jobLeaderListener</span><span class="o">.</span><span class="na">handleError</span><span class="o">(</span><span class="n">failure</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;Obsolete JobManager registration failure from {} with leader session ID {}.&quot;</span><span class="o">,</span> <span class="n">getTargetAddress</span><span class="o">(),</span> <span class="n">getTargetLeaderId</span><span class="o">(),</span> <span class="n">failure</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/**</span>
+<span class="cm"> * Retrying registration for the job manager &lt;--&gt; task manager connection.</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">JobManagerRetryingRegistration</span>
+        <span class="kd">extends</span> <span class="n">RetryingRegistration</span><span class="o">&lt;</span><span class="n">JobMasterId</span><span class="o">,</span> <span class="n">JobMasterGateway</span><span class="o">,</span> <span class="n">JMTMRegistrationSuccess</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">taskManagerRpcAddress</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">TaskManagerLocation</span> <span class="n">taskManagerLocation</span><span class="o">;</span>
+    <span class="nd">@Override</span>
+<span class="err">★★</span><span class="n">④</span>  <span class="kd">protected</span> <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">RegistrationResponse</span><span class="o">&gt;</span> <span class="nf">invokeRegistration</span><span class="o">(</span>
+            <span class="n">JobMasterGateway</span> <span class="n">gateway</span><span class="o">,</span>
+            <span class="n">JobMasterId</span> <span class="n">jobMasterId</span><span class="o">,</span>
+            <span class="kt">long</span> <span class="n">timeoutMillis</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">gateway</span><span class="o">.</span><span class="na">registerTaskManager</span><span class="o">(</span><span class="n">taskManagerRpcAddress</span><span class="o">,</span> <span class="n">taskManagerLocation</span><span class="o">,</span> <span class="n">Time</span><span class="o">.</span><span class="na">milliseconds</span><span class="o">(</span><span class="n">timeoutMillis</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">private</span> <span class="kd">enum</span> <span class="n">State</span> <span class="o">{</span>
+    <span class="n">CREATED</span><span class="o">,</span> <span class="n">STARTED</span><span class="o">,</span> <span class="n">STOPPED</span>
+<span class="o">}</span>
+</pre></div>
+
+<h6 id="_1">上述代码总结：<a class="headerlink" href="#_1" title="Permanent link"></a></h6>
+<ul>
+<li>与ZooKeeperLeaderRetievalService的start()方法的区别在于 JobLeaderService仅仅是启动各种services包括rpcService、highAvailabilityServices、jobLeaderListener及更改状态，并不会像ResourceManagerLeaderRetriever在zk中新建一个节点并对该节点添加listener。</li>
+<li>为什么呢？<ul>
+<li>可能是因为：ResourceManager和TaskManager都是在集群启动（flink-on-yarn集群）的时候就已经启动，而JobManager只有在提交作业的时候才会由Dispatcher拉起。特别是在Flink yarn sesion模式下。</li>
+<li>因此在JobLeaderService类中会有另外一个方法addJob()，在这个方法中会添加一个作业，在zk中添加一个节点，并对该节点进行监听</li>
+</ul>
+</li>
+</ul>
+<p>先分析下addJob()方法：
+在TaskExecutor#requestSlot()会调用addJob()方法
+<div class="codehilite"><pre><span class="n">TaskExecutor</span><span class="o">.</span><span class="na">java</span>
+<span class="nf">requestSlot</span><span class="o">(){</span>
+    <span class="c1">//note: 监控这个作业JobManager的leader变化</span>
+    <span class="n">jobLeaderService</span><span class="o">.</span><span class="na">addJob</span><span class="o">(</span><span class="n">jobId</span><span class="o">,</span> <span class="n">targetAddress</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">JobLeaderService</span><span class="o">.</span><span class="na">java</span>
+<span class="nf">add</span><span class="o">(){</span>
+<span class="err">★★</span>  <span class="kd">final</span> <span class="n">LeaderRetrievalService</span> <span class="n">leaderRetrievalService</span> <span class="o">=</span> <span class="n">highAvailabilityServices</span><span class="o">.</span><span class="na">getJobManagerLeaderRetriever</span><span class="o">(</span>
+            <span class="n">jobId</span><span class="o">,</span><span class="n">defaultTargetAddress</span><span class="o">);</span>
+<span class="err">★★</span>  <span class="n">JobLeaderService</span><span class="o">.</span><span class="na">JobManagerLeaderListener</span> <span class="n">jobManagerLeaderListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JobManagerLeaderListener</span><span class="o">(</span><span class="n">jobId</span><span class="o">);</span>
+<span class="err">★★</span>  <span class="n">leaderRetrievalService</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">jobManagerLeaderListener</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">HighAvailabilityServices</span><span class="o">.</span><span class="na">java</span>
+<span class="err">★</span> <span class="n">LeaderRetrievalService</span> <span class="nf">getJobManagerLeaderRetriever</span><span class="o">(</span><span class="n">JobID</span> <span class="n">jobID</span><span class="o">,</span> <span class="n">String</span> <span class="n">defaultJobManagerAddress</span><span class="o">);</span>
+</pre></div>
+<div class="codehilite"><pre><span class="n">ZooKeeperHaServices</span><span class="o">.</span><span class="na">java</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">LeaderRetrievalService</span> <span class="nf">getJobManagerLeaderRetriever</span><span class="o">(</span><span class="n">JobID</span> <span class="n">jobID</span><span class="o">,</span> <span class="n">String</span> <span class="n">defaultJobManagerAddress</span><span class="o">)</span> <span class="o">{</span>
+<span class="err">★</span>    <span class="k">return</span> <span class="n">getJobManagerLeaderRetriever</span><span class="o">(</span><span class="n">jobID</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">LeaderRetrievalService</span> <span class="nf">getJobManagerLeaderRetriever</span><span class="o">(</span><span class="n">JobID</span> <span class="n">jobID</span><span class="o">)</span> <span class="o">{</span>
+<span class="err">★</span>    <span class="k">return</span> <span class="n">ZooKeeperUtils</span><span class="o">.</span><span class="na">createLeaderRetrievalService</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="n">configuration</span><span class="o">,</span> <span class="n">getPathForJobManager</span><span class="o">(</span><span class="n">jobID</span><span class="o">));</span>
+<span class="o">}</span>
+</pre></div>
+假定上面代码中JobID=&rdquo;Job_123456789&rdquo;
+<div class="codehilite"><pre><span class="n">ZooKeeperUtils</span><span class="o">.</span><span class="na">java</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">ZooKeeperLeaderRetrievalService</span> <span class="nf">createLeaderRetrievalService</span><span class="o">(</span>
+    <span class="kd">final</span> <span class="n">CuratorFramework</span> <span class="n">client</span><span class="o">,</span>
+    <span class="kd">final</span> <span class="n">Configuration</span> <span class="n">configuration</span><span class="o">,</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">pathSuffix</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//leaderPath = /leader/Job_123456789</span>
+<span class="err">★</span>    <span class="n">String</span> <span class="n">leaderPath</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span>
+        <span class="n">HighAvailabilityOptions</span><span class="o">.</span><span class="na">HA_ZOOKEEPER_LEADER_PATH</span><span class="o">)</span> <span class="o">+</span> <span class="n">pathSuffix</span><span class="o">;</span>
+    <span class="c1">//在zk中创建/leader/Job_123456789节点</span>
+<span class="err">★★</span>   <span class="k">return</span> <span class="k">new</span> <span class="n">ZooKeeperLeaderRetrievalService</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="n">leaderPath</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+在zk中创建/leader/Job_123456789节点
+<div class="codehilite"><pre><span class="c1">//note: 使用zookeeper去创建一个leader检索服务，用于检索leader的信息</span>
+<span class="kd">public</span> <span class="nf">ZooKeeperLeaderRetrievalService</span><span class="o">(</span><span class="n">CuratorFramework</span> <span class="n">client</span><span class="o">,</span> <span class="n">String</span> <span class="n">retrievalPath</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">client</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="s">&quot;CuratorFramework client&quot;</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">cache</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NodeCache</span><span class="o">(</span><span class="n">client</span><span class="o">,</span> <span class="n">retrievalPath</span><span class="o">);</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">retrievalPath</span> <span class="o">=</span> <span class="n">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">retrievalPath</span><span class="o">);</span>
+
+    <span class="k">this</span><span class="o">.</span><span class="na">leaderListener</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">lastLeaderAddress</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">lastLeaderSessionID</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="n">running</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div></p>
+<h3 id="5tm-slot">5、TM Slot资源是如何管理的？<a class="headerlink" href="#5tm-slot" title="Permanent link"></a></h3></article></body></html>
